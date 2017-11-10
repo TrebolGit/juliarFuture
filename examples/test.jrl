@@ -1,4 +1,7 @@
 function main() = {
+
+    int y = + 3 4 5 5;
+    /*
     int x = foo();
     printLine ( x );
 
@@ -6,7 +9,6 @@ function main() = {
     print( "memory size = ");
     printLine( z );
 
-    x = 100;
     print("x = ");
     printLine( x );
 
@@ -17,11 +19,24 @@ function main() = {
     x = y;
     print("assign  value of y to x = ");
     printLine( x );
+    */
 }
 
 
 function foo() = {
     int x = 3;
     printLine(x);
+    fart();
     return x;
+}
+
+
+function fart() = {
+    bark();
+    bark();
+    printLine("fart");
+}
+
+function bark()={
+    printLine("bark");
 }

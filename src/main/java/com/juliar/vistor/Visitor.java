@@ -171,8 +171,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
         return node;
     }
 
-
-    private Node handleBooleanOperatorNode( ParserRuleContext ctx){
+    private Node handleBooleanOperatorNode(ParserRuleContext ctx){
         BooleanOperatorNode booleanOperatorNode = new BooleanOperatorNode();
         iterateWithTryCatch( ctx, booleanOperatorNode);
         return booleanOperatorNode;

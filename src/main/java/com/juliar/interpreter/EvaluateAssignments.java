@@ -1,6 +1,7 @@
 package com.juliar.interpreter;
 
 import com.juliar.nodes.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class EvaluateAssignments<T> {
         }
     }
 
-    public static List<Node> evalReassignment( Node n, ActivationFrame activationFrame, Interpreter calback) {
+    @NotNull
+    public static List<Node> evalReassignment(Node n, ActivationFrame activationFrame, Interpreter calback) {
         if ( n != null){
             VariableReassignmentNode node = (VariableReassignmentNode)n;
 

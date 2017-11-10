@@ -3,11 +3,9 @@ package com.juliar.test;
 import com.juliar.JuliarCompiler;
 import junit.framework.TestCase;
 import org.junit.Assert;
-
+import com.juliar.errors.Logger;
 import java.util.List;
-
 import static java.lang.System.out;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
@@ -32,6 +30,9 @@ public class JuliarCompilerTest extends TestCase {
         //errorList.addAll( compiler.compile("serialize.jrl", ".",  false,false));
 
         if (errorList.size() > 0 ){
+            for(int i =0; i < errorList.size(); i++){
+                Logger.log( errorList.get(i) );
+            }
             throw new RuntimeException( "compile errors" );
         }
 
