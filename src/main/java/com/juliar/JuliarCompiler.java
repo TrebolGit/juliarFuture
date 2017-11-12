@@ -1,6 +1,5 @@
 package com.juliar;
 
-import com.fastcgi.FCGIInterface;
 import com.juliar.codegenerator.InstructionInvocation;
 import com.juliar.errors.ErrorListener;
 import com.juliar.errors.Logger;
