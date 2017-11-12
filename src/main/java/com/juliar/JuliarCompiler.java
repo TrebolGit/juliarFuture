@@ -33,7 +33,6 @@ public class JuliarCompiler {
 			Application.launch(Gui.class);
 			return;
 		}
-		fastCGI();
 		try {
 			String[] unparsedArgs = parseFlags(args);
 			if(isInline){
@@ -104,25 +103,6 @@ public class JuliarCompiler {
 			}
         }
         return unparsed.toArray(new String[0]);
-	}
-
-	private static void fastCGI() {
-		while ( new FCGIInterface().FCGIaccept() >= 0) {
-			String method = System.getProperty("REQUEST_METHOD");
-
-			if (method != null) {
-				String documentROOT = System.getProperty("DOCUMENT_ROOT");
-				String scriptNAME = System.getProperty("SCRIPT_NAME");
-				Logger.log("Content-type: text/html\r\n\r\n");
-
-				if ("/".equals(scriptNAME) || "".equals(scriptNAME)) {
-					scriptNAME = "index.jrl";
-				}
-
-				JuliarCompiler compiler = new JuliarCompiler();
-				compiler.compile(documentROOT + scriptNAME, "", false);
-			}
-		}
 	}
 
 	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
