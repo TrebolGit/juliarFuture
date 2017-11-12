@@ -1,5 +1,6 @@
 package com.juliar.gui;
 
+import com.juliar.web.SimpleHTTPServer;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -23,6 +24,7 @@ public class Gui extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            SimpleHTTPServer.main();
             HostServices hostServices = getHostServices();
             Scene scene = SceneCreator.create(stage,"juliar.fxml","Juliar.Future - *New File*", hostServices);
             keyComb(scene);
@@ -30,6 +32,7 @@ public class Gui extends Application {
                 Optional<ButtonType> confirmation = CloseConfirm.closeApp();
                 if (confirmation.isPresent() && confirmation.get() == ButtonType.OK){
                     Platform.exit();
+                    System.exit(0);
                 }
                 event.consume();
             });

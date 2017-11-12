@@ -3,7 +3,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Polygon?>
 <?import java.lang.*?>
-<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1000.0" fx:controller="com.juliar.gui.Controller">
+<?import javafx.scene.web.WebView?>
+<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1300.0" fx:controller="com.juliar.gui.Controller">
     <AnchorPane>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Menu text="File">
@@ -23,7 +24,6 @@
             <Menu text="View" />
             <Menu text="Run">
                 <MenuItem onAction="#onRunInterpreter" text="Run Interpreter" />
-                <MenuItem onAction="#onRunFCGI" text="Run FastCGI" />
             </Menu>
             <Menu text="Help">
                 <MenuItem onAction="#onAbout" text="About" />
@@ -47,6 +47,9 @@
                     <Tab text="Errors">
                         <TextArea fx:id="areaErrorText" editable="false" layoutX="45.0" layoutY="-55.0" />
                     </Tab>
+                    <Tab text="Console">
+                        <TextArea editable="false" layoutX="45.0" layoutY="-55.0" />
+                    </Tab>
                 </TabPane>
                 <Button fx:id="runBtn" onAction="#onRunInterpreter" layoutX="659.0" layoutY="-35" AnchorPane.rightAnchor="50.0" prefHeight="75.0" prefWidth="75.0">
                     <graphic>
@@ -67,5 +70,16 @@
                 </Button>
             </AnchorPane>
         </VBox>
+        <TabPane fx:id="tabPaneOpt" VBox.vgrow="ALWAYS" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Tab text="Help">
+                <WebView fx:id="webHelpView" layoutX="100.0" layoutY="176.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </Tab>
+            <Tab text="Packages">
+                <TextArea editable="false" layoutX="15.0" layoutY="-55.0" />
+            </Tab>
+            <Tab text="Viewer">
+                <WebView fx:id="webPreviewView" layoutX="100.0" layoutY="176.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </Tab>
+        </TabPane>
     </HBox>
 </VBox>
