@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,6 +33,12 @@ import static java.lang.System.*;
  */
 public class Controller {
     @FXML
+    public WebView webPreviewView;
+
+    @FXML
+    public WebView webHelpView;
+
+    @FXML
     public Button runBtn;
 
     @FXML
@@ -38,6 +46,9 @@ public class Controller {
 
     @FXML
     public TextArea areaErrorText;
+
+    @FXML
+    public TabPane tabPaneOpt;
 
     @FXML
     public TabPane tabPane;
@@ -186,8 +197,15 @@ public class Controller {
 
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         DragResizerXY.makeResizable(folderTree);
+        DragResizerXY.makeResizable(tabPaneOpt);
+
+        WebEngine engine = webPreviewView.getEngine();
+        engine.load("http://127.0.0.1:8080/");
+
+        WebEngine engine2 = webHelpView.getEngine();
+        engine2.load("https://juliar.org/documentation");
 
         File jarPath=new File(Gui.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         String propertiesPath=jarPath.getParentFile().getAbsolutePath();
@@ -508,25 +526,6 @@ public class Controller {
     public void onRefresh(){
         scene.getStylesheets().clear();
         CSSLoader.cssLoad(scene);
-    }
-
-    @FXML
-    public void onRunFCGI(){
-        ProcessBuilder pb = new ProcessBuilder("java","-DFCGI_PORT=9000", "-jar", new File(Controller.class.getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .getPath())
-                .getName());
-        try {
-            File log = new File("log");
-            pb.redirectErrorStream(true);
-            pb.redirectOutput(log);
-            pb.start();
-            GuiInformation.create("Juliar FastCGI","","Juliar Successfully launched!");
-        }
-        catch(IOException e){
-            new GuiAlert(e, "Juliar FastCGI Cannot Start: Cannot Start a new instance of Juliar!");
-        }
     }
 
     @FXML

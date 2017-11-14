@@ -1,12 +1,9 @@
 package com.juliar;
 
-import com.fastcgi.FCGIInterface;
-import com.juliar.codegenerator.InstructionInvocation;
 import com.juliar.errors.ErrorListener;
 import com.juliar.errors.Logger;
 import com.juliar.gui.Gui;
 import com.juliar.interpreter.Interpreter;
-import com.juliar.interpreter.ReadWriteBinaryFile;
 import com.juliar.parser.JuliarLexer;
 import com.juliar.parser.JuliarParser;
 import com.juliar.symboltable.SymbolTable;
@@ -21,20 +18,24 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import com.juliar.web.SimpleHTTPServer;
 
 public class JuliarCompiler {
 	public static boolean isDebug = false;
 	public static boolean isRepl = false;
 	public static boolean isInline = false;
+	public static boolean isServer = false;
+	public static boolean isApp = false;
     private ErrorListener errors;
     private String inputFileName;
 
     public static void main(String[] args) {
 		if(!isDebug && System.console() == null && args.length == 0) {
+			isApp = true;
 			Application.launch(Gui.class);
 			return;
 		}
-		fastCGI();
+
 		try {
 			String[] unparsedArgs = parseFlags(args);
 			if(isInline){
@@ -45,6 +46,11 @@ public class JuliarCompiler {
 				return;
 			}
 			if (startupInstructions(unparsedArgs)) {
+				if(isApp) {
+					Logger.log("Running App");
+				} else if (isServer){
+					Logger.log("Server is running on 127.0.0.1:8080");
+				}
 				return;
 			}
 
@@ -62,22 +68,26 @@ public class JuliarCompiler {
 			compiler.compile(fileName, outputPath, compileFlag);
 
 		} catch (Exception ex) {
-			Logger.log("Error " + ex.getMessage());
+			Logger.log("Errored out at: " + ex.getMessage());
 		}
 	}
 
 	private static boolean startupInstructions(String[] args) {
-		Logger.log("Juliar Compiler - Copyright (C) 2017");
+    	if(!isApp && !isServer) {
+			Logger.log("Juliar Compiler - Copyright (C) 2017");
 
-		if(args.length != 1 && args.length != 2){
-			Logger.log("Usage: java <-D [fcgi port]> -jar JuliarCompiler.jar <source file> <output path> ");
-			Logger.log("Path to Juliar source file");
-			Logger.log("Path to output directory if compiled.");
-			Logger.log("If output path is undefined, source file will be interpreted");
-			Logger.log("If you would like to use JuliarCompiler for web specify fcgi port ex. -DFCGI=9000");
-			return true;
-        }
-		return false;
+			if (args.length != 1 && args.length != 2) {
+				Logger.log("Usage: java -jar JuliarCompiler.jar <source file> <output path> <optional: -server, -app, -verbose, -repl, -inline>");
+				Logger.log("Path to Juliar source file");
+				Logger.log("Path to output directory if compiled.");
+				Logger.log("If output path is undefined, source file will be interpreted");
+				Logger.log("If you would like to run a server, add -server flag");
+				return true;
+			}
+			return false;
+		} else {
+    		return true;
+		}
 	}
 
 	private static String[] parseFlags(String[] args) {
@@ -85,7 +95,12 @@ public class JuliarCompiler {
 		for(String arg: args) {
 			if(arg.startsWith("-")) switch (arg) {
 				case "-app":
+					isApp = true;
 					Application.launch(Gui.class);
+					break;
+				case "-server":
+					isServer = true;
+					SimpleHTTPServer.main();
 					break;
 				case "-verbose":
 					isDebug = true;
@@ -105,25 +120,6 @@ public class JuliarCompiler {
 			}
         }
         return unparsed.toArray(new String[0]);
-	}
-
-	private static void fastCGI() {
-		while ( new FCGIInterface().FCGIaccept() >= 0) {
-			String method = System.getProperty("REQUEST_METHOD");
-
-			if (method != null) {
-				String documentROOT = System.getProperty("DOCUMENT_ROOT");
-				String scriptNAME = System.getProperty("SCRIPT_NAME");
-				Logger.log("Content-type: text/html\r\n\r\n");
-
-				if ("/".equals(scriptNAME) || "".equals(scriptNAME)) {
-					scriptNAME = "index.jrl";
-				}
-
-				JuliarCompiler compiler = new JuliarCompiler();
-				compiler.compile(documentROOT + scriptNAME, "", false);
-			}
-		}
 	}
 
 	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
