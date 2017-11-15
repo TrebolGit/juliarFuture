@@ -74,7 +74,7 @@ rightParen
     ;
 
 booleanExpression
-    : ( BOOLEAN | variable | command ) (comparisonOperator) ( variable | primitiveTypes | command | userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
+    : ( BOOLEAN | variable | singleExpression ) (comparisonOperator) ( variable | primitiveTypes | singleExpression | userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
     ;
 
 primitives
@@ -330,10 +330,10 @@ singleExpression
  | singleExpression Instanceof singleExpression                           # InstanceofExpression
  | singleExpression In singleExpression                                   # InExpression
  | singleExpression '?' singleExpression ':' singleExpression             # TernaryExpression
- | (keywords) variable ( assignmentOperator singleExpression)*            # VariableDeclarationExpression
- | (keywords) variable ( assignmentOperator ( '+' | '*' | '-' | '/' ) ( singleExpression singleExpression )+)*  # VariableDeclarationExpression
  | variable assignmentOperator singleExpression                           # AssignmentOperatorExpression
  | variable assignmentOperator ( '+' | '*' | '-' | '/' ) ( singleExpression singleExpression )+ # AssignmentOperatorExpression
+ | (keywords) ( variable ( assignmentOperator singleExpression)* | AssignmentOperatorExpression )         # VariableDeclarationExpression
+ | (keywords) variable ( assignmentOperator ( '+' | '*' | '-' | '/' ) ( singleExpression singleExpression )+)*  # VariableDeclarationExpression
  | This                                                                   # ThisExpression
  | literal                                                                # LiteralExpression
  | variable                                                               # VariableExpression
@@ -343,12 +343,12 @@ singleExpression
 
 
  assignmentExpression
-     : variableDeclaration equalsign ( command | variable | functionCall | primitiveTypes | booleanExpression | userDefinedTypeVariableReference | userDefinedTypeVariableReference)
+     : variableDeclaration equalsign ( singleExpression | variable | functionCall | primitiveTypes | booleanExpression | userDefinedTypeVariableReference | userDefinedTypeVariableReference)
      | userDefinedTypeVariableReference equalsign ( variable | primitiveTypes)
  	;
 
  reassignmentExpression
-     : variable equalsign ( variable | functionCall | primitiveTypes | command |  userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
+     : variable equalsign ( variable | functionCall | primitiveTypes | singleExpression |  userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
      ;
 /*
 
