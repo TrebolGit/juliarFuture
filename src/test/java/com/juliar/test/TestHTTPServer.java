@@ -16,4 +16,8 @@ public class TestHTTPServer extends TestCase {
         super.setUp();
         SimpleHTTPServer.main();
     }
+
+    @Test
+    public void testServer() throws Exception{
+    }
 }
