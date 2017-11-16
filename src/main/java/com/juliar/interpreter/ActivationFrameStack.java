@@ -12,12 +12,12 @@ public class ActivationFrameStack {
     private Stack<ActivationFrame> activationFrameStack = new Stack<>();
 
     public void push( ActivationFrame frame){
-        Logger.log ("push [" + frame.frameName + "]");
+        // Logger.log ("push [" + frame.frameName + "]");
         activationFrameStack.push( frame );
     }
 
     public ActivationFrame pop(){
-        Logger.log ("pop [" + activationFrameStack.peek().frameName +"]");
+        // Logger.log ("pop [" + activationFrameStack.peek().frameName +"]");
         return activationFrameStack.pop();
     }
 
