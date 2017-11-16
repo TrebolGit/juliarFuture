@@ -1,16 +1,16 @@
 
-var Allocations = (function(){
-    function Allocations(allocName) {
-        this.allocName = allocName;
+var juliarInterop = (function(){
+    function juliarInterop( ns ) {
+        this.nameSpace = ns;
     }
 
-    Allocations.prototype.AllocateCost = function( amt ){
+    juliarInterop.prototype.Main = function(  ){
+
     };
 
 
-    Allocations.prototype.SetTab = function() {
+    juliarInterop.prototype.SetTab = function() {
     };
 
-    return Allocations;
+    return juliarInterop;
 }());
-;

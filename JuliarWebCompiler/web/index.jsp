@@ -11,7 +11,8 @@
   <script src="JuliarInterop.js"></script>
   <script type="text/javascript" language="javascript">
       window.addEventListener( "load", function () {
-          var interop = new Allocations("test");
+          var interOp = new juliarInterop("test");
+          interOp.Main();
       })
   </script>
   <title></title>
