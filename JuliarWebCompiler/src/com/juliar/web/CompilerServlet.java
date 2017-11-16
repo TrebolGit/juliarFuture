@@ -23,20 +23,17 @@ public class CompilerServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().print("doGet");
         if (request.getQueryString() != null){
             try {
                 String theCode = request.getParameter("codeArea");
 
                 JuliarCompiler compiler = new JuliarCompiler();
                 compiler.isDebug = true;
-                List<String> errorList = null;
                 InputStream inputStream = new ByteArrayInputStream(theCode.getBytes("UTF-8"));
                 ServletOutputStream outputStream = response.getOutputStream();
                 System.setOut( new PrintStream( response.getOutputStream() ) );
                 compiler.compile(inputStream, ".", false);
                 outputStream.flush();
-
             }
             catch (Exception ex){
                 response.getOutputStream().println();

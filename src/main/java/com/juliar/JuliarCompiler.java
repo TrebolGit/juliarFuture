@@ -171,7 +171,7 @@ public class JuliarCompiler {
 
 		JuliarParser.CompileUnitContext context = parser.compileUnit();
 		if (isDebug) {
-			Logger.log(context.toStringTree(parser));
+			// Logger.log(context.toStringTree(parser));
 		}
 
 		Visitor visitor = new Visitor((imports, linesToSkip) -> {
