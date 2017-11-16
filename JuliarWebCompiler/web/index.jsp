@@ -8,6 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <script src="JuliarInterop.js"></script>
+  <script type="text/javascript" language="javascript">
+      window.addEventListener( "load", function () {
+          var interop = new Allocations("test");
+      })
+  </script>
   <title></title>
 </head>
 <body>

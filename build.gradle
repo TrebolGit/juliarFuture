@@ -72,6 +72,25 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('org/antlr/v4/tool/templates/**')
 }
 
+
+task webJar(type: Jar, dependsOn: classes) {
+    baseName 'juliarFuture'
+    manifest {
+        attributes 'Main-Class': 'com.juliar.JuliarCompiler'
+    }
+    from(sourceSets.main.output) {
+        include "**"
+    }
+    from (configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }) {
+        exclude 'LICENSE'
+        exclude 'module-info.class'
+        exclude 'META-INF/**'
+        exclude 'com/ibm/**'
+    }
+    exclude('com/juliar/JuliarAndroid.class')
+    destinationDir = file("JuliarWebCompiler/web/WEB-INF/lib/");
+}
+
 artifacts {
     archives libJar
 }
