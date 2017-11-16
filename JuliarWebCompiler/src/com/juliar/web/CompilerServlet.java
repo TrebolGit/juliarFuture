@@ -32,7 +32,13 @@ public class CompilerServlet extends HttpServlet {
                 InputStream inputStream = new ByteArrayInputStream(theCode.getBytes("UTF-8"));
                 ServletOutputStream outputStream = response.getOutputStream();
                 System.setOut( new PrintStream( response.getOutputStream() ) );
-                compiler.compile(inputStream, ".", false);
+                List<String> errors = compiler.compile(inputStream, ".", false);
+
+                if (errors != null || errors.size() > 0){
+                    for(int i = 0; i < errors.size(); i++){
+                        outputStream.println( errors.get( i ));
+                    }
+                }
                 outputStream.flush();
             }
             catch (Exception ex){
