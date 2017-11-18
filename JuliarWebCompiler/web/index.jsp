@@ -19,6 +19,7 @@
       window.addEventListener( "load", function () {
           var interOp = new juliarInterop("test");
           interOp.Main();
+          interOp.jnf("printLine");
       })
   </script>
   <title></title>
@@ -148,6 +149,10 @@
     }
 
     function JAJAX() {
+        var interOp = new juliarInterop("test");
+        interOp.Main();
+        interOp.jnf("printLine");
+
         var xmlhttp= window.XMLHttpRequest ?
             new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 

@@ -12,5 +12,10 @@ var juliarInterop = (function(){
     juliarInterop.prototype.SetTab = function() {
     };
 
+
+    juliarInterop.prototype.jnf = function( funcName ) {
+
+    };
+
     return juliarInterop;
 }());
