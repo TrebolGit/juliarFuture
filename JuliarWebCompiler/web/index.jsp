@@ -9,11 +9,11 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-<link rel="stylesheet" href="assets/juliargrid.css">
-<link rel="stylesheet" href="assets/codemirror.css">
-<link rel="stylesheet" href="assets/juliarcobalt.css">
-<script src="assets/codemirror.js"></script>
-    <script src="assets/simple.js"></script>
+<link rel="stylesheet" href="juliargrid.css">
+<link rel="stylesheet" href="codemirror.css">
+<link rel="stylesheet" href="juliarcobalt.css">
+<script src="codemirror.js"></script>
+    <script src="simple.js"></script>
   <script src="JuliarInterop.js"></script>
   <script type="text/javascript" language="javascript">
       window.addEventListener( "load", function () {
