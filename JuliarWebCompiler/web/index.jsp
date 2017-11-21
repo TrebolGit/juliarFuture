@@ -16,8 +16,11 @@
     <script src="simple.js"></script>
   <script src="JuliarInterop.js"></script>
   <script type="text/javascript" language="javascript">
+      var interOp = new juliarInterop("test", "test.jrl");
+      interOp.serverModule()
+
       window.addEventListener( "load", function () {
-          var interOp = new juliarInterop("test");
+          //var interOp = new juliarInterop("test");
           interOp.Main();
           interOp.jnf("printLine");
       })
@@ -149,9 +152,12 @@
     }
 
     function JAJAX() {
-        var interOp = new juliarInterop("test");
+
+        var parameterDictionary = {};
+        parameterDictionary[ "parm1" ] = "x";
+
         interOp.Main();
-        interOp.jnf("printLine");
+        interOp.jnf("printLine", parameterDictionary);
 
         var xmlhttp= window.XMLHttpRequest ?
             new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");

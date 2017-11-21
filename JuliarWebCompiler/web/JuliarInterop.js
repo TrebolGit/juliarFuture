@@ -1,7 +1,10 @@
 
 var juliarInterop = (function(){
-    function juliarInterop( ns ) {
-        this.nameSpace = ns;
+
+    function juliarInterop( nameSpace, moduleName ) {
+        this.nameSpace = nameSpace;
+        this.moduleName = moduleName;
+
     }
 
     juliarInterop.prototype.Main = function(  ){
@@ -9,13 +12,29 @@ var juliarInterop = (function(){
     };
 
 
-    juliarInterop.prototype.SetTab = function() {
+    juliarInterop.prototype.serverModule = function( ) {
+        debugger;
+        callServerAsync( "compile?module=" + this.moduleName );
     };
 
 
-    juliarInterop.prototype.jnf = function( funcName ) {
+    juliarInterop.prototype.jnf = function( funcName , parameterDictionary) {
 
     };
+
+    function callServerAsync( uri ){
+        var xmlhttp= window.XMLHttpRequest ?
+            new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                joutput.innerHTML = xmlhttp.responseText;
+            }
+        };
+
+        xmlhttp.open("GET", encodeURIComponent( uri ), true);
+        xmlhttp.send();
+    }
 
     return juliarInterop;
 }());
