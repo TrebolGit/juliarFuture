@@ -14,7 +14,7 @@ var juliarInterop = (function(){
 
     juliarInterop.prototype.serverModule = function( ) {
         debugger;
-        callServerAsync( "compile?module=" + this.moduleName );
+        callServerAsync( "compile?module=" , this.moduleName );
     };
 
 
@@ -22,7 +22,11 @@ var juliarInterop = (function(){
 
     };
 
-    function callServerAsync( uri ){
+    juliarInterop.prototype.queryInterface = function ( functionName){
+
+    }
+
+    function callServerAsync( servlet, uri ){
         var xmlhttp= window.XMLHttpRequest ?
             new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 
@@ -32,7 +36,7 @@ var juliarInterop = (function(){
             }
         };
 
-        xmlhttp.open("GET", encodeURIComponent( uri ), true);
+        xmlhttp.open("GET", servlet + encodeURIComponent( uri ), true);
         xmlhttp.send();
     }
 

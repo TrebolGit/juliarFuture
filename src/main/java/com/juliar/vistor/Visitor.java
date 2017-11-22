@@ -40,6 +40,14 @@ public class Visitor extends JuliarBaseVisitor<Node>
         return new InstructionInvocation(instructionList, functionNodeMap);
     }
 
+    public boolean queryFunction(String functionName){
+        if ( functionNodeMap.size() > 0 &&  functionNodeMap.containsKey( functionName )){
+            return true;
+        }
+
+        return false;
+    }
+
     public Visitor(ImportsInterface cb, boolean skip){
         importsInterfaceCallback = cb;
     }

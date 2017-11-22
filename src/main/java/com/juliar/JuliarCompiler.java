@@ -28,6 +28,7 @@ public class JuliarCompiler {
 	public static boolean isApp = false;
     private ErrorListener errors;
     private String inputFileName;
+    private Visitor visitor;
 
     public static void main(String[] args) {
 		if(!isDebug && System.console() == null && args.length == 0) {
@@ -161,6 +162,15 @@ public class JuliarCompiler {
         return new ArrayList<>();
 	}
 
+
+	public boolean queryFunction( String funcName ){
+    	if (visitor != null) {
+    		return visitor.queryFunction(funcName);
+		}
+
+		return false;
+	}
+
 	/*
 	Will execute the compiler or the interpreter.
 	 */
@@ -174,7 +184,7 @@ public class JuliarCompiler {
 			// Logger.log(context.toStringTree(parser));
 		}
 
-		Visitor visitor = new Visitor((imports, linesToSkip) -> {
+		visitor = new Visitor((imports, linesToSkip) -> {
 		}, true);
 		visitor.visit(context);
 
@@ -217,12 +227,12 @@ public class JuliarCompiler {
 		if (isDebug) {
             Logger.log(context.toStringTree(parser));
         }
-		Visitor v = new Visitor((imports, linesToSkip) -> {
+		visitor = new Visitor((imports, linesToSkip) -> {
             /*TODO Nothing?*/
         }, true);
 
-		v.visit(context);
-		new Interpreter(v.instructions());
+		visitor.visit(context);
+		new Interpreter(visitor.instructions());
 	}
 
 
