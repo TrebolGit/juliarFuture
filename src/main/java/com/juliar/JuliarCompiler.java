@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import com.juliar.web.SimpleHTTPServer;
+import com.bugsnag.Bugsnag;
 
 public class JuliarCompiler {
 	public static boolean isDebug = false;
@@ -30,6 +31,12 @@ public class JuliarCompiler {
     private String inputFileName;
 
     public static void main(String[] args) {
+		Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
+		bugsnag.addCallback((report) -> {
+			// Will appear as the 'name' in the 'subsystem' tab
+			report.addToTab("subsystem", "name", "Your subsystem name");
+		});
+
 		if(!isDebug && System.console() == null && args.length == 0) {
 			isApp = true;
 			Application.launch(Gui.class);

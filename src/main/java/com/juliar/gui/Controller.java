@@ -4,6 +4,7 @@ import com.juliar.JuliarCompiler;
 import com.juliar.errors.Logger;
 import javafx.application.HostServices;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -484,7 +485,7 @@ public class Controller {
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> {
+        task.setOnSucceeded((WorkerStateEvent taskFinishEvent) -> {
             area.requestFocus();
             out.flush();
             setOut(out);
@@ -500,9 +501,8 @@ public class Controller {
                 String[] indicators = parts[0].split(",");
                 areaOutText.appendText(parts[1]);
                 int startPos = area.getAbsolutePosition(Integer.parseInt(indicators[0])-1, Integer.parseInt(indicators[1]));
-                int endPos = area.getAbsolutePosition(Integer.parseInt(indicators[0])-1, area.getParagraphLenth(Integer.parseInt(indicators[0])-1));
+                int endPos = area.getAbsolutePosition(Integer.parseInt(indicators[0])-1, area.getParagraphLength(Integer.parseInt(indicators[0])-1));
                 area.selectRange(startPos, endPos);
-                area.setEstimatedScrollY(0);
             } else {
                 tabPaneOut.getSelectionModel().select(0);
             }
