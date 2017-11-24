@@ -40,6 +40,9 @@ public class CompilerServlet extends HttpServlet {
                     return;
                 }
 
+                /*
+                 http://localhost:8080/compile?module=test.jrl&queryFunction=foo
+                 */
                 String module = request.getParameter("module");
                 String queryFunction = request.getParameter("queryfunction");
                 if ( queryFunction != null ){

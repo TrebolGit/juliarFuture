@@ -1,6 +1,4 @@
-
-var juliarInterop = (function(){
-
+var juliarInterop = ( function(){
     function juliarInterop( nameSpace, moduleName ) {
         this.nameSpace = nameSpace;
         this.moduleName = moduleName;
@@ -11,19 +9,15 @@ var juliarInterop = (function(){
 
     };
 
-
     juliarInterop.prototype.serverModule = function( ) {
-        debugger;
         callServerAsync( "compile?module=" , this.moduleName );
     };
 
 
     juliarInterop.prototype.jnf = function( funcName , parameterDictionary) {
-
     };
 
-    juliarInterop.prototype.queryInterface = function ( functionName){
-
+    juliarInterop.prototype.queryInterface = function ( functionName) {
     }
 
     function callServerAsync( servlet, uri ){

@@ -148,7 +148,7 @@ public class Interpreter {
         List<Node> instructionList = node.getInstructions();
         int size = instructionList.size();
 
-        List<Node> trueExpressions = new ArrayList<>();
+        List<Node> trueExpressions = ((NodeImpl)node).getConditionalExpressions();
         BooleanNode booleanNode = getBooleanExpressionNode(instructionList, size, trueExpressions);
 
         evalBooleanNode(booleanNode, frame, callback);

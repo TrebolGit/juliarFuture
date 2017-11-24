@@ -91,4 +91,29 @@ public abstract class NodeImpl implements Node , Serializable{
         }
     }
 
+    public List<Node> getConditionalExpressions(){
+        List<Node> inst = getInstructions();
+        List<Node> conditionalExpressions = new ArrayList<>();
+
+        int instCount = inst.size();
+        for (int i = 0; i < instCount; i++) {
+            Node node = inst.get( i );
+            if ( node instanceof FinalNode) {
+                FinalNode finalNode = (FinalNode) node;
+                if (finalNode.dataString().equals("while") ||
+                        finalNode.dataString().equals("if") ||
+                        finalNode.dataString().equals("(")) {
+                    continue;
+                }
+                else if (finalNode.dataString().equals( ")" )) {
+                    break;
+                }
+            }
+            else {
+                conditionalExpressions.add( node );
+            }
+        }
+
+        return conditionalExpressions;
+    }
 }
