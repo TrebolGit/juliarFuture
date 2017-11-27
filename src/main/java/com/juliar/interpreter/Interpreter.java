@@ -145,15 +145,13 @@ public class Interpreter {
     }
 
     private List<Node> evalWhileExpression(Node node, ActivationFrame frame, Interpreter callback) {
-        List<Node> instructionList = node.getInstructions();
-        int size = instructionList.size();
-
-        List<Node> trueExpressions = ((NodeImpl)node).getConditionalExpressions();
-        BooleanNode booleanNode = getBooleanExpressionNode(instructionList, size, trueExpressions);
+        List<Node> instructionList = ((NodeImpl)node).getConditionalExpressions();
+        BooleanOperatorNode booleanNode = (BooleanOperatorNode) instructionList.get( 0 );
 
         evalBooleanNode(booleanNode, frame, callback);
 
         Node boolEvalResult = null;
+        /*
         if (frame.peekReturnNode() != null) {
             boolEvalResult = frame.popNode();
 
@@ -198,7 +196,7 @@ public class Interpreter {
                     }
                 }
             }
-        }
+        }*/
 
         return new ArrayList<>();
     }

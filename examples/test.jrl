@@ -1,6 +1,11 @@
 function main() = {
 
     int y = + 3 4 5 5;
+
+    while ( y == 3){
+        printLine("asdf");
+    }
+
     /*
     int x = foo();
     printLine ( x );
