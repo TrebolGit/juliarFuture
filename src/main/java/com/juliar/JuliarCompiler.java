@@ -38,6 +38,8 @@ public class JuliarCompiler {
 			report.addToTab("subsystem", "name", "Your subsystem name");
 		});
 
+		bugsnag.notify(new RuntimeException("Non-fatal"));
+
 		if(!isDebug && System.console() == null && args.length == 0) {
 			isApp = true;
 			Application.launch(Gui.class);
