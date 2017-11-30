@@ -71,6 +71,12 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('org/fxmisc/**')
     exclude('org/glassfish/json/messages.properties')
     exclude('org/antlr/v4/tool/templates/**')
+    exclude('javax/annotation/**')
+    exclude('com/google/**')
+    exclude('com/fasterxml/**')
+    exclude('com/bugsnag/**')
+    exclude('org/slf4j/**')
+    exclude('org/codehaus/**')
 }
 
 
@@ -110,7 +116,8 @@ install {
         addFilter('juliar') { artifact, file -> artifact.name.endsWith('b') }
         pom('juliar').whenConfigured {
             p -> p.dependencies = p.dependencies.findAll {
-                dep -> dep.artifactId != "junit" && dep.artifactId != "richtextfx" && dep.artifactId != "asm-all"
+                dep -> dep.artifactId != "junit" && dep.artifactId != "richtextfx" && dep.artifactId != "asm-all" &&
+                        dep.artifactId != "bugsnag"
             }
         }
         addFilter('juliarFuture') { artifact, file -> artifact.name.endsWith('e') }
