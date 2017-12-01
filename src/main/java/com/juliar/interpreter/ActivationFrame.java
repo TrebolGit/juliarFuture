@@ -1,6 +1,7 @@
 package com.juliar.interpreter;
 
 import com.juliar.nodes.Node;
+import com.juliar.nodes.VariableNode;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -40,5 +41,13 @@ public class ActivationFrame {
         }
 
         return parameterStack.pop();
+    }
+
+    public Node getNodeFromFrameByVariableNode(VariableNode node){
+        if (variableSet.containsKey( node.variableName)){
+            return variableSet.get( node.variableName );
+        }
+
+        throw new RuntimeException( "variable not found" );
     }
 }

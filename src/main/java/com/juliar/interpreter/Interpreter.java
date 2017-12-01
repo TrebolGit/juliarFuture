@@ -184,7 +184,7 @@ public class Interpreter {
                         break;
                     }
 
-                    // re-evaluate the loop condtion
+                    // re-evaluateBooleanOperatorNode the loop condtion
                     evalBooleanNode(booleanNode, frame, callback);
                     boolEvalResult = frame.popNode();
                     finalNode = (FinalNode) boolEvalResult.getInstructions().get(0);
@@ -200,6 +200,8 @@ public class Interpreter {
 
         return new ArrayList<>();
     }
+
+
 
     private BooleanNode getBooleanExpressionNode(List<Node> instructionList, int size,List<Node> trueExpressions) {
         BooleanNode booleanNode = null;
@@ -269,6 +271,10 @@ public class Interpreter {
     private List<Node> evalBooleanNode(Node node, ActivationFrame frame, Interpreter callback){
         Node variableType  = node.getInstructions().get(0);
 
+        if ( node instanceof BooleanOperatorNode ){
+            ((BooleanOperatorNode)node).evaluateBooleanOperatorNode( frame , this);
+        }
+
         try {
             Node lvalue = null;
             if (variableType instanceof VariableNode) {
@@ -285,7 +291,7 @@ public class Interpreter {
             // handle these cases.
             // Multiple ifs will only cause confusion.
             FinalNode updatedLvalue = null;
-
+/*
             if (node.getInstructions().size() == 1) {
                 //lvalue must be a single boolean expression
                 if (lvalue instanceof FinalNode) {
@@ -328,6 +334,7 @@ public class Interpreter {
                 frame.pushReturnNode( booleanNode );
                 return new ArrayList<>();
             }
+            */
         }
         catch( Exception ex){
             Logger.log(ex.getMessage());
@@ -362,7 +369,7 @@ public class Interpreter {
         return false;
     }
 
-    private FinalNode getFinalNodeFromAnyNode(Node node){
+    public FinalNode getFinalNodeFromAnyNode(Node node){
         if ( node instanceof FinalNode){
             return (FinalNode)node;
         }
@@ -546,7 +553,7 @@ public class Interpreter {
 
     /*
     interface Evaluate {
-        List<Node> evaluate(Node node, ActivationFrame frame);
+        List<Node> evaluateBooleanOperatorNode(Node node, ActivationFrame frame);
     }
     */
 }
