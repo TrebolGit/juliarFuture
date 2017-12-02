@@ -2,7 +2,7 @@ function main() = {
 
     int y = 5;
 
-    while ( y == 3){
+    while ( (y == 3) && (y == 5) || (y > 6) ){
         printLine("asdf");
     }
 

@@ -15,7 +15,37 @@ public class Interpreter {
     private Stack<Node> returnValueStack = new Stack<>();
     private Map<String, Node> functionNodeMap;
     private Map<NodeType, Evaluate> functionMap = new HashMap<>();
+    public Stack<Node> operatorStack = new Stack<Node>();
+    public Stack<Node> operandStack = new Stack<Node>();
+    private operatorPrecedence operatorPrecedenceTable = new operatorPrecedence();
 
+
+    private enum SrEval{
+        Shift,
+        Reduce,
+        Error,
+        End,
+    }
+
+    private class operatorPrecedence {
+        public SrEval shiftReduceOperationTable[][] = {
+      /*              PLUS            MINUS           MULTILY        DIVIDE         EXPONENT       FUNCTION       p             c              COMMA          LEFTPAREN      RIGHTPAREN     SEMI            EQUAL         EQEQ      */
+      /* PLUS     */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* MINUS    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* MULTIPLY */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* DIVIDE   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* EXPONENT */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* FUNCTION */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* p        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* c        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
+      /* COMMA    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce,SrEval.Reduce, SrEval.Error,  SrEval.Reduce, SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error},
+      /* LPAREN   */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Error,   SrEval.Error, SrEval.Shift},
+      /* RPAREN   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Reduce},
+      /* SEMI     */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Error,  SrEval.Shift,  SrEval.Error,  SrEval.End,     SrEval.Error, SrEval.Error},
+      /* EQUAL    */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,   SrEval.Error, SrEval.Error},
+      /* EQEQ     */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error},
+        };
+    }
 
     public Interpreter(InstructionInvocation invocation){
         try {
@@ -28,7 +58,6 @@ public class Interpreter {
             functionMap.put( NodeType.VariableReassignmentType   , ( EvaluateAssignments::evalReassignment  ));
             functionMap.put( NodeType.AssignmentType             , ( EvaluateAssignments::evalAssignment    ));
             functionMap.put( NodeType.PrimitiveType              , ( EvaluatePrimitives::evalPrimitives     ));
-
             functionMap.put( NodeType.CompliationUnitType        , ((n, activationFrame, callback )-> evalCompilationUnit()    ));
             functionMap.put( NodeType.AddType                    , ((n, activationFrame, callback  )-> evalAdd()                ));
             functionMap.put( NodeType.CommandType                , ((n, activationFrame, callback  )-> evalCommand(n)           ));
@@ -40,9 +69,7 @@ public class Interpreter {
             functionMap.put( NodeType.StatementType              , ((n, activationFrame, callback  )-> evalStatement(n)         ));
             functionMap.put( NodeType.ExpressionType             , ((n, activationFrame, callback  )-> evalStatement(n)         ));
             functionMap.put( NodeType.FinalType                  , ((n, activationFrame, callback  )-> evalFinal()              ));
-
             functionMap.put( NodeType.UserDefinedFunctionReferenceType , (( n, activationFrameStack, callback  )-> evalUserDefinedFunctionCall(n) ));
-
             functionMap.put( NodeType.AggregateType              , ( this::evaluateAggregate        ));
             functionMap.put( NodeType.ReturnValueType            , ( this::evalReturn               ));
             functionMap.put( NodeType.BooleanType                , ( this::evalBooleanNode          ));
@@ -83,6 +110,53 @@ public class Interpreter {
         return new ArrayList<>();
     }
 
+    public void pushOperandStack( Node node){
+        operandStack.push ( node );
+    }
+
+    public void pushOperatorStack( Node node){
+        if ( operatorStack.empty() ) {
+            operatorStack.push(node);
+        } else {
+            FinalNode currentOperand = (FinalNode) operatorStack.peek();
+            int currentNodePrecedence = getOperatorPrecedenceValue( currentOperand );
+            int newNodePrecedence = getOperatorPrecedenceValue( (FinalNode) node);
+
+            SrEval eval = operatorPrecedenceTable.shiftReduceOperationTable[currentNodePrecedence][newNodePrecedence];
+
+            if (eval == SrEval.Shift ){
+                operatorStack.push( node );
+                return;
+            }
+            if ( eval == SrEval.Reduce ){
+                if ( operandStack.size() >= 2 ){
+                    Node rValue = operandStack.pop();
+                    Node lValue = operandStack.pop();
+                    Node operation = operatorStack.pop();
+                    // Need to Evaluate the operation.
+                    // Create a new node?
+                }
+            }
+        }
+    }
+
+    private int getOperatorPrecedenceValue( FinalNode node){
+        int precedence = -1;
+        if ( node.dataString().equals( "(" )){
+            precedence = 9;
+        }
+
+        if ( node.dataString().equals( ")" )) {
+            precedence = 10;
+        }
+
+        if ( node.dataString().equals( "==")){
+            precedence = 13;
+        }
+
+        return precedence;
+    }
+
     private List<Node> evalCompilationUnit() {
         for(Map.Entry<String, Node> entry : functionNodeMap.entrySet()) {
             if (entry.getKey().equals( mainFunctionName )) {
@@ -92,7 +166,6 @@ public class Interpreter {
                 activationFrameStack.push( frame );
                 execute( entry.getValue().getInstructions() );
                 activationFrameStack.pop();
-
 
                 break;
             }

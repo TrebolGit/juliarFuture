@@ -192,6 +192,13 @@ public class Visitor extends JuliarBaseVisitor<Node>
     }
 
     @Override
+    public Node visitParenthesizedExpression(JuliarParser.ParenthesizedExpressionContext ctx) {
+        ParenthesizedExpressionNode node = new ParenthesizedExpressionNode();
+        iterateWithTryCatch( ctx, node);
+        return node;
+    }
+
+    @Override
     public Node visitTypes(JuliarParser.TypesContext ctx) {
         IntegralTypeNode integralTypeNode = new IntegralTypeNode();
 

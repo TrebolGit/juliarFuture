@@ -12,9 +12,29 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BooleanOperatorNode extends NodeImpl {
+
+    private Interpreter interpreter;
+
     @Override
     public NodeType getType() {
         return NodeType.BooleanOperatorType;
+    }
+
+
+    @Override
+    public void EvaluateNode(Node n) {
+        if ( n instanceof FinalNode){
+            interpreter.pushOperatorStack( n );
+        }
+        else if ( n instanceof VariableNode || n instanceof FunctionCallNode || n instanceof LiteralNode) {
+            interpreter.pushOperandStack( n );
+        }
+        if ( n.getInstructions().size() == 3){
+            EvaluateNode( n.getInstructions().get(0) );
+            EvaluateNode( n.getInstructions().get(1) );
+            EvaluateNode( n.getInstructions().get(2) );
+        }
+
     }
 
     public void evaluateBooleanOperatorNode(ActivationFrame frame, Interpreter interpreter){
@@ -25,6 +45,9 @@ public class BooleanOperatorNode extends NodeImpl {
             boolean isEqualEqual;
             Node operatorTypeNode  = null;
             Node rvalue = null;
+            this.interpreter = interpreter;
+
+
             // This is ugly code. Need to find a better way to
             // handle these cases.
             // Multiple ifs will only cause confusion.
@@ -38,6 +61,9 @@ public class BooleanOperatorNode extends NodeImpl {
                 operatorTypeNode = getInstructions().get ( 1 );
                 rvalue = getInstructions().get( 2 );
 
+                EvaluateNode ( this );
+
+                /*
                 if ( operatorTypeNode instanceof FinalNode && ((FinalNode) operatorTypeNode).dataString().equals( "==" ) ){
                     if ( lvalue instanceof VariableNode){
                        Node valueOfLValue = frame.getNodeFromFrameByVariableNode( (VariableNode)lvalue );
@@ -51,6 +77,7 @@ public class BooleanOperatorNode extends NodeImpl {
                     }
 
                 }
+                */
 
 
                 // frame.pushReturnNode( booleanNode );

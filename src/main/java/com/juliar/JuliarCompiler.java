@@ -159,7 +159,7 @@ public class JuliarCompiler {
 				executeCommandLineRepl(parser);
 			}
 			else {
-				if (excuteCompiler(outputfile, compilerFlag, parser)) {
+				if (executeCompiler(outputfile, compilerFlag, parser)) {
 					return errors.errorList();
 				}
 
@@ -183,14 +183,14 @@ public class JuliarCompiler {
 	/*
 	Will execute the compiler or the interpreter.
 	 */
-	private boolean excuteCompiler(String outputfile, boolean compilerFlag, JuliarParser parser) throws IOException {
+	private boolean executeCompiler(String outputfile, boolean compilerFlag, JuliarParser parser) throws IOException {
 		// Calls the parse CompileUnit method
 		// to parse a complete program
 		// then calls the code generator.
 
 		JuliarParser.CompileUnitContext context = parser.compileUnit();
 		if (isDebug) {
-			// Logger.log(context.toStringTree(parser));
+			Logger.log(context.toStringTree(parser));
 		}
 
 		visitor = new Visitor((imports, linesToSkip) -> {

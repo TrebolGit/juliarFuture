@@ -26,6 +26,7 @@ public enum NodeType {
     LineNodeType,
     LiteralType,
     OperationType,
+    ParenthesizedNode,
     PrimitiveType,
     RelationalType,
     ReturnValueType,

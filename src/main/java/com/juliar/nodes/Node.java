@@ -21,11 +21,12 @@ public interface Node {
 
     String getNodeName();
 
-
     IntegralType getIntegralType();
 
     void setVariableTypeByIntegralType( IntegralType type);
 
     void setVariableType(String variableType);
+
+    void EvaluateNode(Node node);
 
     }

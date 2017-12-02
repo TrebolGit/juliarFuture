@@ -91,6 +91,10 @@ public abstract class NodeImpl implements Node , Serializable{
         }
     }
 
+    @Override
+    public void EvaluateNode(Node node) {
+    }
+
     public List<Node> getConditionalExpressions(){
         List<Node> inst = getInstructions();
         List<Node> conditionalExpressions = new ArrayList<>();
