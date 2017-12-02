@@ -133,6 +133,14 @@ public class Interpreter {
                     Node rValue = operandStack.pop();
                     Node lValue = operandStack.pop();
                     Node operation = operatorStack.pop();
+
+                    if ( lValue instanceof FunctionCallNode){
+                        execute(new ArrayList<>(Arrays.asList(lValue)));
+                    }
+
+                    if ( rValue instanceof FunctionCallNode) {
+                        execute(new ArrayList<>(Arrays.asList(rValue)));
+                    }
                     // Need to Evaluate the operation.
                     // Create a new node?
                 }
