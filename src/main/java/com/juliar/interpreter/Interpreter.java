@@ -29,21 +29,23 @@ public class Interpreter {
 
     private class operatorPrecedence {
         public SrEval shiftReduceOperationTable[][] = {
-      /*              PLUS            MINUS           MULTILY        DIVIDE         EXPONENT       FUNCTION       p             c              COMMA          LEFTPAREN      RIGHTPAREN     SEMI            EQUAL         EQEQ      */
-      /* PLUS     */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* MINUS    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* MULTIPLY */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* DIVIDE   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* EXPONENT */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* FUNCTION */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* p        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* c        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error},
-      /* COMMA    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce,SrEval.Reduce, SrEval.Error,  SrEval.Reduce, SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error},
-      /* LPAREN   */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Error,   SrEval.Error, SrEval.Shift},
-      /* RPAREN   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Reduce},
-      /* SEMI     */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Error,  SrEval.Shift,  SrEval.Error,  SrEval.End,     SrEval.Error, SrEval.Error},
-      /* EQUAL    */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,   SrEval.Error, SrEval.Error},
-      /* EQEQ     */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error},
+      /*              PLUS            MINUS           MULTILY        DIVIDE         EXPONENT       FUNCTION       p             c              COMMA          LEFTPAREN      RIGHTPAREN     SEMI            EQUAL         EQEQ           BIAND         BIOR          */
+      /*0 PLUS     */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*1 MINUS    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*2 MULTIPLY */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*3 DIVIDE   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*4 EXPONENT */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*5 FUNCTION */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*6 p        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*7 c        */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*8 COMMA    */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Reduce,SrEval.Reduce, SrEval.Error,  SrEval.Reduce, SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+      /*9 LPAREN   */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Error,   SrEval.Error, SrEval.Shift,  SrEval.Error, SrEval.Error },
+     /*10 RPAREN   */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Reduce, SrEval.Reduce, SrEval.Reduce, SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Reduce, SrEval.Error, SrEval.Error },
+     /*11 SEMI     */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Error,  SrEval.Shift,  SrEval.Error,  SrEval.End,     SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+     /*12 EQUAL    */ {SrEval.Shift,   SrEval.Shift,   SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,   SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
+     /*13 EQEQ     */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error,  SrEval.Reduce, SrEval.Reduce},
+     /*14 BIAND    */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error,  SrEval.Reduce, SrEval.Reduce },
+     /*15 BIOR     */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error,  SrEval.Reduce, SrEval.Reduce },
         };
     }
 
@@ -134,13 +136,7 @@ public class Interpreter {
                     Node lValue = operandStack.pop();
                     Node operation = operatorStack.pop();
 
-                    if ( lValue instanceof FunctionCallNode){
-                        execute(new ArrayList<>(Arrays.asList(lValue)));
-                    }
-
-                    if ( rValue instanceof FunctionCallNode) {
-                        execute(new ArrayList<>(Arrays.asList(rValue)));
-                    }
+                    evalBooleanOperation( operation, lValue, rValue);
                     // Need to Evaluate the operation.
                     // Create a new node?
                 }
@@ -148,18 +144,66 @@ public class Interpreter {
         }
     }
 
+    private Boolean evalBooleanOperation( Node operation, Node lValue, Node rValue){
+        if ( operation instanceof FinalNode){
+            String opType = ((FinalNode) operation).dataString();
+            String lvalueString;
+
+            switch ( opType){
+                case "==":
+
+                    if (lValue instanceof FinalNode){
+                        lvalueString = ((FinalNode) lValue).dataString();
+                    } else if ( lValue instanceof LiteralNode){
+                        LiteralNode literalNode = (LiteralNode)lValue.getInstructions().get (0);
+                        // lvalueString = (LiteralNode)literalNode.getInstructions().get( 0 );
+                    }
+
+                    break;
+                case ">=":
+                    break;
+                case "<=":
+                    break;
+                case "&&":
+                    if (lValue instanceof FinalNode){
+                        lvalueString = ((FinalNode) lValue).dataString();
+                    } else if ( lValue instanceof LiteralNode){
+                        LiteralNode literalNode = (LiteralNode)lValue.getInstructions().get (0);
+                       // lvalueString = (LiteralNode)literalNode.getInstructions().get( 0 );
+                    }
+
+                    //if ( )
+                    break;
+                case "||":
+                    break;
+
+            }
+        }
+
+        return false;
+    }
+
     private int getOperatorPrecedenceValue( FinalNode node){
         int precedence = -1;
-        if ( node.dataString().equals( "(" )){
+        String dataString = node.dataString();
+        if ( dataString.equals( "(" )){
             precedence = 9;
         }
 
-        if ( node.dataString().equals( ")" )) {
+        if ( dataString.equals( ")" )) {
             precedence = 10;
         }
 
-        if ( node.dataString().equals( "==")){
+        if ( dataString.equals( "==")){
             precedence = 13;
+        }
+
+        if ( dataString.equals( "&&")){
+            precedence  = 14;
+        }
+
+        if ( dataString.equals( "||")) {
+            precedence = 15;
         }
 
         return precedence;
@@ -227,12 +271,20 @@ public class Interpreter {
 
     private List<Node> evalWhileExpression(Node node, ActivationFrame frame, Interpreter callback) {
         List<Node> instructionList = ((NodeImpl)node).getConditionalExpressions();
+
+        Node expressionNode = instructionList.get( 0 );
+
+        if ( expressionNode instanceof EvaluatableNode ) {
+            expressionNode.EvaluateNode( frame, callback);
+        }
+
+        /*
         BooleanOperatorNode booleanNode = (BooleanOperatorNode) instructionList.get( 0 );
 
         evalBooleanNode(booleanNode, frame, callback);
 
         Node boolEvalResult = null;
-        /*
+
         if (frame.peekReturnNode() != null) {
             boolEvalResult = frame.popNode();
 
@@ -265,7 +317,7 @@ public class Interpreter {
                         break;
                     }
 
-                    // re-evaluateBooleanOperatorNode the loop condtion
+                    // re-evaluateExpression the loop condtion
                     evalBooleanNode(booleanNode, frame, callback);
                     boolEvalResult = frame.popNode();
                     finalNode = (FinalNode) boolEvalResult.getInstructions().get(0);
@@ -353,7 +405,7 @@ public class Interpreter {
         Node variableType  = node.getInstructions().get(0);
 
         if ( node instanceof BooleanOperatorNode ){
-            ((BooleanOperatorNode)node).evaluateBooleanOperatorNode( frame , this);
+      //      ((BooleanOperatorNode)node).evaluateExpression( frame , this);
         }
 
         try {
@@ -634,7 +686,7 @@ public class Interpreter {
 
     /*
     interface Evaluate {
-        List<Node> evaluateBooleanOperatorNode(Node node, ActivationFrame frame);
+        List<Node> evaluateExpression(Node node, ActivationFrame frame);
     }
     */
 }

@@ -13,6 +13,7 @@ public enum NodeType {
     BreakType,
     CompliationUnitType,
     CommandType,
+    EvaluatableType,
     EqualEqualType,
     EqualSignType,
     ExpressionType,

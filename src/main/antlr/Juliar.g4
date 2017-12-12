@@ -283,7 +283,7 @@ ifExpr
 
 
 whileExpression
-    : While '(' ( singleExpression )+ ')' '{' ( statement )* '}'
+    : While '(' ( evaluatableExpression )+ ')' '{' ( statement )* '}'
     ;
 
 doWhileExpr
@@ -338,9 +338,10 @@ singleExpression
  | literal                                                                # LiteralExpression
  | variable                                                               # VariableExpression
  | functionCall                                                           # FunctionCallExpression
- | '(' expressionSequence ')'                                                    # ParenthesizedExpression
+ | '(' expressionSequence ')'                                             # ParenthesizedExpression
  ;
 
+ evaluatableExpression : singleExpression                                # Evaluatable ;
 
  assignmentExpression
      : variableDeclaration equalsign ( singleExpression | variable | functionCall | primitiveTypes | booleanExpression | userDefinedTypeVariableReference | userDefinedTypeVariableReference)

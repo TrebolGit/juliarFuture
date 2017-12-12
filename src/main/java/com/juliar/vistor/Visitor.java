@@ -560,6 +560,13 @@ public class Visitor extends JuliarBaseVisitor<Node>
 
 
     @Override
+    public Node visitEvaluatable(JuliarParser.EvaluatableContext ctx) {
+        Node node = new EvaluatableNode();
+        iterateWrapper(ctx, this, node);
+        return node;
+    }
+
+    @Override
     public Node visitUserDefinedTypeDecl(JuliarParser.UserDefinedTypeDeclContext ctx) {
         UserDefinedTypeNode userDefinedTypeNode = new UserDefinedTypeNode();
 

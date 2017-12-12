@@ -22,71 +22,19 @@ public class BooleanOperatorNode extends NodeImpl {
 
 
     @Override
-    public void EvaluateNode(Node n) {
-        if ( n instanceof FinalNode){
-            interpreter.pushOperatorStack( n );
-        }
-        else if ( n instanceof VariableNode || n instanceof FunctionCallNode || n instanceof LiteralNode) {
-            interpreter.pushOperandStack( n );
-        }
-        if ( n.getInstructions().size() == 3){
-            EvaluateNode( n.getInstructions().get(0) );
-            EvaluateNode( n.getInstructions().get(1) );
-            EvaluateNode( n.getInstructions().get(2) );
-        }
-
-    }
-
-    public void evaluateBooleanOperatorNode(ActivationFrame frame, Interpreter interpreter){
-        try {
-
-            Node node = this;
-            Node lvalue = null;
-            boolean isEqualEqual;
-            Node operatorTypeNode  = null;
-            Node rvalue = null;
-            this.interpreter = interpreter;
-
-
-            // This is ugly code. Need to find a better way to
-            // handle these cases.
-            // Multiple ifs will only cause confusion.
-            FinalNode updatedLvalue = null;
-
-            int instructionCount = getInstructions().size();
-
-            if ( instructionCount == 3) {
-
-                lvalue = getInstructions().get( 0 );
-                operatorTypeNode = getInstructions().get ( 1 );
-                rvalue = getInstructions().get( 2 );
-
-                EvaluateNode ( this );
-
-                /*
-                if ( operatorTypeNode instanceof FinalNode && ((FinalNode) operatorTypeNode).dataString().equals( "==" ) ){
-                    if ( lvalue instanceof VariableNode){
-                       Node valueOfLValue = frame.getNodeFromFrameByVariableNode( (VariableNode)lvalue );
-                       if ( valueOfLValue instanceof LiteralNode && rvalue instanceof LiteralNode) {
-                           Node valueOfRvalue = rvalue.getInstructions().get( 0 );
-                           isEqualEqual = ((LiteralNode) valueOfLValue).isEqual( ((LiteralNode)rvalue));
-                           frame.pushReturnNode(null);
-                       }
-
-
-                    }
-
+    public void EvaluateNode(ActivationFrame frame, Interpreter interpreter) {
+        for (Node n : this.getInstructions()) {
+            if (n instanceof BooleanOperatorNode || n instanceof ParenthesizedExpressionNode) {
+                n.EvaluateNode(frame, interpreter);
+            }
+            else {
+                if ( n instanceof FinalNode){
+                    interpreter.pushOperatorStack(n);
                 }
-                */
-
-
-                // frame.pushReturnNode( booleanNode );
+                if ( n instanceof VariableNode || n instanceof FunctionCallNode || n instanceof  LiteralNode){
+                    interpreter.pushOperandStack( n );
+                }
             }
         }
-        catch( Exception ex){
-            Logger.log(ex.getMessage());
-        }
-
-
     }
 }

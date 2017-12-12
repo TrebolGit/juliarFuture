@@ -1,5 +1,8 @@
 package com.juliar.nodes;
 
+import com.juliar.interpreter.ActivationFrame;
+import com.juliar.interpreter.Interpreter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -14,7 +17,11 @@ import static com.juliar.nodes.IntegralType.*;
 public abstract class NodeImpl implements Node , Serializable{
     protected transient List<Node> instructions = new ArrayList<>();
     protected String nodeName;
+    public Interpreter interpreter;
+    public ActivationFrame frame;
+
     private IntegralType integralType;
+
 
     public NodeImpl(){
         setNodeName();
@@ -92,7 +99,7 @@ public abstract class NodeImpl implements Node , Serializable{
     }
 
     @Override
-    public void EvaluateNode(Node node) {
+    public void EvaluateNode(ActivationFrame frame, Interpreter interpreter) {
     }
 
     public List<Node> getConditionalExpressions(){

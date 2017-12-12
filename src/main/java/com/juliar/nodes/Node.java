@@ -1,5 +1,8 @@
 package com.juliar.nodes;
 
+import com.juliar.interpreter.ActivationFrame;
+import com.juliar.interpreter.Interpreter;
+
 import java.util.List;
 import java.util.Stack;
 
@@ -27,6 +30,7 @@ public interface Node {
 
     void setVariableType(String variableType);
 
-    void EvaluateNode(Node node);
+    //void EvaluateNode(Node node);
 
-    }
+    void EvaluateNode(ActivationFrame frame, Interpreter interpreter);
+}
