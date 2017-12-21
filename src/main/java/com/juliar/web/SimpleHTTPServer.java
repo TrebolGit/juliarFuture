@@ -1,22 +1,20 @@
 package com.juliar.web;
 
 
+import com.bugsnag.Bugsnag;
+import com.juliar.JuliarCompiler;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import com.bugsnag.Bugsnag;
-import com.google.common.io.Resources;
-import com.juliar.JuliarCompiler;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 
 public class SimpleHTTPServer {
 
