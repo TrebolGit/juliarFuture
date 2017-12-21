@@ -2,6 +2,7 @@ apply plugin: 'application'
 apply plugin: 'maven'
 apply plugin: 'antlr'
 
+
 mainClassName = 'com.juliar.JuliarCompiler'
 
 group = 'com.github.juliarLang'
@@ -23,9 +24,9 @@ dependencies {
     antlr 'org.antlr:antlr4:4.7'
     compile fileTree(dir: 'jars', include: '*.jar')
     compile 'org.ow2.asm:asm-all:6.0_BETA'
-    compile 'org.fxmisc.richtext:richtextfx:0.8.1'
     compile 'com.bugsnag:bugsnag:3.+'
     testCompile 'junit:junit:4.11'
+
 }
 
 
@@ -67,8 +68,6 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('com/juliar/jpm/**')
     exclude('com/juliar/juliarrepl/**')
     exclude('com/nire4j/**')
-    exclude('org/reactfx/**')
-    exclude('org/fxmisc/**')
     exclude('org/glassfish/json/messages.properties')
     exclude('org/antlr/v4/tool/templates/**')
     exclude('javax/annotation/**')
@@ -77,25 +76,6 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('com/bugsnag/**')
     exclude('org/slf4j/**')
     exclude('org/codehaus/**')
-}
-
-
-task webJar(type: Jar, dependsOn: classes) {
-    baseName 'juliarFuture'
-    manifest {
-        attributes 'Main-Class': 'com.juliar.JuliarCompiler'
-    }
-    from(sourceSets.main.output) {
-        include "**"
-    }
-    from (configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }) {
-        exclude 'LICENSE'
-        exclude 'module-info.class'
-        exclude 'META-INF/**'
-        exclude 'com/ibm/**'
-    }
-    exclude('com/juliar/JuliarAndroid.class')
-    destinationDir = file("JuliarWebCompiler/web/WEB-INF/lib/");
 }
 
 artifacts {
@@ -116,7 +96,7 @@ install {
         addFilter('juliar') { artifact, file -> artifact.name.endsWith('b') }
         pom('juliar').whenConfigured {
             p -> p.dependencies = p.dependencies.findAll {
-                dep -> dep.artifactId != "junit" && dep.artifactId != "richtextfx" && dep.artifactId != "asm-all" &&
+                dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all" &&
                         dep.artifactId != "bugsnag"
             }
         }

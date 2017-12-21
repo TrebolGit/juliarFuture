@@ -1,50 +1,48 @@
 package com.juliar;
 
+import com.bugsnag.Bugsnag;
 import com.juliar.errors.ErrorListener;
 import com.juliar.errors.Logger;
-import com.juliar.gui.Gui;
 import com.juliar.interpreter.Interpreter;
 import com.juliar.parser.JuliarLexer;
 import com.juliar.parser.JuliarParser;
 import com.juliar.symboltable.SymbolTable;
 import com.juliar.vistor.Visitor;
-import org.antlr.v4.runtime.*;
+import com.juliar.web.SimpleHTTPServer;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.application.Application;
-import com.juliar.web.SimpleHTTPServer;
-import com.bugsnag.Bugsnag;
 
 public class JuliarCompiler {
 	public static boolean isDebug = false;
 	public static boolean isRepl = false;
 	public static boolean isInline = false;
-	public static boolean isServer = false;
-	public static boolean isApp = false;
+
     private ErrorListener errors;
     private String inputFileName;
     private Visitor visitor;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException, IOException {
 		Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
-		bugsnag.addCallback((report) -> {
-			// Will appear as the 'name' in the 'subsystem' tab
-			report.addToTab("subsystem", "name", "Your subsystem name");
-		});
+		bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "Blue"));
 
-		bugsnag.notify(new RuntimeException("Non-fatal"));
+		bugsnag.notify(new RuntimeException("Initiated"));
 
-		if(!isDebug && System.console() == null && args.length == 0) {
-			isApp = true;
-			Application.launch(Gui.class);
-			return;
-		}
+
+        SimpleHTTPServer.main();
+        if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:48042"));
+
 
 		try {
 			String[] unparsedArgs = parseFlags(args);
@@ -56,11 +54,6 @@ public class JuliarCompiler {
 				return;
 			}
 			if (startupInstructions(unparsedArgs)) {
-				if(isApp) {
-					Logger.log("Running App");
-				} else if (isServer){
-					Logger.log("Server is running on 127.0.0.1:8080");
-				}
 				return;
 			}
 
@@ -83,38 +76,26 @@ public class JuliarCompiler {
 	}
 
 	private static boolean startupInstructions(String[] args) {
-    	if(!isApp && !isServer) {
-			Logger.log("Juliar Compiler - Copyright (C) 2017");
+		Logger.log("Juliar Compiler - Copyright (C) 2018");
 
-			if (args.length != 1 && args.length != 2) {
-				Logger.log("Usage: java -jar JuliarCompiler.jar <source file> <output path> <optional: -server, -app, -verbose, -repl, -inline>");
-				Logger.log("Path to Juliar source file");
-				Logger.log("Path to output directory if compiled.");
-				Logger.log("If output path is undefined, source file will be interpreted");
-				Logger.log("If you would like to run a server, add -server flag");
-				return true;
-			}
-			return false;
-		} else {
-    		return true;
+		if (args.length != 1 && args.length != 2) {
+			Logger.log("Usage: java -jar JuliarCompiler.jar <source file> <output path> <optional: -repl, -inline, -debug>");
+			Logger.log("Path to Juliar source file");
+			Logger.log("Path to output directory if compiled.");
+			Logger.log("If output path is undefined, source file will be interpreted");
+			Logger.log("If you would like to run a server, add -server flag");
+			return true;
 		}
+		return false;
 	}
 
 	private static String[] parseFlags(String[] args) {
 		ArrayList<String> unparsed = new ArrayList<>();
 		for(String arg: args) {
 			if(arg.startsWith("-")) switch (arg) {
-				case "-app":
-					isApp = true;
-					Application.launch(Gui.class);
-					break;
-				case "-server":
-					isServer = true;
-					SimpleHTTPServer.main();
-					break;
-				case "-verbose":
+				case "-debug":
 					isDebug = true;
-					Logger.log("verbose is on");
+					Logger.log("debug is on");
 					break;
 				case "-repl":
 					isRepl = true;
@@ -132,17 +113,15 @@ public class JuliarCompiler {
         return unparsed.toArray(new String[0]);
 	}
 
-	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
+	public void compile(String source, String outputPath, boolean compilerFlag) {
         try {
         	inputFileName = source;
 			FileInputStream fileInputStream = new FileInputStream(source);
-			return compile(fileInputStream, outputPath, compilerFlag);
-        }
+			compile(fileInputStream, outputPath, compilerFlag);
+		}
 		catch (Exception ex) {
 			Logger.log(ex.getMessage());
 		}
-		
-        return new ArrayList<>();
 	}
 
 	public List<String> compile(InputStream b, String outputfile, boolean compilerFlag) {
