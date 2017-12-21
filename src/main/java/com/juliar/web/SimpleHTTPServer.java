@@ -66,10 +66,12 @@ public class SimpleHTTPServer {
     static class GetHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
+            String q = httpExchange.getRequestURI().getQuery();
+
             response.append("<html><body>");
-            Map <String,String> parms = SimpleHTTPServer.queryToMap(httpExchange.getRequestURI().getQuery());
-            if(!parms.get("codeArea").isEmpty()){
-                response.append(doInPlaceInterpret(parms.get("codeArea")));
+            //Map <String,String> parms = SimpleHTTPServer.queryToMap(httpExchange.getRequestURI().getQuery());
+            if(!q.isEmpty() && q.startsWith("q=")){
+                response.append(doInPlaceInterpret(q.substring(2)));
             }
             else{
                 response.append("File not found");
@@ -82,7 +84,7 @@ public class SimpleHTTPServer {
 
     static class ExitHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
-           server.stop(0);
+            server.stop(0);
         }
     }
 
@@ -116,7 +118,7 @@ public class SimpleHTTPServer {
         System.setOut(ps);
 
         try{
-            compiler.isDebug = true;
+            compiler.isDebug = false;
             InputStream inputStream = new ByteArrayInputStream(theCode.getBytes("UTF-8"));
 
             List<String> errors = compiler.compile(inputStream, ".", false);

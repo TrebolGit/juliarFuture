@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-<link rel="stylesheet" href="juliargrid.css">
-<link rel="stylesheet" href="codemirror.css">
-<script src="codemirror.js"></script>
+    <link rel="stylesheet" href="juliargrid.css">
+    <link rel="stylesheet" href="codemirror.css">
+    <script src="codemirror.js"></script>
     <script src="simple.js"></script>
-  <script src="JuliarInterop.js"></script>
-  <script type="text/javascript" language="javascript">
-      var interOp = new juliarInterop("test", "test.jrl");
-      interOp.serverModule()
+    <script src="JuliarInterop.js"></script>
+    <script type="text/javascript" language="javascript">
+        var interOp = new juliarInterop("test", "test.jrl");
+        interOp.serverModule()
 
-      window.addEventListener( "load", function () {
-          //var interOp = new juliarInterop("test");
-          interOp.Main();
-          interOp.jnf("printLine");
-      })
-  </script>
-  <title></title>
+        window.addEventListener( "load", function () {
+            //var interOp = new juliarInterop("test");
+            interOp.Main();
+            interOp.jnf("printLine");
+        })
+    </script>
+    <title></title>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
         <input type="button" name="open" value="&#9997; save" id="save_btn" onclick="download(filename,myCodeMirror.getValue())"/>
         <input type="button" name="compile" value="&#9654; compile" id="compile_btn" onclick="JAJAX()" />
         <textarea name="codeArea" id="codeArea"></textarea>
-	</div>
+    </div>
     <div class="col span_1_of_2">
         <div id="output_tab">Output</div>
         <input type="button" id="save_output_tab" value="&#11096; Save" onclick="download('output.txt',joutput.innerHTML)" />
@@ -98,10 +98,10 @@
     });
 
     var myCodeMirror = CodeMirror.fromTextArea(codeArea, {
-    lineNumbers: true,
+        lineNumbers: true,
         mode:  "simplemode",
-    theme: "cobalt"
-  });
+        theme: "cobalt"
+    });
 
     if(localStorage.juliarCode){
         myCodeMirror.getDoc().setValue(localStorage.juliarCode);
@@ -126,7 +126,7 @@
         today = mm + '/' + dd + '/' + yyyy;
 
 
-        myCodeMirror.getDoc().setValue("/*\n\tTitle: Untitled\n\tAuthor: " + navigator.appName + "\n\tDate: " + today + "\n*/\n\n" +
+        myCodeMirror.getDoc().setValue("/*\n\tTitle: Untitled\n\tAuthor: " + "John Doe" + "\n\tDate: " + today + "\n*/\n\n" +
             "function main() = {\n\tprintLine(\"Hello World\");\n}");
     }
 
@@ -163,7 +163,7 @@
         };
 
         var codeArea = myCodeMirror.getValue();
-        xmlhttp.open("GET","/get?codeArea=" + encodeURIComponent(codeArea), true);
+        xmlhttp.open("GET","/get?q=" + encodeURIComponent(codeArea), true);
         xmlhttp.send();
 
     }
