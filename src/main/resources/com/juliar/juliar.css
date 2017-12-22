@@ -1,0 +1,213 @@
+* {
+    box-sizing: border-box;
+    transition:all 0.3s ease;
+}
+a{
+    text-decoration:none;
+    color: #ef7171;
+}
+a:active{
+    text-decoration:none;
+    color: #ef7171;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+}
+/* For mobile phones: */
+[class*="col-"] {
+    width: 100%;
+}
+@media only screen and (min-width: 600px) {
+    /* For tablets: */
+    .col-m-1 {width: 8.33%;}
+    .col-m-2 {width: 16.66%;}
+    .col-m-3 {width: 25%;}
+    .col-m-4 {width: 33.33%;}
+    .col-m-5 {width: 41.66%;}
+    .col-m-6 {width: 50%;}
+    .col-m-7 {width: 58.33%;}
+    .col-m-8 {width: 66.66%;}
+    .col-m-9 {width: 75%;}
+    .col-m-10 {width: 83.33%;}
+    .col-m-11 {width: 91.66%;}
+    .col-m-12 {width: 100%;}
+}
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
+
+body {
+    margin: 0;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    color: rgb(51,52,71);
+    transition:all 0.3s ease;
+}
+
+/* Top Nav Stuff */
+
+nav #menu {
+    background-color:rgb(51,52,71);
+    width:100%;
+}
+
+
+nav #menu > li{
+    padding:15px;
+}
+
+nav ul.hidden {
+    padding-top:15px;
+    margin-left:-15px;
+}
+
+/*Strip the ul of padding and list styling*/
+nav ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    position: absolute;
+}
+/*Create a horizontal list with spacing*/
+nav li {
+    display:inline-block;
+}
+/*Style for menu links*/
+nav li a {
+    display:block;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    text-decoration: none;
+}
+/*Hover state for top level links*/
+nav li:hover{
+    background: #19c589;
+}
+
+/*Style for dropdown links*/
+nav li:hover ul a {
+    background: #f3f3f3;
+    color: #2f3036;
+    height: 40px;
+    line-height: 40px;
+}
+/*Hover state for dropdown links*/
+nav li:hover ul a:hover {
+    background: #19c589;
+    color: #fff;
+}
+/*Hide dropdown links until they are needed*/
+nav li ul {
+    display: none;
+}
+/*Make dropdown links vertical*/
+nav li ul li {
+    display: block;
+    float: none;
+}
+/*Prevent text wrapping*/
+nav li ul li a {
+    width: auto;
+    min-width: 100px;
+    padding: 0 20px;
+}
+/*Display the dropdown on hover*/
+nav #menu > li:hover > .hidden, .hidden:hover {
+    display: block;
+    visibility: visible;
+}
+
+/*Style 'show menu' label button and hide it by default*/
+nav .show-menu {
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    color: #fff;
+    background: #19c589;
+    text-align: center;
+    padding: 10px 0;
+    display: none;
+}
+/*Hide checkbox*/
+nav input[type=checkbox]{
+    display: none;
+}
+/*Show menu when invisible checkbox is checked*/
+nav input[type=checkbox]:checked ~ #menu{
+    display: block;
+}
+/*Responsive Styles*/
+@media screen and (max-width : 760px){
+    /*Make dropdown links appear inline*/
+    nav ul {
+        position: static;
+        display: none;
+    }
+    /*Create vertical spacing*/
+    nav menu li {
+        margin-bottom: 1px;
+    }
+    /*Make all menu links full width*/
+    nav ul li, li a {
+        width: 100%;
+    }
+    /*Display 'show menu' link*/
+    nav .show-menu {
+        display:block;
+    }
+}
+
+
+
+
+
+
+
+.cm-s-cobalt.CodeMirror { background: rgb(53,61,79); color: yellow; }
+.cm-s-cobalt div.CodeMirror-selected { background: #b36539; }
+.cm-s-cobalt .CodeMirror-line::selection, .cm-s-cobalt .CodeMirror-line > span::selection, .cm-s-cobalt .CodeMirror-line > span > span::selection { background: rgba(179, 101, 57, .99); }
+.cm-s-cobalt .CodeMirror-line::-moz-selection, .cm-s-cobalt .CodeMirror-line > span::-moz-selection, .cm-s-cobalt .CodeMirror-line > span > span::-moz-selection { background: rgba(179, 101, 57, .99); }
+.cm-s-cobalt .CodeMirror-gutters { background: rgb(53,61,79); border-right: 0; }
+.cm-s-cobalt .CodeMirror-guttermarker { color: #ffee80; }
+.cm-s-cobalt .CodeMirror-guttermarker-subtle { color: rgb(115,127,150); font-family:monospace !important; }
+.cm-s-cobalt .CodeMirror-linenumber { color: rgb(115,127,150); font-family:monospace !important; }
+.cm-s-cobalt .CodeMirror-cursor { border-left: 1px solid white; }
+
+.cm-s-cobalt span.cm-comment { color: #9B9B9B; }
+.cm-s-cobalt span.cm-string { color: #19e2c6; }
+.cm-s-cobalt span.cm-brace { color: white; }
+.cm-s-cobalt span.cm-bracket { color: darkgreen; }
+.cm-s-cobalt span.cm-paren { color: white; }
+.cm-s-cobalt span.cm-semicolon { font-weight:700; }
+.cm-s-cobalt span.cm-keyword { color: #FF707F; }
+
+.cm-s-cobalt span.cm-atom { color: #845dc4; }
+.cm-s-cobalt span.cm-number, .cm-s-cobalt span.cm-attribute { color: yellow; }
+
+
+.cm-s-cobalt span.cm-meta { color: #ff9d00; }
+.cm-s-cobalt span.cm-variable-2, .cm-s-cobalt span.cm-tag { color: #9effff; }
+.cm-s-cobalt span.cm-variable-3, .cm-s-cobalt span.cm-def, .cm-s-cobalt .cm-type { color: white; }
+.cm-s-cobalt span.cm-builtin, .cm-s-cobalt span.cm-special { color: #ff9e59; }
+.cm-s-cobalt span.cm-link { color: #845dc4; }
+.cm-s-cobalt span.cm-error { color: #9d1e15; }
+
+.cm-s-cobalt .CodeMirror-activeline-background { background: #002D57; }
+.cm-s-cobalt .CodeMirror-matchingbracket { outline:1px solid grey;color:white !important; }
