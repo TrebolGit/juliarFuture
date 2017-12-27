@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900" rel="stylesheet">
@@ -16,10 +16,10 @@
     <ul id="menu">
         <li><a href="#">File</a>
             <ul class="hidden">
-                <li><a href="#">New</a></li>
-                <li><a href="#">Load</a></li>
+                <li><a href="#" onclick="clear()">New</a></li>
+                <li><a href="#" onclick="openFileOption()">Load</a></li>
                 <li><a href="#">Open Folder</a></li>
-                <li><a href="#">Save</a></li>
+                <li><a href="#" onclick="download(filename,myCodeMirror.getValue())">Save</a></li>
                 <li><a href="#">Save As...</a></li>
                 <li><a href="#">Download</a></li>
                 <li><a href="#">Exit</a></li>
@@ -50,14 +50,12 @@
     </ul>
 </nav>
 
-<div class="section group">
-    <div class="col span_1_of_2">
-        <input type="button" name="open" value="&#9993; open" id="open_btn" onclick="openFileOption()"/>
-        <input type="button" name="open" value="&#9997; save" id="save_btn" onclick="download(filename,myCodeMirror.getValue())"/>
+<div class="row main">
+    <div class="col-6">
         <input type="button" name="compile" value="&#9654; compile" id="compile_btn" onclick="JAJAX()" />
         <textarea name="codeArea" id="codeArea"></textarea>
     </div>
-    <div class="col span_1_of_2">
+    <div class="col-6">
         <div id="output_tab">Output</div>
         <input type="button" id="save_output_tab" value="&#11096; Save" onclick="download('output.txt',joutput.innerHTML)" />
         <input type="button" value="&#11096; Exit" onclick="EXIT()" />
@@ -174,14 +172,11 @@
         }
     }
 
+    function clear() {
+
+    }
+
     function JAJAX() {
-
-        var parameterDictionary = {};
-        parameterDictionary[ "parm1" ] = "x";
-
-        interOp.Main();
-        interOp.jnf("printLine", parameterDictionary);
-
         var xmlhttp= window.XMLHttpRequest ?
             new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 

@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    transition:all 0.3s ease;
 }
 a{
     text-decoration:none;
@@ -66,6 +65,7 @@ body {
 nav #menu {
     background-color:rgb(51,52,71);
     width:100%;
+    z-index:100;
 }
 
 
@@ -177,10 +177,12 @@ nav input[type=checkbox]:checked ~ #menu{
 
 
 
+.main{
+    padding-top:50px;
+}
 
 
-
-.cm-s-cobalt.CodeMirror { background: rgb(53,61,79); color: yellow; }
+.cm-s-cobalt.CodeMirror { background: rgb(53,61,79); color: yellow;  margin-left:-15px; }
 .cm-s-cobalt div.CodeMirror-selected { background: #b36539; }
 .cm-s-cobalt .CodeMirror-line::selection, .cm-s-cobalt .CodeMirror-line > span::selection, .cm-s-cobalt .CodeMirror-line > span > span::selection { background: rgba(179, 101, 57, .99); }
 .cm-s-cobalt .CodeMirror-line::-moz-selection, .cm-s-cobalt .CodeMirror-line > span::-moz-selection, .cm-s-cobalt .CodeMirror-line > span > span::-moz-selection { background: rgba(179, 101, 57, .99); }
