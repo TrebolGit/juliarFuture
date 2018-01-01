@@ -113,15 +113,17 @@ public class JuliarCompiler {
         return unparsed.toArray(new String[0]);
 	}
 
-	public void compile(String source, String outputPath, boolean compilerFlag) {
+	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
         try {
         	inputFileName = source;
 			FileInputStream fileInputStream = new FileInputStream(source);
-			compile(fileInputStream, outputPath, compilerFlag);
+			return compile(fileInputStream, outputPath, compilerFlag);
 		}
 		catch (Exception ex) {
 			Logger.log(ex.getMessage());
 		}
+
+		return new ArrayList<>();
 	}
 
 	public List<String> compile(InputStream b, String outputfile, boolean compilerFlag) {

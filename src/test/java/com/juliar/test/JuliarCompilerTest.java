@@ -26,10 +26,10 @@ public class JuliarCompilerTest extends TestCase {
         JuliarCompiler compiler = new JuliarCompiler();
         compiler.isDebug = true;
         List<String> errorList = null;
-        //errorList = compiler.compile("examples/test.jrl", ".",  false);
+        errorList = compiler.compile("examples/test.jrl", ".",  false);
         //errorList.addAll( compiler.compile("serialize.jrl", ".",  false,false));
 
-        /*if (errorList.size() > 0 ){
+        if (errorList.size() > 0 ){
             for(int i =0; i < errorList.size(); i++){
                 Logger.log( errorList.get(i) );
             }
@@ -43,7 +43,7 @@ public class JuliarCompilerTest extends TestCase {
         catch( Exception ex){
             ex.printStackTrace();
             throw ex;
-        }*/
+        }
     }
 
     public void testCompile() throws Exception {
