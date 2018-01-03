@@ -2,7 +2,7 @@ package com.juliar.web;
 
 
 import com.bugsnag.Bugsnag;
-import com.juliar.JuliarCompiler;
+import com.juliar.Juliar;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -20,9 +20,9 @@ public class SimpleHTTPServer {
 
     static private HttpServer server;
 
-    static private JuliarCompiler compiler = new JuliarCompiler();
+    static private Juliar compiler = new Juliar();
 
-    static File jarPath=new File(JuliarCompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    static File jarPath=new File(Juliar.class.getProtectionDomain().getCodeSource().getLocation().getPath());
     static String fullPath = jarPath.getParentFile().getAbsolutePath().replace("\\", "/");
 
     public static void main()  {
@@ -51,8 +51,8 @@ public class SimpleHTTPServer {
             //remove "/" exploit
             uri = uri.startsWith("/") ? uri.substring(1) : uri;
 
-            if(JuliarCompiler.class.getResourceAsStream(uri) != null){
-                response = new Scanner(JuliarCompiler.class.getResourceAsStream(uri), "UTF-8").useDelimiter("\\A").next();
+            if(Juliar.class.getResourceAsStream(uri) != null){
+                response = new Scanner(Juliar.class.getResourceAsStream(uri), "UTF-8").useDelimiter("\\A").next();
             } else if(new File(fullPath+uri).exists()){
                 response = new String(Files.readAllBytes(Paths.get(fullPath+uri)));
             }

@@ -24,10 +24,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JuliarCompiler {
+public class Juliar {
 	public static boolean isDebug = false;
 	public static boolean isRepl = false;
 	public static boolean isInline = false;
+	public static int port = 48042;
 
     private ErrorListener errors;
     private String inputFileName;
@@ -41,14 +42,14 @@ public class JuliarCompiler {
 
 
         SimpleHTTPServer.main();
-        if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:48042"));
+        if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:"+Integer.toString(port)));
 
 
 		try {
 			String[] unparsedArgs = parseFlags(args);
 			if(isInline){
 				String unparsedStr = String.join(" ", unparsedArgs);
-				JuliarCompiler compiler = new JuliarCompiler();
+				Juliar compiler = new Juliar();
 				InputStream stream = new ByteArrayInputStream(unparsedStr.getBytes(StandardCharsets.UTF_8));
 				compiler.compile(stream, "", false);
 				return;
@@ -67,7 +68,7 @@ public class JuliarCompiler {
 			}
 
 
-			JuliarCompiler compiler = new JuliarCompiler();
+			Juliar compiler = new Juliar();
 			compiler.compile(fileName, outputPath, compileFlag);
 
 		} catch (Exception ex) {
@@ -79,7 +80,7 @@ public class JuliarCompiler {
 		Logger.log("Juliar Compiler - Copyright (C) 2018");
 
 		if (args.length != 1 && args.length != 2) {
-			Logger.log("Usage: java -jar JuliarCompiler.jar <source file> <output path> <optional: -repl, -inline, -debug>");
+			Logger.log("Usage: java -jar Juliar.jar <source file> <output path> <optional: -repl, -inline, -debug>");
 			Logger.log("Path to Juliar source file");
 			Logger.log("Path to output directory if compiled.");
 			Logger.log("If output path is undefined, source file will be interpreted");
@@ -91,6 +92,7 @@ public class JuliarCompiler {
 
 	private static String[] parseFlags(String[] args) {
 		ArrayList<String> unparsed = new ArrayList<>();
+		boolean flag_port = false;
 		for(String arg: args) {
 			if(arg.startsWith("-")) switch (arg) {
 				case "-debug":
@@ -103,8 +105,15 @@ public class JuliarCompiler {
 				case "-inline":
 					isInline = true;
 					break;
+				case "-port":
+					flag_port = true;
+					break;
 				default:
 					break;
+			}
+			else if(flag_port){
+				flag_port = false;
+				port = Integer.parseUnsignedInt(arg);
 			}
 			else{
 				unparsed.add(arg);

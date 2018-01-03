@@ -1,41 +1,65 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="juliargrid.css">
-    <link rel="stylesheet" href="codemirror.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900" rel="stylesheet">
     <script src="codemirror.js"></script>
     <script src="simple.js"></script>
-    <script src="JuliarInterop.js"></script>
-    <script type="text/javascript" language="javascript">
-        var interOp = new juliarInterop("test", "test.jrl");
-        interOp.serverModule()
-
-        window.addEventListener( "load", function () {
-            //var interOp = new juliarInterop("test");
-            interOp.Main();
-            interOp.jnf("printLine");
-        })
-    </script>
-    <title></title>
+    <link rel="stylesheet" href="codemirror.css">
+    <link href="juliar.css" rel="stylesheet">
+    <title>Juliar</title>
 </head>
 <body>
 
-<div class="section group">
-    <div class="col span_1_of_2">
-        <input type="button" name="open" value="&#9993; open" id="open_btn" onclick="openFileOption()"/>
-        <input type="button" name="open" value="&#9997; save" id="save_btn" onclick="download(filename,myCodeMirror.getValue())"/>
-        <input type="button" name="compile" value="&#9654; compile" id="compile_btn" onclick="JAJAX()" />
+<nav>
+    <label for="show-menu" class="show-menu">Commands</label>
+    <input type="checkbox" id="show-menu" role="button">
+    <ul id="menu">
+        <li><a href="#">File</a>
+            <ul class="hidden">
+                <li><a href="#" onclick="myCodeMirror.getDoc().setValue('')">New</a></li>
+                <li><a href="#" onclick="openFileOption()">Load</a></li>
+                <li><a href="#" onclick="alert('Coming Soon');">Open Folder</a></li>
+                <li><a href="#" onclick="download(filename,myCodeMirror.getValue())">Save</a></li>
+                <li><a href="#" onclick="alert('Coming Soon');">Save As...</a></li>
+                <li><a href="#" onclick="download('output.txt',joutput.innerHTML)">Download Output</a></li>
+                <li><a href="#" onclick="EXIT()">Exit</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Edit</a>
+            <ul class="hidden">
+                <li><a href="#" onclick="myCodeMirror.undo()">Undo</a></li>
+                <li><a href="#" onclick="myCodeMirror.redo()">Redo</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">View</a>
+        </li>
+        <li><a href="#">Run</a>
+            <ul class="hidden">
+                <li><a href="#" onclick="JAJAX()">Run Interpreter</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Help</a>
+            <ul class="hidden">
+                <li><a href="#" onclick="alert('Coming Soon');">About</a></li>
+                <li><a href="#" onclick="alert('Coming Soon');">What's new?</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="row main">
+    <div class="col-6">
+
         <textarea name="codeArea" id="codeArea"></textarea>
     </div>
-    <div class="col span_1_of_2">
-        <div id="output_tab">Output</div>
-        <input type="button" id="save_output_tab" value="&#11096; Save" onclick="download('output.txt',joutput.innerHTML)" />
-        <input type="button" value="&#11096; Exit" onclick="EXIT()" />
+    <div class="col-6">
+        <h3>Output:</h3>
         <div id="output"></div>
+        <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />
+        <input type="button" name="compile" value="&#9654;" id="compile_btn" onclick="JAJAX()" />
     </div>
-    <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />
-
 </div>
 
 <script>
@@ -146,19 +170,12 @@
     }
 
     function JAJAX() {
-
-        var parameterDictionary = {};
-        parameterDictionary[ "parm1" ] = "x";
-
-        interOp.Main();
-        interOp.jnf("printLine", parameterDictionary);
-
         var xmlhttp= window.XMLHttpRequest ?
             new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                joutput.innerHTML = xmlhttp.responseText;
+                joutput.innerHTML = xmlhttp.responseText.replace(/(?:\r\n|\r|\n)/g, '<br />');
             }
         };
 
@@ -194,6 +211,7 @@
 
 
 </script>
+
 </body>
 </html>
 

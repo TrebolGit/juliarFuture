@@ -1,18 +1,16 @@
 package com.juliar.test;
 
-import com.juliar.JuliarCompiler;
+import com.juliar.Juliar;
 import junit.framework.TestCase;
-import org.junit.Assert;
 import com.juliar.errors.Logger;
 import java.util.List;
-import static java.lang.System.out;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 /**
  * Created by donreamey on 10/25/16.
  */
-public class JuliarCompilerTest extends TestCase {
+public class JuliarTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
@@ -23,7 +21,7 @@ public class JuliarCompilerTest extends TestCase {
     }
 
     public void testInterpreter() throws Exception{
-        JuliarCompiler compiler = new JuliarCompiler();
+        Juliar compiler = new Juliar();
         compiler.isDebug = true;
         List<String> errorList = null;
         errorList = compiler.compile("examples/test.jrl", ".",  false);
@@ -48,7 +46,7 @@ public class JuliarCompilerTest extends TestCase {
 
     public void testCompile() throws Exception {
         /*try {
-            JuliarCompiler compiler = new JuliarCompiler();
+            Juliar compiler = new Juliar();
             assertNotNull(compiler);
             //List<String> errorList = compiler.compile("test.jrl", ".",  false);
 

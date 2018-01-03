@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'antlr'
 
 
-mainClassName = 'com.juliar.JuliarCompiler'
+mainClassName = 'com.juliar.Juliar'
 
 group = 'com.github.juliarLang'
 
@@ -37,7 +37,7 @@ generateGrammarSource {
 jar {
     baseName 'juliar'
     manifest {
-        attributes 'Main-Class': 'com.juliar.JuliarCompiler'
+        attributes 'Main-Class': 'com.juliar.Juliar'
     }
     from (configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }) {
         exclude 'LICENSE'
@@ -50,8 +50,7 @@ jar {
 
 
 task libJar(type: Jar, dependsOn: classes) {
-    baseName 'jlib'
-    //classifier = 'lib'
+    baseName 'juliarlib'
     manifest {
         attributes 'Main-Class': 'com.juliar.JuliarAndroid'
     }
@@ -80,9 +79,9 @@ task libJar(type: Jar, dependsOn: classes) {
 }
 
 task webJar(type: Jar, dependsOn: classes) {
-    baseName 'juliarFuture'
+    baseName 'juliar'
     manifest {
-        attributes 'Main-Class': 'com.juliar.JuliarCompiler'
+        attributes 'Main-Class': 'com.juliar.Juliar'
     }
     from(sourceSets.main.output) {
         include "**"
@@ -113,15 +112,15 @@ test {
 // this step is necessary when installing both jars in the local maven repository
 install {
     repositories.mavenInstaller {
-        addFilter('juliar') { artifact, file -> artifact.name.endsWith('b') }
-        pom('juliar').whenConfigured {
+        addFilter('juliarlib') { artifact, file -> artifact.name.endsWith('b') }
+        pom('juliarlib').whenConfigured {
             p -> p.dependencies = p.dependencies.findAll {
                 dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all" &&
                         dep.artifactId != "bugsnag"
             }
         }
-        addFilter('juliarFuture') { artifact, file -> artifact.name.endsWith('e') }
+        pom('juliarlib').version = '0.1'
+        addFilter('juliar') { artifact, file -> artifact.name.endsWith('r') }
         pom('juliar').version = '0.1'
-        pom('juliarFuture').version = '0.1'
     }
 }
