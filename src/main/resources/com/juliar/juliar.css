@@ -66,6 +66,8 @@ nav #menu {
     background-color:rgb(51,52,71);
     width:100%;
     z-index:100;
+    position:fixed;
+    border-bottom:1px solid #192320;
 }
 
 
