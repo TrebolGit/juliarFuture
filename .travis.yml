@@ -15,7 +15,7 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Juliar Team"
   - git config --local user.email "admin@juliar.org"
-  - git tag "Juliar_Latest"
+  - git tag "Juliar-$(date +'%Y%m%d%H%M%S')"
 
 deploy:
   provider: releases
