@@ -147,6 +147,18 @@ function readSingleFile() {
 }
 
 
+function docs(){
+    window.open('https://juliar.org/documentation', '_blank');
+}
+
+function about(){
+    popup("About Juliar","<div class='row'><div class='col-6'><img src='whitelogo.svg' style='background-color:rgb(0,224,188)'/></div><div class='col-6'><p>Juliar was created with love by Juliar Team</p></div></div>");
+}
+
+function newfeatures(){
+    popup("What's New?", "v0.1 Release - Initial Release");
+}
+
 // Add Event Listeners
 
 // Cache the lookup
@@ -166,7 +178,7 @@ document.getElementById("menu").addEventListener('click', function(e){
                 download(filename,myCodeMirror.getValue());
                 break;
             case "download":
-                download('output.txt',joutput.innerHTML)
+                download('output.txt',joutput.innerHTML);
                 break;
             case "exit":
                 EXIT();
@@ -180,11 +192,31 @@ document.getElementById("menu").addEventListener('click', function(e){
             case "run":
                 JAJAX();
                 break;
+            case "about":
+                about();
+                break;
+            case "newfeatures":
+                newfeatures();
+                break;
+            case "docs":
+                docs();
+                break;
             default:
-                alert("Coming Soon");
+                popup();
         }
+       menu_unhover(e.target.parentNode.parentNode);
    }
 });
+
+
+
+function menu_unhover(el)
+{
+    var par = el.parentNode;
+    var next = el.nextSibling;
+    par.removeChild(el);
+    setTimeout(function() {par.insertBefore(el, next);}, 0)
+}
 
 
 // Load Content from cache, else generate new page.
@@ -197,3 +229,31 @@ if(localStorage.juliarCode){
 } else {
     newfile();
 }
+
+
+// Modal
+var modal = document.getElementById('juliar_popup');
+
+function popup(header,content){
+    header = header || "Coming Soon to Juliar!";
+    content = content || "Currently not available!";
+
+    document.getElementsByClassName("modal-header")[0].children[1].innerHTML = header;
+    document.getElementsByClassName("modal-body")[0].children[0].innerHTML = content;
+    modal.style.display = "block";
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(e) {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+};

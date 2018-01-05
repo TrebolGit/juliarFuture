@@ -9,6 +9,14 @@ script:
 
 notifications:
   slack: juliarlang:z7GTm7XhwjuvwIb9oYKvFdWN
+
+
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Juliar Team"
+  - git config --local user.email "admin@juliar.org"
+  - git tag "Juliar Latest Release"
+
 deploy:
   provider: releases
   api_key:
@@ -16,5 +24,6 @@ deploy:
   file_glob: true
   file: build/libs/*
   skip_cleanup: true
+  overwrite: true
   on:
-    repo: juliarLang/juliarFuture
+    repo: juliarLang/juliar

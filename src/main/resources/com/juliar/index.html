@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>Juliar</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900" rel="stylesheet">
     <link href="codemirror.css" rel="stylesheet">
     <link href="juliar.css" rel="stylesheet">
@@ -42,6 +43,7 @@
                 <ul class="hidden">
                     <li><a href="#about">About</a></li>
                     <li><a href="#newfeatures">What's new?</a></li>
+                    <li><a href="#docs">Documentation</a></li>
                 </ul>
             </li>
         </ul>
@@ -56,6 +58,18 @@
             <div id="output"></div>
             <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />
             <input type="button" name="compile" value="&#9654;" id="compile_btn" onclick="JAJAX()" />
+            <div id="juliar_popup" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Modal Header</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal Body</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="codemirror.js"></script>

@@ -64,8 +64,6 @@ task libJar(type: Jar, dependsOn: classes) {
         exclude 'com/ibm/**'
     }
     exclude('com/juliar/JuliarCompiler.class')
-    exclude('com/juliar/gui/**')
-    exclude('com/juliar/jpm/**')
     exclude('com/juliar/juliarrepl/**')
     exclude('com/nire4j/**')
     exclude('org/glassfish/json/messages.properties')
@@ -76,6 +74,7 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('com/bugsnag/**')
     exclude('org/slf4j/**')
     exclude('org/codehaus/**')
+    exclude('com/juliar/web/**')
 }
 
 task webJar(type: Jar, dependsOn: classes) {

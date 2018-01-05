@@ -27,7 +27,7 @@ public class SimpleHTTPServer {
 
     public static void main()  {
         try {
-            server = HttpServer.create(new InetSocketAddress(48042), 0);
+            server = HttpServer.create(new InetSocketAddress(Juliar.port), 0);
             server.createContext("/", new MyHandler());
             server.createContext("/get", new GetHandler());
             server.createContext("/exit", new ExitHandler());
