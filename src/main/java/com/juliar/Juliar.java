@@ -1,6 +1,6 @@
 package com.juliar;
 
-import com.bugsnag.Bugsnag;
+//import com.bugsnag.Bugsnag;
 import com.juliar.errors.ErrorListener;
 import com.juliar.errors.Logger;
 import com.juliar.interpreter.Interpreter;
@@ -35,10 +35,10 @@ public class Juliar {
     private Visitor visitor;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-		Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
-		bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "2018"));
+		//Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
+		//bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "2018"));
 
-		bugsnag.notify(new RuntimeException("Initiated"));
+		//bugsnag.notify(new RuntimeException("Initiated"));
 
 
         SimpleHTTPServer.main();

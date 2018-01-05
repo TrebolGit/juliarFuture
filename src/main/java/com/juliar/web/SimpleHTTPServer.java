@@ -1,7 +1,7 @@
 package com.juliar.web;
 
 
-import com.bugsnag.Bugsnag;
+//import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -34,8 +34,8 @@ public class SimpleHTTPServer {
             server.setExecutor(null); // creates a default executor
             server.start();
         } catch(Exception e){
-            Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
-            bugsnag.notify(e);
+            //Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
+            //bugsnag.notify(e);
             System.out.println("Error occured");
         }
     }

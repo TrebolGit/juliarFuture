@@ -24,7 +24,7 @@ dependencies {
     antlr 'org.antlr:antlr4:4.7'
     compile fileTree(dir: 'jars', include: '*.jar')
     compile 'org.ow2.asm:asm-all:6.0_BETA'
-    compile 'com.bugsnag:bugsnag:3.+'
+    //compile 'com.bugsnag:bugsnag:3.+'
     testCompile 'junit:junit:4.11'
 
 }
@@ -71,7 +71,7 @@ task libJar(type: Jar, dependsOn: classes) {
     exclude('javax/annotation/**')
     exclude('com/google/**')
     exclude('com/fasterxml/**')
-    exclude('com/bugsnag/**')
+    //exclude('com/bugsnag/**')
     exclude('org/slf4j/**')
     exclude('org/codehaus/**')
     exclude('com/juliar/web/**')
@@ -114,8 +114,8 @@ install {
         addFilter('juliarlib') { artifact, file -> artifact.name.endsWith('b') }
         pom('juliarlib').whenConfigured {
             p -> p.dependencies = p.dependencies.findAll {
-                dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all" &&
-                        dep.artifactId != "bugsnag"
+                dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all"
+                    //&& dep.artifactId != "bugsnag"
             }
         }
         pom('juliarlib').version = '0.1'

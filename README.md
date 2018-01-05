@@ -4,6 +4,7 @@
 [![codebeat badge](https://codebeat.co/badges/4196f5e9-69c8-4863-a68a-18e006ee4665)](https://codebeat.co/projects/github-com-juliarlang-juliar-master)
 [![Build Status](https://travis-ci.org/juliarLang/juliar.svg?branch=master)](https://travis-ci.org/juliarLang/juliar)
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/juliarLang/juliar.svg?columns=all)](https://waffle.io/juliarLang/juliar)
+[![](https://jitpack.io/v/juliarLang/juliar.svg)](https://jitpack.io/#juliarLang/juliar)
 
 [![Juliar Programming Language Logo](https://user-images.githubusercontent.com/11934545/34541564-abf43afe-f0a6-11e7-9507-de1450e51ad8.png)](https://juliar.org/)
 
