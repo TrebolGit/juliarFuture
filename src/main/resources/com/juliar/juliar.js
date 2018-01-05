@@ -152,11 +152,13 @@ function docs(){
 }
 
 function about(){
-    popup("About Juliar","<div class='row'><div class='col-6'><img src='whitelogo.svg' style='background-color:rgb(0,224,188)'/></div><div class='col-6'><p>Juliar was created with love by Juliar Team</p></div></div>");
+    popup("About Juliar","<div class='row'><div class='col-6'><img src='whitelogo.svg' style='background-color:rgb(51,52,71)'/></div><div class='col-6'>" +
+        "<p>Juliar was created with love by Juliar Team. Visit us at <a target='_blank' href='https://juliar.org'>https://juliar.org</a>. " +
+        "If you have any questions send an email to <a href='mailto:admin@juliar.org'>admin@juliar.org</a>.</p></div></div>");
 }
 
 function newfeatures(){
-    popup("What's New?", "v0.1 Release - Initial Release");
+    popup("What's New?", "v0.1 Release - Initial Release. Major GUI updates.");
 }
 
 // Add Event Listeners
@@ -257,3 +259,18 @@ window.onclick = function(e) {
         modal.style.display = "none";
     }
 };
+
+// Tabs
+function openTab(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}

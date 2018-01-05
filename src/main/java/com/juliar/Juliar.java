@@ -36,7 +36,7 @@ public class Juliar {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 		Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
-		bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "Blue"));
+		bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "2018"));
 
 		bugsnag.notify(new RuntimeException("Initiated"));
 
