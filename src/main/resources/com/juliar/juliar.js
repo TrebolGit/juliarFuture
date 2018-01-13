@@ -261,7 +261,7 @@ window.onclick = function(e) {
 };
 
 // Tabs
-function openTab(evt, cityName) {
+function openTab(tabIndex) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -271,6 +271,13 @@ function openTab(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    tabcontent[tabIndex].style.display = "block";
+    //evt.currentTarget.className += " active";
 }
+
+document.getElementById("files_tab").addEventListener('click', function(e){
+   e.preventDefault();
+   openTab(1);
+});
+
+//openTab(0);
