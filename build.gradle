@@ -21,11 +21,11 @@ repositories {
 }
 
 dependencies {
-    antlr 'org.antlr:antlr4:4.7'
+    antlr 'org.antlr:antlr4:4.7.1'
     compile fileTree(dir: 'jars', include: '*.jar')
     compile 'org.ow2.asm:asm-all:6.0_BETA'
     compile 'com.bugsnag:bugsnag:3.+'
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
 
 }
 
@@ -35,7 +35,7 @@ generateGrammarSource {
 }
 
 jar {
-    baseName 'juliar'
+    baseName 'Juliar'
     manifest {
         attributes 'Main-Class': 'com.juliar.Juliar'
     }
@@ -78,7 +78,7 @@ task libJar(type: Jar, dependsOn: classes) {
 }
 
 task webJar(type: Jar, dependsOn: classes) {
-    baseName 'juliar'
+    baseName 'Juliar'
     manifest {
         attributes 'Main-Class': 'com.juliar.Juliar'
     }
@@ -117,8 +117,8 @@ install {
                 dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all" && dep.artifactId != "bugsnag"
             }
         }
-        pom('juliarlib').version = '0.1'
-        addFilter('juliar') { artifact, file -> artifact.name.endsWith('r') }
-        pom('juliar').version = '0.1'
+        pom('juliarlib').version = '0.2'
+        addFilter('Juliar') { artifact, file -> artifact.name.endsWith('r') }
+        pom('Juliar').version = '0.2'
     }
 }

@@ -41,12 +41,15 @@ public class Juliar {
 		bugsnag.notify(new RuntimeException("Initiated"));
 
 
-        SimpleHTTPServer.main();
-        if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:"+Integer.toString(port)));
 
 
 		try {
 			String[] unparsedArgs = parseFlags(args);
+
+			SimpleHTTPServer.main();
+			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:"+Integer.toString(port)));
+
+
 			if(isInline){
 				String unparsedStr = String.join(" ", unparsedArgs);
 				Juliar compiler = new Juliar();
