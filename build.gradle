@@ -117,8 +117,8 @@ install {
                 dep -> dep.artifactId != "junit" && dep.artifactId != "asm-all" && dep.artifactId != "bugsnag"
             }
         }
-        pom('juliarlib').version = '0.2'
+        pom('juliarlib').version = '0.1'
         addFilter('Juliar') { artifact, file -> artifact.name.endsWith('r') }
-        pom('Juliar').version = '0.2'
+        pom('Juliar').version = '0.1'
     }
 }
