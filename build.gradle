@@ -25,6 +25,7 @@ dependencies {
     compile fileTree(dir: 'jars', include: '*.jar')
     compile 'org.ow2.asm:asm-all:6.0_BETA'
     compile 'com.bugsnag:bugsnag:3.+'
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.21'
     testCompile 'junit:junit:4.12'
 
 }

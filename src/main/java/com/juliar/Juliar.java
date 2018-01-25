@@ -30,25 +30,19 @@ public class Juliar {
 	public static boolean isInline = false;
 	public static int port = 48042;
 
-    private ErrorListener errors;
-    private String inputFileName;
-    private Visitor visitor;
+	private ErrorListener errors;
+	private String inputFileName;
+	private Visitor visitor;
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
+	public static void main(String[] args) throws URISyntaxException, IOException {
 		Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
 		bugsnag.addCallback(report ->report.addToTab("subsystem", "name", "2018"));
 
 		bugsnag.notify(new RuntimeException("Initiated"));
 
 
-
-
 		try {
 			String[] unparsedArgs = parseFlags(args);
-
-			SimpleHTTPServer.main();
-			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(new URI("http://127.0.0.1:"+Integer.toString(port)));
-
 
 			if(isInline){
 				String unparsedStr = String.join(" ", unparsedArgs);
@@ -57,7 +51,13 @@ public class Juliar {
 				compiler.compile(stream, "", false);
 				return;
 			}
-			if (startupInstructions(unparsedArgs)) {
+			else if(unparsedArgs.length == 0) {
+				SimpleHTTPServer.main();
+				if (Desktop.isDesktopSupported())
+					Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + Integer.toString(port)));
+				return;
+			}
+			else if (startupInstructions(unparsedArgs)) {
 				return;
 			}
 
@@ -121,13 +121,13 @@ public class Juliar {
 			else{
 				unparsed.add(arg);
 			}
-        }
-        return unparsed.toArray(new String[0]);
+		}
+		return unparsed.toArray(new String[0]);
 	}
 
 	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
-        try {
-        	inputFileName = source;
+		try {
+			inputFileName = source;
 			FileInputStream fileInputStream = new FileInputStream(source);
 			return compile(fileInputStream, outputPath, compilerFlag);
 		}
@@ -139,13 +139,13 @@ public class Juliar {
 	}
 
 	public List<String> compile(InputStream b, String outputfile, boolean compilerFlag) {
-        try {
+		try {
 			SymbolTable.clearSymbolTable();
 			JuliarParser parser = parse( b );
-			
+
 			errors = new ErrorListener();
 			parser.addErrorListener(errors);
-			
+
 			// call parse statement.
 			// This will parse a single line to validate the syntax
 			if (isRepl) {
@@ -160,22 +160,22 @@ public class Juliar {
 		} catch (Exception ex) {
 			Logger.log(ex.getMessage());
 		}
-		
-        return new ArrayList<>();
+
+		return new ArrayList<>();
 	}
 
 
 	public boolean queryFunction( String funcName ){
-    	if (visitor != null) {
-    		return visitor.queryFunction(funcName);
+		if (visitor != null) {
+			return visitor.queryFunction(funcName);
 		}
 
 		return false;
 	}
 
 	/*
-	Will execute the compiler or the interpreter.
-	 */
+    Will execute the compiler or the interpreter.
+     */
 	private boolean executeCompiler(String outputfile, boolean compilerFlag, JuliarParser parser) throws IOException {
 		// Calls the parse CompileUnit method
 		// to parse a complete program
@@ -205,14 +205,14 @@ public class Juliar {
 			com.juliar.codegenerator.CodeGenerator generator = new com.juliar.codegenerator.CodeGenerator(isDebug);
 			generator.generate(visitor.instructions(), outputfile);
 		}
-		/*
-		ReadWriteBinaryFile readWriteBinaryFile = new ReadWriteBinaryFile();
-		readWriteBinaryFile.write(inputFileName, visitor.instructions());
+      /*
+      ReadWriteBinaryFile readWriteBinaryFile = new ReadWriteBinaryFile();
+      readWriteBinaryFile.write(inputFileName, visitor.instructions());
 
-		InstructionInvocation invocation = readWriteBinaryFile.read( inputFileName );
-		if (invocation != null) {
-			new Interpreter( invocation );
-		}*/
+      InstructionInvocation invocation = readWriteBinaryFile.read( inputFileName );
+      if (invocation != null) {
+         new Interpreter( invocation );
+      }*/
 
 		new Interpreter(visitor.instructions());
 
@@ -221,17 +221,17 @@ public class Juliar {
 	}
 
 	/*
-	Runs the REPL engine from the command line.
-	TODO: Does this work?
-	 */
+    Runs the REPL engine from the command line.
+    TODO: Does this work?
+     */
 	private void executeCommandLineRepl(JuliarParser parser) {
 		JuliarParser.CompileUnitContext context = parser.compileUnit();
 		if (isDebug) {
-            Logger.log(context.toStringTree(parser));
-        }
+			Logger.log(context.toStringTree(parser));
+		}
 		visitor = new Visitor((imports, linesToSkip) -> {
-            /*TODO Nothing?*/
-        }, true);
+			/*TODO Nothing?*/
+		}, true);
 
 		visitor.visit(context);
 		new Interpreter(visitor.instructions());
@@ -239,15 +239,15 @@ public class Juliar {
 
 
 	private JuliarParser parse(InputStream b) throws IOException {
-        JuliarParser parser;
-        CharStream s = CharStreams.fromStream(b);
+		JuliarParser parser;
+		CharStream s = CharStreams.fromStream(b);
 
-        JuliarLexer lexer = new JuliarLexer(s);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        parser = new JuliarParser(tokenStream);
+		JuliarLexer lexer = new JuliarLexer(s);
+		CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+		parser = new JuliarParser(tokenStream);
 
-        parser.removeErrorListeners();
+		parser.removeErrorListeners();
 
-        return parser;
+		return parser;
 	}
 }

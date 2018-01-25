@@ -1,8 +1,8 @@
 package com.juliar.web;
 
-
 import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -41,6 +41,14 @@ public class SimpleHTTPServer {
     }
 
 
+    private static String getFileExtension(String name) {
+        try {
+            return name.substring(name.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     static class MyHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             String response = "";
@@ -49,15 +57,19 @@ public class SimpleHTTPServer {
                 uri = "index.html";
             }
             //remove "/" exploit
-            uri = uri.startsWith("/") ? uri.substring(1) : uri;
+            while(uri.startsWith("/")){
+                uri = uri.substring(1);
+            }
+            String ext = getFileExtension(uri);
 
             if(Juliar.class.getResourceAsStream(uri) != null){
                 response = new Scanner(Juliar.class.getResourceAsStream(uri), "UTF-8").useDelimiter("\\A").next();
+
             } else if(new File(fullPath+uri).exists()){
                 response = new String(Files.readAllBytes(Paths.get(fullPath+uri)));
             }
 
-            SimpleHTTPServer.writeResponse(httpExchange, response);
+            SimpleHTTPServer.writeResponse(httpExchange, response,ext);
         }
     }
 
@@ -76,7 +88,7 @@ public class SimpleHTTPServer {
             }
 
             response.append("</body></html>");
-            SimpleHTTPServer.writeResponse(httpExchange, response.toString());
+            SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
         }
     }
 
@@ -87,10 +99,51 @@ public class SimpleHTTPServer {
     }
 
 
-    public static void writeResponse(HttpExchange httpExchange, String response) throws IOException {
-        httpExchange.sendResponseHeaders(200, response.length());
+    public static void writeResponse(HttpExchange httpExchange, String response,String ext) throws IOException {
+        Headers h = httpExchange.getResponseHeaders();
+
+        switch (ext) {
+            case "ico":
+                h.add("Content-Type", "image/x-icon");
+                break;
+            case "jrl":
+                h.add("Content-Type", "text/plain");
+                break;
+            case "svg":
+                h.add("Content-Type", "image/svg+xml");
+                break;
+            case "html":
+                h.add("Content-Type", "text/html");
+                break;
+            case "css":
+                h.add("Content-Type", "text/css");
+                break;
+            case "js":
+                h.add("Content-Type", "text/javascript");
+                break;
+            case "png":
+                h.add("Content-Type", "image/png");
+                break;
+            case "jpeg":
+            case "jpg":
+                h.add("Content-Type", "image/jpeg");
+                break;
+            case "gif":
+                h.add("Content-Type", "image/gif");
+                break;
+            case "pdf":
+                h.add("Content-Type", "application/pdf");
+
+                break;
+            default:
+                break;
+        }
+
+        byte[] newResponse = response.getBytes("UTF-8");
+
+        httpExchange.sendResponseHeaders(200, newResponse.length);
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(newResponse, 0, newResponse.length);
         os.close();
     }
 
