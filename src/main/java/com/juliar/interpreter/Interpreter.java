@@ -112,6 +112,22 @@ public class Interpreter {
         return new ArrayList<>();
     }
 
+    public void evaluateExpressionStack(){
+        Node operator = null;
+        if ( operatorStack.empty() ) {
+            throw new RuntimeException("not operators on stack");
+        }
+
+        operator = operatorStack.pop();
+
+        //TODO ensure the type is accurate.
+        assert false : "this needs to fail until i fix it";
+        if ( operator.getType().equals( NodeType.EqualEqualType) && operandStack.size() >= 2 ){
+            Node r = operandStack.pop();
+            Node l = operatorStack.pop();
+        }
+    }
+
     public void pushOperandStack( Node node){
         operandStack.push ( node );
     }

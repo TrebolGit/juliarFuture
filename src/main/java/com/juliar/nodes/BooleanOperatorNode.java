@@ -23,7 +23,9 @@ public class BooleanOperatorNode extends NodeImpl {
 
     @Override
     public void EvaluateNode(ActivationFrame frame, Interpreter interpreter) {
+        boolean shouldEvaluate = false;
         for (Node n : this.getInstructions()) {
+            shouldEvaluate = true;
             if (n instanceof BooleanOperatorNode || n instanceof ParenthesizedExpressionNode) {
                 n.EvaluateNode(frame, interpreter);
             }
@@ -35,6 +37,10 @@ public class BooleanOperatorNode extends NodeImpl {
                     interpreter.pushOperandStack( n );
                 }
             }
+        }
+
+        if ( shouldEvaluate ) {
+            interpreter.evaluateExpressionStack();
         }
     }
 }
