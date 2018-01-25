@@ -20,9 +20,11 @@ public interface Node {
 
     NodeType getType();
 
+    /*
     void setNodeName();
 
     String getNodeName();
+    */
 
     IntegralType getIntegralType();
 

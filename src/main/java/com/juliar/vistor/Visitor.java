@@ -57,8 +57,9 @@ public class Visitor extends JuliarBaseVisitor<Node>
 
         CompliationUnitNode node = new CompliationUnitNode();
         try {
-            callStack.push ( node.getNodeName() );
-            symbolTable.addLevel( node.getNodeName() );
+            String nodeName = node.toString();
+            callStack.push ( nodeName);
+            symbolTable.addLevel( nodeName );
 
             new IterateOverContext(ctx, this, node);
 

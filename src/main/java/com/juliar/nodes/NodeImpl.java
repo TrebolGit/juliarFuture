@@ -16,7 +16,6 @@ import static com.juliar.nodes.IntegralType.*;
 @SuppressWarnings("serial")
 public abstract class NodeImpl implements Node , Serializable{
     protected transient List<Node> instructions = new ArrayList<>();
-    protected String nodeName;
     public Interpreter interpreter;
     public ActivationFrame frame;
 
@@ -24,7 +23,7 @@ public abstract class NodeImpl implements Node , Serializable{
 
 
     public NodeImpl(){
-        setNodeName();
+        //setNodeName();
     }
 
     @Override
@@ -46,16 +45,6 @@ public abstract class NodeImpl implements Node , Serializable{
     @Override
     public List<Node> getInstructions(){
         return instructions;
-    }
-
-    @Override
-    public void setNodeName(){
-        nodeName = this.toString();
-    }
-
-    @Override
-    public String getNodeName(){
-        return nodeName;
     }
 
     @Override

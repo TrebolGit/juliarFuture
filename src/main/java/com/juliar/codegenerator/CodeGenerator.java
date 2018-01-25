@@ -155,7 +155,6 @@ public class CodeGenerator {
         Logger.log("x");
         for(Node instruction : instructions) {
             Logger.log("Instructions");
-            Logger.log(instruction.getNodeName().toString());
             if( instruction instanceof FunctionDeclNode){
                 List<Node> t = instruction.getInstructions();
                 evaluateExpressions(t, mw, ga, stackSize);
