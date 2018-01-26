@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class FinalNode extends NodeImpl{
     private String dataString;
     private transient Object object;
+    private NodeType nodeType = NodeType.FinalType;
 
     public FinalNode(TerminalNode data){
         if (data.getText() != null ) {
@@ -20,7 +21,6 @@ public class FinalNode extends NodeImpl{
     }
 
     public FinalNode(){
-
     }
 
     public void setDataString(Object data){
@@ -55,15 +55,14 @@ public class FinalNode extends NodeImpl{
         }
 
         try {
-            return IntegralType.jinteger;
-        } catch (Exception e) {
-            Logger.log(e);
-        }
-
-        try {
             if (dataString.equalsIgnoreCase("true") || dataString.toLowerCase().endsWith("false")) {
                 return IntegralType.jboolean;
             }
+        } catch (Exception e) {
+            Logger.log(e);
+        }
+        try {
+            return IntegralType.jinteger;
         } catch (Exception e) {
             Logger.log(e);
         }
@@ -91,7 +90,18 @@ public class FinalNode extends NodeImpl{
 
     @Override
     public NodeType getType() {
-        return NodeType.FinalType;
+        switch (dataString) {
+            case "==":
+                nodeType = NodeType.EqualEqualType;
+                break;
+            case "<=":
+            case "=>":
+            case "<":
+            case ">":
+                assert false : "Type not implemented";
+        }
+
+        return nodeType;
     }
 
 }

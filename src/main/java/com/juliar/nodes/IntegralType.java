@@ -11,5 +11,6 @@ public enum IntegralType {
     jstring,
     jobject,
     jboolean,
+    jbooleanOperator,
     juserDefined,
 }

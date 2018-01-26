@@ -121,10 +121,11 @@ public class Interpreter {
         operator = operatorStack.pop();
 
         //TODO ensure the type is accurate.
-        assert false : "this needs to fail until i fix it";
-        if ( operator.getType().equals( NodeType.EqualEqualType) && operandStack.size() >= 2 ){
+        //assert false : "this needs to fail until i fix it";
+        if ( operator.getType().equals(  NodeType.EqualEqualType) && operandStack.size() >= 2 ){
             Node r = operandStack.pop();
-            Node l = operatorStack.pop();
+            Node l = operandStack.pop();
+
         }
     }
 
