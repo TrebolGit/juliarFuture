@@ -51,6 +51,15 @@ public class Juliar {
 				compiler.compile(stream, "", false);
 				return;
 			}
+			else if(isRepl){
+                /*Juliar compiler = new Juliar();
+                SymbolTable.clearSymbolTable();
+                JuliarParser parser = parse(new FileInputStream("") );
+
+                errors = new ErrorListener();
+                parser.addErrorListener(errors);*/
+                return;
+			}
 			else if(unparsedArgs.length == 0) {
 				SimpleHTTPServer.main();
 				if (Desktop.isDesktopSupported())
@@ -229,12 +238,15 @@ public class Juliar {
 		if (isDebug) {
 			Logger.log(context.toStringTree(parser));
 		}
-		visitor = new Visitor((imports, linesToSkip) -> {
-			/*TODO Nothing?*/
-		}, true);
+        Visitor v = new Visitor(new ImportsInterface() {
+            @Override
+            public void createTempCallback(String imports, int linesToSkip) {
 
-		visitor.visit(context);
-		new Interpreter(visitor.instructions());
+            }
+        }, true);
+
+        v.visit(context);
+        Interpreter i = new Interpreter(v.instructions());
 	}
 
 
