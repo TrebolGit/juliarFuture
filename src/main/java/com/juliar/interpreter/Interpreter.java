@@ -123,9 +123,21 @@ public class Interpreter {
         //TODO ensure the type is accurate.
         //assert false : "this needs to fail until i fix it";
         if ( operator.getType().equals(  NodeType.EqualEqualType) && operandStack.size() >= 2 ){
-            Node r = operandStack.pop();
-            Node l = operandStack.pop();
+            NodeImpl r = ( NodeImpl ) operandStack.pop();
+            NodeImpl l = ( NodeImpl ) operandStack.pop();
 
+            ActivationFrame frame = activationFrameStack.peek();
+
+            Object rReal = r.getRealValue( frame );
+            Object lreal = l.getRealValue( frame );
+
+            boolean equalEqualEval = rReal.equals( lreal );
+            BooleanNode booleanNode = new BooleanNode();
+            FinalNode finalNode = new FinalNode();
+            finalNode.setDataString( equalEqualEval );
+            booleanNode.addInst( finalNode );
+
+            operandStack.push( booleanNode );
         }
     }
 

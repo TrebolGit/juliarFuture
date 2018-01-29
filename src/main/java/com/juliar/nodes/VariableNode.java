@@ -1,5 +1,7 @@
 package com.juliar.nodes;
 
+import com.juliar.interpreter.ActivationFrame;
+
 /**
  * Created by Don on 1/15/2017.
  */
@@ -38,4 +40,13 @@ public class VariableNode extends NodeImpl {
         return (FinalNode) this.getInstructions().get(0);
     }
 
+    @Override
+    public Object getRealValue(ActivationFrame frame) {
+        String variableName =  (( FinalNode )getInstructions().get( 0 )).dataString();
+        if ( frame.variableSet.containsKey( variableName ) ){
+            return ((FinalNode)frame.variableSet.get ( variableName ).getInstructions().get ( 0 )).dataString();
+        }
+
+        return "";
+    }
 }

@@ -116,4 +116,8 @@ public abstract class NodeImpl implements Node , Serializable{
 
         return conditionalExpressions;
     }
+
+    public Object getRealValue(ActivationFrame frame){
+        return "";
+    }
 }

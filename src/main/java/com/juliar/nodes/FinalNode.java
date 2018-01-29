@@ -90,6 +90,11 @@ public class FinalNode extends NodeImpl{
 
     @Override
     public NodeType getType() {
+        dataString();
+        if ( dataString == null ) {
+            return NodeType.FinalType;
+        }
+
         switch (dataString) {
             case "==":
                 nodeType = NodeType.EqualEqualType;

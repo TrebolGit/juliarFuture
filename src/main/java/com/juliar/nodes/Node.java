@@ -35,4 +35,5 @@ public interface Node {
     //void EvaluateNode(Node node);
 
     void EvaluateNode(ActivationFrame frame, Interpreter interpreter);
+
 }
