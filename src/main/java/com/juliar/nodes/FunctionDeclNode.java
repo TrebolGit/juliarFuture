@@ -1,7 +1,6 @@
 package com.juliar.nodes;
 
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by Don on 1/12/2017.

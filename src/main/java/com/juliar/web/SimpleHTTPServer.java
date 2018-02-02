@@ -2,6 +2,7 @@ package com.juliar.web;
 
 import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
+import com.juliar.errors.Logger;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -17,13 +18,15 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SimpleHTTPServer {
+    static File jarPath=new File(Juliar.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    static String fullPath = jarPath.getParentFile().getAbsolutePath().replace("\\", "/");
+
 
     static private HttpServer server;
 
     static private Juliar compiler = new Juliar();
-
-    static File jarPath=new File(Juliar.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-    static String fullPath = jarPath.getParentFile().getAbsolutePath().replace("\\", "/");
+    static private String charset = "UTF-8";
+    static private String contentType = "Content-Type";
 
     public static void main()  {
         try {
@@ -36,16 +39,7 @@ public class SimpleHTTPServer {
         } catch(Exception e){
             Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
             bugsnag.notify(e);
-            System.out.println("Error occured");
-        }
-    }
-
-
-    private static String getFileExtension(String name) {
-        try {
-            return name.substring(name.lastIndexOf(".") + 1);
-        } catch (Exception e) {
-            return "";
+            Logger.log("Error occured");
         }
     }
 
@@ -63,13 +57,20 @@ public class SimpleHTTPServer {
             String ext = getFileExtension(uri);
 
             if(Juliar.class.getResourceAsStream(uri) != null){
-                response = new Scanner(Juliar.class.getResourceAsStream(uri), "UTF-8").useDelimiter("\\A").next();
+                response = new Scanner(Juliar.class.getResourceAsStream(uri), charset).useDelimiter("\\A").next();
 
             } else if(new File(fullPath+uri).exists()){
                 response = new String(Files.readAllBytes(Paths.get(fullPath+uri)));
             }
 
             SimpleHTTPServer.writeResponse(httpExchange, response,ext);
+        }
+        private static String getFileExtension(String name) {
+            try {
+                return name.substring(name.lastIndexOf('.') + 1);
+            } catch (Exception e) {
+                return "";
+            }
         }
     }
 
@@ -90,6 +91,35 @@ public class SimpleHTTPServer {
             response.append("</body></html>");
             SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
         }
+        private static String doInPlaceInterpret( String theCode) throws IOException {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(baos);
+            // IMPORTANT: Save the old System.out!
+            PrintStream old = System.out;
+            // Tell Java to use your special stream
+            System.setOut(ps);
+
+            try{
+                compiler.isDebug = false;
+                InputStream inputStream = new ByteArrayInputStream(theCode.getBytes(charset));
+
+                List<String> errors = compiler.compile(inputStream, ".", false);
+
+                if (errors != null || errors.size() > 0) {
+                    for (int i = 0; i < errors.size(); i++) {
+                        System.out.println(errors.get(i));
+                    }
+                }
+
+            }
+            catch (Exception ex){
+                throw ex;
+            }
+            // Put things back
+            System.out.flush();
+            System.setOut(old);
+            return baos.toString();
+        }
     }
 
     static class ExitHandler implements HttpHandler {
@@ -104,42 +134,42 @@ public class SimpleHTTPServer {
 
         switch (ext) {
             case "ico":
-                h.add("Content-Type", "image/x-icon");
+                h.add(contentType, "image/x-icon");
                 break;
             case "jrl":
-                h.add("Content-Type", "text/plain");
+                h.add(contentType, "text/plain");
                 break;
             case "svg":
-                h.add("Content-Type", "image/svg+xml");
+                h.add(contentType, "image/svg+xml");
                 break;
             case "html":
-                h.add("Content-Type", "text/html");
+                h.add(contentType, "text/html");
                 break;
             case "css":
-                h.add("Content-Type", "text/css");
+                h.add(contentType, "text/css");
                 break;
             case "js":
-                h.add("Content-Type", "text/javascript");
+                h.add(contentType, "text/javascript");
                 break;
             case "png":
-                h.add("Content-Type", "image/png");
+                h.add(contentType, "image/png");
                 break;
             case "jpeg":
             case "jpg":
-                h.add("Content-Type", "image/jpeg");
+                h.add(contentType, "image/jpeg");
                 break;
             case "gif":
-                h.add("Content-Type", "image/gif");
+                h.add(contentType, "image/gif");
                 break;
             case "pdf":
-                h.add("Content-Type", "application/pdf");
+                h.add(contentType, "application/pdf");
 
                 break;
             default:
                 break;
         }
 
-        byte[] newResponse = response.getBytes("UTF-8");
+        byte[] newResponse = response.getBytes(charset);
 
         httpExchange.sendResponseHeaders(200, newResponse.length);
         OutputStream os = httpExchange.getResponseBody();
@@ -160,33 +190,5 @@ public class SimpleHTTPServer {
         return result;
     }
 
-    static private String doInPlaceInterpret( String theCode) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream ps = new PrintStream(baos);
-        // IMPORTANT: Save the old System.out!
-        PrintStream old = System.out;
-        // Tell Java to use your special stream
-        System.setOut(ps);
 
-        try{
-            compiler.isDebug = false;
-            InputStream inputStream = new ByteArrayInputStream(theCode.getBytes("UTF-8"));
-
-            List<String> errors = compiler.compile(inputStream, ".", false);
-
-            if (errors != null || errors.size() > 0) {
-                for (int i = 0; i < errors.size(); i++) {
-                    System.out.println(errors.get(i));
-                }
-            }
-
-        }
-        catch (Exception ex){
-            throw ex;
-        }
-        // Put things back
-        System.out.flush();
-        System.setOut(old);
-        return baos.toString();
-    }
 }
