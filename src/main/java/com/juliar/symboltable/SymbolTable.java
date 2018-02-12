@@ -44,7 +44,6 @@ public class SymbolTable {
     public static void clearSymbolTable(){
         currentScope.isEmpty();
         symbolTable = null;
-        symbolTable = null;
     }
 
     private SymbolTable(){

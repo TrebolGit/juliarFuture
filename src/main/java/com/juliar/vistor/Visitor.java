@@ -41,11 +41,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
     }
 
     public boolean queryFunction(String functionName){
-        if ( functionNodeMap.size() > 0 &&  functionNodeMap.containsKey( functionName )){
-            return true;
-        }
-
-        return false;
+        return functionNodeMap.size() > 0 &&  functionNodeMap.containsKey( functionName );
     }
 
     public Visitor(ImportsInterface cb, boolean skip){

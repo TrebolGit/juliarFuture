@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Juliar {
 	public static boolean isDebug = false;
@@ -50,6 +51,20 @@ public class Juliar {
 				InputStream stream = new ByteArrayInputStream(unparsedStr.getBytes(StandardCharsets.UTF_8));
 				compiler.compile(stream, "", false);
 				return;
+			}
+			else if(isRepl) {
+				String unparsedStr = String.join(" ", unparsedArgs);
+				Juliar compiler = new Juliar();
+				Scanner reader = new Scanner(System.in);
+				System.out.print("Welcome to Juliar REPL. Please type in the command and press enter to execute\n>");
+				while (true) {
+					String s = reader.nextLine();
+					s = "function main() = {" + s + "}";
+					InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
+					compiler.compile(stream, "", false);
+					System.out.print("\n>");
+					return;
+				}
 			}
 			else if(unparsedArgs.length == 0) {
 				SimpleHTTPServer.main();
@@ -229,12 +244,15 @@ public class Juliar {
 		if (isDebug) {
 			Logger.log(context.toStringTree(parser));
 		}
-		visitor = new Visitor((imports, linesToSkip) -> {
-			/*TODO Nothing?*/
-		}, true);
+        Visitor v = new Visitor(new ImportsInterface() {
+            @Override
+            public void createTempCallback(String imports, int linesToSkip) {
 
-		visitor.visit(context);
-		new Interpreter(visitor.instructions());
+            }
+        }, true);
+
+        v.visit(context);
+        Interpreter i = new Interpreter(v.instructions());
 	}
 
 

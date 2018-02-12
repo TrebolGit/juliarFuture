@@ -103,6 +103,7 @@ public class FinalNode extends NodeImpl{
             case "=>":
             case "<":
             case ">":
+            default:
                 assert false : "Type not implemented";
         }
 
