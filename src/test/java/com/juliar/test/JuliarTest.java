@@ -2,7 +2,7 @@ package com.juliar.test;
 
 import com.juliar.Juliar;
 import junit.framework.TestCase;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -29,7 +29,7 @@ public class JuliarTest extends TestCase {
 
         if (errorList.size() > 0 ){
             for(int i =0; i < errorList.size(); i++){
-                Logger.log( errorList.get(i) );
+                JuliarLogger.log( errorList.get(i) );
             }
             throw new RuntimeException( "compile errors" );
         }
