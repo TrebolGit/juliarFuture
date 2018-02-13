@@ -1,8 +1,8 @@
 package com.juliar.controlflow;
 
-import com.juliar.errors.Logger;
-
-import java.util.*;
+import com.juliar.errors.JuliarLogger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -41,7 +41,7 @@ public class ControlFlowAdjacencyList {
             }
         }
         catch(Exception e){
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
     }

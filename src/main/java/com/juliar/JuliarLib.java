@@ -1,7 +1,7 @@
 package com.juliar;
 
 import com.juliar.errors.ErrorListener;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.interpreter.Interpreter;
 import com.juliar.parser.JuliarLexer;
 import com.juliar.parser.JuliarParser;
@@ -22,7 +22,7 @@ public class JuliarLib {
         try {
             compile(args[0]);
         } catch(Exception e) {
-            Logger.log("Something went wrong");
+            JuliarLogger.log("Something went wrong");
         }
     }
 
@@ -43,7 +43,7 @@ public class JuliarLib {
             }
 
         } catch (Exception ex) {
-            Logger.log(ex.getMessage());
+            JuliarLogger.log(ex.getMessage());
         }
     }
 
@@ -61,11 +61,11 @@ public class JuliarLib {
 
         if (!errors.errorList().isEmpty() || !visitor.getErrorList().isEmpty()) {
             for (String error : errors.errorList()) {
-                Logger.logerr(error);
+                JuliarLogger.logerr(error);
             }
 
             for (String error : visitor.getErrorList()) {
-                Logger.logerr(error);
+                JuliarLogger.logerr(error);
             }
 
             return true;

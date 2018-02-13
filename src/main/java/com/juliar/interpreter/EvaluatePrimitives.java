@@ -1,6 +1,6 @@
 package com.juliar.interpreter;
 
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.nodes.*;
 
 import java.io.Console;
@@ -67,7 +67,7 @@ class EvaluatePrimitives {
                 //activationFrame.returnNode = finalNode;
                 break;
             default:
-                Logger.log("function " + functionName + " does not exist");
+                JuliarLogger.log("function " + functionName + " does not exist");
                 break;
         }
 

@@ -1,7 +1,7 @@
 package com.juliar.interpreter;
 
 import com.juliar.codegenerator.InstructionInvocation;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.nodes.*;
 
 import java.util.*;
@@ -85,7 +85,7 @@ public class Interpreter {
             execute( inst );
         }
         catch( Exception ex){
-            Logger.log(ex);
+            JuliarLogger.log(ex);
         }
     }
 
@@ -106,7 +106,7 @@ public class Interpreter {
             }
         }
         catch( Exception ex){
-            Logger.log( ex );
+            JuliarLogger.log( ex );
         }
 
         return new ArrayList<>();
@@ -487,7 +487,7 @@ public class Interpreter {
             */
         }
         catch( Exception ex){
-            Logger.log(ex.getMessage());
+            JuliarLogger.log(ex.getMessage());
         }
 
         return new ArrayList<>();

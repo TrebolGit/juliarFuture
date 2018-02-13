@@ -42,7 +42,6 @@ public class JuliarTest extends TestCase {
             ex.printStackTrace();
             throw ex;
         }
-        assert(true);
     }
 
     public void testCompile() throws Exception {
@@ -81,8 +80,7 @@ public class JuliarTest extends TestCase {
         ScriptEngineManager engineManager = new ScriptEngineManager();
         ScriptEngine engine = engineManager.getEngineByName("nashorn");
         engine.eval("function sum(a, b) { a = b; a++; return b; }");
-        assert(true);
-        //Object returnScriptValue = engine.eval("sum(1, 2);");
-        //int i = 4;
+        Object returnScriptValue = engine.eval("sum(1, 2);");
+        int i = 4;
     }
 }

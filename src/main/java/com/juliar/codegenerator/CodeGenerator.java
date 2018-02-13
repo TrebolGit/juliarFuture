@@ -1,6 +1,6 @@
 package com.juliar.codegenerator;
 
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.nodes.*;
 import com.juliar.pal.Primitives;
 import com.juliar.pal.PrimitivesMap;
@@ -116,7 +116,7 @@ public class CodeGenerator {
             jarOut.write(code);
             jarOut.closeEntry();
         } catch(Exception e){
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
         jarOut.close();
         fout.close();
@@ -152,16 +152,16 @@ public class CodeGenerator {
     }
 
     private MethodVisitor evaluateExpressions(List<Node> instructions, MethodVisitor mw, GeneratorAdapter ga, Integer stackSize ){
-        Logger.log("x");
+        JuliarLogger.log("x");
         for(Node instruction : instructions) {
-            Logger.log("Instructions");
+            JuliarLogger.log("Instructions");
             if( instruction instanceof FunctionDeclNode){
                 List<Node> t = instruction.getInstructions();
                 evaluateExpressions(t, mw, ga, stackSize);
             }
             if ( instruction instanceof PrimitiveNode){
                 String function = ((PrimitiveNode) instruction).getPrimitiveName().toString();
-                Logger.log(function);
+                JuliarLogger.log(function);
 
                 function = PrimitivesMap.getFunction(function);
                 mw.visitLdcInsn(((PrimitiveNode) instruction).getGetPrimitiveArgument().toString());
@@ -225,7 +225,7 @@ public class CodeGenerator {
             }
 
             if (instruction instanceof BinaryNode){
-                Logger.log("BinaryNode");
+                JuliarLogger.log("BinaryNode");
                 Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((BinaryNode)instruction).operation().toString());
 
                 BinaryNode b = ((BinaryNode)instruction);
@@ -263,7 +263,7 @@ public class CodeGenerator {
             }
 
             if (instruction instanceof AggregateNode) {
-                Logger.log("BinaryNode");
+                JuliarLogger.log("BinaryNode");
                 Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((AggregateNode)instruction).operation().toString());
 
                 List<IntegralTypeNode> integralTypeNodes = ((AggregateNode)instruction).data();

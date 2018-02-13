@@ -1,6 +1,5 @@
 package com.juliar.nodes;
 
-import com.juliar.errors.Logger;
 import com.juliar.interpreter.ActivationFrame;
 import com.juliar.interpreter.Interpreter;
 
