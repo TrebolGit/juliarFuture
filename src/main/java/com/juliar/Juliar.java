@@ -29,7 +29,7 @@ public class Juliar {
 	public static boolean isDebug = false;
 	public static boolean isRepl = false;
 	public static boolean isInline = false;
-	public static int port = 48042;
+	public static int port = 80;
 
 	private ErrorListener errors;
 	private String inputFileName;
