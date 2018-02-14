@@ -226,7 +226,7 @@ public class CodeGenerator {
 
             if (instruction instanceof BinaryNode){
                 JuliarLogger.log("BinaryNode");
-                Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((BinaryNode)instruction).operation().toString());
+                //Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((BinaryNode)instruction).operation().toString());
 
                 BinaryNode b = ((BinaryNode)instruction);
                 if (isDebug) {
@@ -255,7 +255,7 @@ public class CodeGenerator {
                 ga.visitIntInsn(ISTORE, 2);
                 ga.visitIntInsn(ILOAD, 1);
                 ga.visitIntInsn(ILOAD, 2);
-                ga.visitInsn(op.get(addType));
+                //ga.visitInsn(op.get(addType));
 
                 mw.visitIntInsn(ILOAD, 0);
 
@@ -264,7 +264,7 @@ public class CodeGenerator {
 
             if (instruction instanceof AggregateNode) {
                 JuliarLogger.log("BinaryNode");
-                Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((AggregateNode)instruction).operation().toString());
+                //Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((AggregateNode)instruction).operation().toString());
 
                 List<IntegralTypeNode> integralTypeNodes = ((AggregateNode)instruction).data();
                 int addCount = integralTypeNodes.size() - 1;
@@ -306,7 +306,7 @@ public class CodeGenerator {
                 }
 
                 for(int i = 0; i < addCount; i++) {
-                    ga.visitInsn(op.get(addType));
+                    //ga.visitInsn(op.get(addType));
                 }
 
                 debugPrintLine(mw,addType);
