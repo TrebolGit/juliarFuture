@@ -2,7 +2,7 @@ package com.juliar.vistor;
 
 import com.juliar.ImportsInterface;
 import com.juliar.codegenerator.InstructionInvocation;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.nodes.*;
 import com.juliar.pal.Primitives;
 import com.juliar.parser.JuliarBaseVisitor;
@@ -66,7 +66,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
             //symbolTable.dumpSymbolTable();
         }
         catch(Exception ex){
-            Logger.log( ex.getMessage() );
+            JuliarLogger.log( ex.getMessage() );
         }
         return node;
     }
@@ -131,7 +131,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
                                 ctx.types(1).accept(this));
                     n.addInst( funcContextStack, n);
                 }catch( Exception ex){
-                    Logger.log(ex.getMessage(),ex);
+                    JuliarLogger.log(ex.getMessage(),ex);
                 }
             }
 
@@ -663,7 +663,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
                 line = bufferedReader.readLine();
             }
         } catch (IOException e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
         importBuffer.append( builder );

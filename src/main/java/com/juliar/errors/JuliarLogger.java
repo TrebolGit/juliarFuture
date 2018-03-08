@@ -5,7 +5,7 @@ import static java.lang.System.*;
 /**
  * Created by AndreiM on 12/27/2016.
  */
-public class Logger {
+public class JuliarLogger {
     private static boolean hasError = false;
     private static int errors = 0;
 
@@ -41,17 +41,17 @@ public class Logger {
     }
 
     public static void exitIfErrors(){
-        if(Logger.hasError){
+        if(JuliarLogger.hasError){
             err.println("Found "+errors+" errors!");
             throw new NullPointerException();
         }
     }
 
-    public Logger(String Message){
+    public JuliarLogger(String Message){
         out.println("Error: " + Message);
     }
 
-    public Logger(String Message, Exception Type){
+    public JuliarLogger(String Message, Exception Type){
         out.println("Error: " + Message);
     }
 

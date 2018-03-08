@@ -1,7 +1,7 @@
 package com.juliar.interpreter;
 
 import com.juliar.codegenerator.InstructionInvocation;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 
 import java.io.*;
 
@@ -20,7 +20,7 @@ public class ReadWriteBinaryFile {
             p.writeObject( invocation );
             p.flush();
         } catch (IOException e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
     }
 
@@ -38,7 +38,7 @@ public class ReadWriteBinaryFile {
                 invocation = (InstructionInvocation) object;
             }
         } catch (IOException|ClassNotFoundException e){
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
         return invocation;
     }

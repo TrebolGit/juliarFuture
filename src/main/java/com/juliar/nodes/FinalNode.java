@@ -1,6 +1,6 @@
 package com.juliar.nodes;
 
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
@@ -59,30 +59,30 @@ public class FinalNode extends NodeImpl{
                 return IntegralType.jboolean;
             }
         } catch (Exception e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
         try {
             return IntegralType.jinteger;
         } catch (Exception e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
         try {
             return IntegralType.jdouble;
         } catch (Exception e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
         try {
             return IntegralType.jfloat;
         } catch (Exception e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
         try {
             return IntegralType.jlong;
         } catch (Exception e) {
-            Logger.log(e);
+            JuliarLogger.log(e);
         }
 
         return IntegralType.jobject;

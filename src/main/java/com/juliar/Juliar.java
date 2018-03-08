@@ -2,7 +2,7 @@ package com.juliar;
 
 import com.bugsnag.Bugsnag;
 import com.juliar.errors.ErrorListener;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.juliar.interpreter.Interpreter;
 import com.juliar.parser.JuliarLexer;
 import com.juliar.parser.JuliarParser;
@@ -29,7 +29,7 @@ public class Juliar {
 	public static boolean isDebug = false;
 	public static boolean isRepl = false;
 	public static boolean isInline = false;
-	public static int port = 48042;
+	public static int port = 80;
 
 	private ErrorListener errors;
 	private String inputFileName;
@@ -82,7 +82,7 @@ public class Juliar {
 			if(unparsedArgs.length > 1){
 				outputPath = unparsedArgs[1];
 				compileFlag = true;
-				Logger.log("Compiling...");
+				JuliarLogger.log("Compiling...");
 			}
 
 
@@ -90,19 +90,19 @@ public class Juliar {
 			compiler.compile(fileName, outputPath, compileFlag);
 
 		} catch (Exception ex) {
-			Logger.log("Errored out at: " + ex.getMessage());
+			JuliarLogger.log("Errored out at: " + ex.getMessage());
 		}
 	}
 
 	private static boolean startupInstructions(String[] args) {
-		Logger.log("Juliar Compiler - Copyright (C) 2018");
+		JuliarLogger.log("Juliar Compiler - Copyright (C) 2018");
 
 		if (args.length != 1 && args.length != 2) {
-			Logger.log("Usage: java -jar Juliar.jar <source file> <output path> <optional: -repl, -inline, -debug>");
-			Logger.log("Path to Juliar source file");
-			Logger.log("Path to output directory if compiled.");
-			Logger.log("If output path is undefined, source file will be interpreted");
-			Logger.log("If you would like to run a server, add -server flag");
+			JuliarLogger.log("Usage: java -jar Juliar.jar <source file> <output path> <optional: -repl, -inline, -debug>");
+			JuliarLogger.log("Path to Juliar source file");
+			JuliarLogger.log("Path to output directory if compiled.");
+			JuliarLogger.log("If output path is undefined, source file will be interpreted");
+			JuliarLogger.log("If you would like to run a server, add -server flag");
 			return true;
 		}
 		return false;
@@ -115,7 +115,7 @@ public class Juliar {
 			if(arg.startsWith("-")) switch (arg) {
 				case "-debug":
 					isDebug = true;
-					Logger.log("debug is on");
+					JuliarLogger.log("debug is on");
 					break;
 				case "-repl":
 					isRepl = true;
@@ -147,7 +147,7 @@ public class Juliar {
 			return compile(fileInputStream, outputPath, compilerFlag);
 		}
 		catch (Exception ex) {
-			Logger.log(ex.getMessage());
+			JuliarLogger.log(ex.getMessage());
 		}
 
 		return new ArrayList<>();
@@ -173,7 +173,7 @@ public class Juliar {
 
 			}
 		} catch (Exception ex) {
-			Logger.log(ex.getMessage());
+			JuliarLogger.log(ex.getMessage());
 		}
 
 		return new ArrayList<>();
@@ -198,7 +198,7 @@ public class Juliar {
 
 		JuliarParser.CompileUnitContext context = parser.compileUnit();
 		if (isDebug) {
-			Logger.log(context.toStringTree(parser));
+			JuliarLogger.log(context.toStringTree(parser));
 		}
 
 		visitor = new Visitor((imports, linesToSkip) -> {
@@ -207,11 +207,11 @@ public class Juliar {
 
 		if (!errors.errorList().isEmpty() || !visitor.getErrorList().isEmpty()) {
 			for (String error : errors.errorList()) {
-				Logger.logerr(error);
+				JuliarLogger.logerr(error);
 			}
 
 			for (String error : visitor.getErrorList()) {
-				Logger.logerr(error);
+				JuliarLogger.logerr(error);
 			}
 
 			return true;
@@ -242,7 +242,7 @@ public class Juliar {
 	private void executeCommandLineRepl(JuliarParser parser) {
 		JuliarParser.CompileUnitContext context = parser.compileUnit();
 		if (isDebug) {
-			Logger.log(context.toStringTree(parser));
+			JuliarLogger.log(context.toStringTree(parser));
 		}
         Visitor v = new Visitor(new ImportsInterface() {
             @Override

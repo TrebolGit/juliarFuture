@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import com.juliar.errors.JuliarLogger;
 
-import com.juliar.errors.Logger;
 /**
  * platform abstraction layer.
  */
@@ -36,7 +36,7 @@ public class Primitives {
             return text.toString();
 
         } catch (Exception fne) {
-           Logger.log(fne.getMessage());
+            JuliarLogger.log(fne.getMessage());
         }
 
         return "";
@@ -74,7 +74,7 @@ public class Primitives {
             Path file = Paths.get("the-file-name.txt");
             Files.write(file, lines, Charset.forName("UTF-8"));
         } catch (IOException e) {
-            Logger.log(e.getMessage() + " sysFileWrite error");
+            JuliarLogger.log(e.getMessage() + " sysFileWrite error");
         }
     }
 

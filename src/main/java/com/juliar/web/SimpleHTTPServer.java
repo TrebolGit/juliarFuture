@@ -2,7 +2,7 @@ package com.juliar.web;
 
 import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
-import com.juliar.errors.Logger;
+import com.juliar.errors.JuliarLogger;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -31,16 +31,21 @@ public class SimpleHTTPServer {
     public static void main()  {
         try {
             server = HttpServer.create(new InetSocketAddress(Juliar.port), 0);
-            server.createContext("/", new MyHandler());
-            server.createContext("/get", new GetHandler());
-            server.createContext("/exit", new ExitHandler());
-            server.setExecutor(null); // creates a default executor
-            server.start();
-        } catch(Exception e){
-            Bugsnag bugsnag = new Bugsnag("c7e03c1e69143ad2fb1f3ea13ed8fda0");
-            bugsnag.notify(e);
-            Logger.log("Error occured");
+
+        } catch(IOException e){
+            InetSocketAddress myport = new InetSocketAddress(0);
+            try {
+                server = HttpServer.create(myport, 0);
+            } catch(IOException err){
+                JuliarLogger.log(err);
+            }
+            Juliar.port = myport.getPort();
         }
+        server.createContext("/", new MyHandler());
+        server.createContext("/get", new GetHandler());
+        server.createContext("/exit", new ExitHandler());
+        server.setExecutor(null); // creates a default executor
+        server.start();
     }
 
     static class MyHandler implements HttpHandler {

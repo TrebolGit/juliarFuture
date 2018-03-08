@@ -1,11 +1,9 @@
 package com.juliar.interpreter;
 
-import com.juliar.errors.Logger;
 import com.juliar.nodes.IntegralTypeNode;
 import com.juliar.nodes.Node;
 import com.juliar.nodes.VariableNode;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 public class ActivationFrameStack {

@@ -28,11 +28,13 @@ public class TestByteCode extends TestCase {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
+        assertTrue(true);
     }
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        assertTrue(true);
     }
 
 }
