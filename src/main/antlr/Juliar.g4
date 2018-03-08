@@ -215,6 +215,14 @@ comparisonOperator
     | notOperator
     ;
 
+unaryOperator
+    : '+'
+    | '-'
+    | '*'
+    | '/'
+    | '%'
+    ;
+
 bitWiseOperators
     : bitAnd
     | bitOr
@@ -322,18 +330,17 @@ singleExpression
  | '-' singleExpression                                                   # UnaryMinusExpression
  | '~' singleExpression                                                   # BitNotExpression
  | notOperator singleExpression                                           # NotExpression
- | singleExpression ( '*' | '/' | '%' ) singleExpression                  # MultiplicativeExpression
- | singleExpression ( '+' | '-' ) singleExpression                        # AdditiveExpression
  | singleExpression comparisonOperator singleExpression                   # EqualityExpression
  | singleExpression bitWiseOperators singleExpression                     # BitAndExpression
  | singleExpression ( bitLeftShift | bitRigthShift ) singleExpression     # BitShiftExpression
  | singleExpression Instanceof singleExpression                           # InstanceofExpression
  | singleExpression In singleExpression                                   # InExpression
  | singleExpression '?' singleExpression ':' singleExpression             # TernaryExpression
+ | variable assignmentOperator evaluatableExpression                      # AssignmentOperatorExpression
  | variable assignmentOperator singleExpression                           # AssignmentOperatorExpression
- | variable assignmentOperator ( '+' | '*' | '-' | '/' ) ( singleExpression singleExpression )+ # AssignmentOperatorExpression
- | (keywords) ( variable ( assignmentOperator singleExpression)* | AssignmentOperatorExpression )         # VariableDeclarationExpression
- | (keywords) variable ( assignmentOperator ( '+' | '*' | '-' | '/' ) ( singleExpression singleExpression )+)*  # VariableDeclarationExpression
+ | variable assignmentOperator ( unaryOperator ) ( singleExpression singleExpression )+ # AssignmentOperatorExpression
+ | (keywords) ( variable ( assignmentOperator singleExpression)* )         # VariableDeclarationExpression
+ | (keywords) variable ( assignmentOperator ( unaryOperator ) ( singleExpression singleExpression )+)*  # VariableDeclarationExpression
  | This                                                                   # ThisExpression
  | literal                                                                # LiteralExpression
  | variable                                                               # VariableExpression
@@ -341,7 +348,10 @@ singleExpression
  | '(' expressionSequence ')'                                             # ParenthesizedExpression
  ;
 
- evaluatableExpression : singleExpression                                # Evaluatable ;
+
+
+ //evaluatableExpression : singleExpression a
+ evaluatableExpression : singleExpression                               # Evaluatable ;
 
  assignmentExpression
      : variableDeclaration equalsign ( singleExpression | variable | functionCall | primitiveTypes | booleanExpression | userDefinedTypeVariableReference | userDefinedTypeVariableReference)

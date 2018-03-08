@@ -11,8 +11,10 @@ public class FinalNode extends NodeImpl{
     private String dataString;
     private transient Object object;
     private NodeType nodeType = NodeType.FinalType;
+    private byte[] instructionBytes;
 
     public FinalNode(TerminalNode data){
+        instructionBytes = data.getText().getBytes();
         if (data.getText() != null ) {
             dataString = data.getText();
         } else if (data.getSymbol().getText() != null ){
@@ -25,6 +27,14 @@ public class FinalNode extends NodeImpl{
 
     public void setDataString(Object data){
         object = data;
+    }
+
+    public byte[] getFinalNodeBytes(){
+        return instructionBytes;
+    }
+
+    public <T> T getBytesAstype(Class<T> asType){
+       return asType.cast( instructionBytes );
     }
 
     public String dataString() {
@@ -98,6 +108,9 @@ public class FinalNode extends NodeImpl{
         switch (dataString) {
             case "==":
                 nodeType = NodeType.EqualEqualType;
+                break;
+            case "function":
+                nodeType = NodeType.FunctionDeclType;
                 break;
             case "<=":
             case "=>":

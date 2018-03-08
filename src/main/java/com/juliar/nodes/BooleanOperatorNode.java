@@ -33,6 +33,7 @@ public class BooleanOperatorNode extends NodeImpl {
                     interpreter.pushOperatorStack(n);
                 }
                 if ( n instanceof VariableNode || n instanceof FunctionCallNode || n instanceof  LiteralNode){
+                    String s = ((VariableNode)n).getVariableName();
                     interpreter.pushOperandStack( n );
                 }
             }

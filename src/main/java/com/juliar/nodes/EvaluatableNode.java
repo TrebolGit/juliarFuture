@@ -3,9 +3,29 @@ package com.juliar.nodes;
 import com.juliar.interpreter.ActivationFrame;
 import com.juliar.interpreter.Interpreter;
 
+import java.util.Stack;
+
 import static com.juliar.nodes.NodeType.EvaluatableType;
 
 public class EvaluatableNode extends NodeImpl {
+    @Override
+    public void addInst(Node parent, Node instruction) {
+        super.addInst(parent, instruction);
+    }
+
+    @Override
+    public void addInst(Node instruction) {
+        super.addInst(instruction);
+    }
+
+    @Override
+    public void addInst(Stack<Node> contextStack, Node instruction) {
+        super.addInst(contextStack, instruction);
+    }
+
+    public EvaluatableNode(){
+        System.out.println("evaluatableNode");
+    }
 
     @Override
     public NodeType getType() {

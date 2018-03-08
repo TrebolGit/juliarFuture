@@ -26,6 +26,13 @@ public class VariableNode extends NodeImpl {
         variableName = vName;
     }
 
+    public String getVariableName() {
+        FinalNode finalNode = (FinalNode) getInstructions().get(0);
+        byte[] bytes = finalNode.getFinalNodeBytes();
+
+        return new String(bytes);
+    }
+
     public void setIntegralTypeNode(IntegralTypeNode typeNode){
         integralTypeNode = typeNode;
     }

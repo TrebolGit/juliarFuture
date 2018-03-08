@@ -1,10 +1,16 @@
 package com.juliar.nodes;
 
+import java.util.Stack;
+
 /**
  * Created by donreamey on 3/28/17.
  */
 @SuppressWarnings("serial")
 public class ExpressionNode extends NodeImpl{
+    public ExpressionNode(){
+        System.out.println( "ExpressionNode" );
+    }
+
     @Override
     public NodeType getType() {
         return NodeType.ExpressionType;
@@ -17,5 +23,24 @@ public class ExpressionNode extends NodeImpl{
         }
 
         throw new RuntimeException( "variable does not have a name");
+    }
+
+    @Override
+    public void addInst(Node parent, Node instruction) {
+        super.addInst(parent, instruction);
+    }
+
+    @Override
+    public void addInst(Node instruction) {
+        if ( instruction instanceof FinalNode )
+        {
+            return;
+        }
+        super.addInst(instruction);
+    }
+
+    @Override
+    public void addInst(Stack<Node> contextStack, Node instruction) {
+        super.addInst(contextStack, instruction);
     }
 }

@@ -93,15 +93,18 @@ public class Interpreter {
 
     public List<Node> execute( List<Node> instructions ) {
         try {
-            for (Node Node : instructions) {
-                Evaluate evaluate = functionMap.get(Node.getType());
-                if (evaluate != null) {
-                    List<Node> instructionsToExecute = evaluate.evaluate(Node, activationFrameStack.peek(), this);
-                    if (instructionsToExecute != null && !instructionsToExecute.isEmpty()) {
-                        execute(instructionsToExecute);
+            for (Node currentNode : instructions) {
+                NodeType nodeType = currentNode.getType();
+                if ( functionMap.containsKey( nodeType )) {
+                    Evaluate evaluate = functionMap.get(  nodeType );
+                    if (evaluate != null) {
+                        List<Node> instructionsToExecute = evaluate.evaluate(currentNode, activationFrameStack.peek(), this);
+                        if (instructionsToExecute != null && !instructionsToExecute.isEmpty()) {
+                            execute(instructionsToExecute);
+                        }
+                    } else {
+                        evalNull();
                     }
-                } else {
-                    evalNull();
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.juliar.nodes;
 
+import java.util.Stack;
+
 /**
  * Created by donreamey on 1/18/17.
  */
@@ -8,6 +10,10 @@ public class VariableDeclarationNode extends NodeImpl {
     private static int ASSIGNMENT_SIZE = 4;
     private static int OPERATOR_SLOT = 3;
     public String type;
+
+    public VariableDeclarationNode(){
+        System.out.println( "variableDeclarationNode" );
+    }
 
     @Override
     public NodeType getType() {
@@ -71,5 +77,21 @@ public class VariableDeclarationNode extends NodeImpl {
         return (VariableNode) instructions.get(1);
     }
 
+    @Override
+    public void addInst(Node parent, Node instruction) {
+        super.addInst(parent, instruction);
+    }
 
+    @Override
+    public void addInst(Node instruction) {
+        if ( instruction instanceof FinalNode){
+            return;
+        }
+        super.addInst(instruction);
+    }
+
+    @Override
+    public void addInst(Stack<Node> contextStack, Node instruction) {
+        super.addInst(contextStack, instruction);
+    }
 }
