@@ -25,8 +25,7 @@ public class JuliarTest extends TestCase {
         Juliar compiler = new Juliar();
         compiler.isDebug = true;
         List<String> errorList = null;
-        /*errorList = compiler.compile("examples/test.jrl", ".",  false);
-        //errorList.addAll( compiler.compile("serialize.jrl", ".",  false,false));
+        errorList = compiler.compile("examples/test.jlr", ".",  false);
 
         if (errorList.size() > 0 ){
             for(int i =0; i < errorList.size(); i++){
@@ -42,7 +41,7 @@ public class JuliarTest extends TestCase {
         catch( Exception ex){
             ex.printStackTrace();
             throw ex;
-        }*/
+        }
         assertTrue(true);
     }
 

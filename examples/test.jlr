@@ -1,4 +1,9 @@
 function main() = {
     int x;
-    x = 3;
+    x = 3 + 3 + main(foo(x));
+}
+
+
+function foo() = {
+
 }

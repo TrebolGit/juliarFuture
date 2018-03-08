@@ -45,8 +45,7 @@ expression
 functionCall
     : funcName '()'
     | funcName (leftParen)(WS)*(rightParen)
-    | funcName (leftParen) variable (',' variable)? (rightParen)
-    | funcName (leftParen)STRING(rightParen)
+    | funcName (leftParen) singleExpression (',' singleExpression)? (rightParen)
     ;
 
 functionDeclaration
@@ -330,6 +329,7 @@ singleExpression
  | '-' singleExpression                                                   # UnaryMinusExpression
  | '~' singleExpression                                                   # BitNotExpression
  | notOperator singleExpression                                           # NotExpression
+ | singleExpression unaryOperator singleExpression                        # BinaryExpression
  | singleExpression comparisonOperator singleExpression                   # EqualityExpression
  | singleExpression bitWiseOperators singleExpression                     # BitAndExpression
  | singleExpression ( bitLeftShift | bitRigthShift ) singleExpression     # BitShiftExpression
