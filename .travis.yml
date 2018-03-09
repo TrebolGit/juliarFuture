@@ -21,6 +21,7 @@ before_deploy:
 - cd build/libs/
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
 - jarsigner -verify Juliar.jar
+- cd ../../
 - git config --local user.name "Juliar Team"
 - git config --local user.email "admin@juliar.org"
 - git tag "Juliar-$(date +'%Y%m%d-%H%M%S')"
