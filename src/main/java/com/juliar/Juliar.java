@@ -32,7 +32,6 @@ public class Juliar {
 	public static int port = 80;
 
 	private ErrorListener errors;
-	private String inputFileName;
 	private Visitor visitor;
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
@@ -53,7 +52,6 @@ public class Juliar {
 				return;
 			}
 			else if(isRepl) {
-				String unparsedStr = String.join(" ", unparsedArgs);
 				Juliar compiler = new Juliar();
 				Scanner reader = new Scanner(System.in);
 				System.out.print("Welcome to Juliar REPL. Please type in the command and press enter to execute\n>");
@@ -63,7 +61,6 @@ public class Juliar {
 					InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
 					compiler.compile(stream, "", false);
 					System.out.print("\n>");
-					return;
 				}
 			}
 			else if(unparsedArgs.length == 0) {
@@ -141,6 +138,7 @@ public class Juliar {
 	}
 
 	public List<String> compile(String source, String outputPath, boolean compilerFlag) {
+		String inputFileName;
 		try {
 			inputFileName = source;
 			FileInputStream fileInputStream = new FileInputStream(source);
@@ -244,15 +242,10 @@ public class Juliar {
 		if (isDebug) {
 			JuliarLogger.log(context.toStringTree(parser));
 		}
-        Visitor v = new Visitor(new ImportsInterface() {
-            @Override
-            public void createTempCallback(String imports, int linesToSkip) {
-
-            }
-        }, true);
+        Visitor v = new Visitor((imports, linesToSkip) -> {}, true);
 
         v.visit(context);
-        Interpreter i = new Interpreter(v.instructions());
+        new Interpreter(v.instructions());
 	}
 
 
