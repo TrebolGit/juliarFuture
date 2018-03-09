@@ -19,7 +19,7 @@ before_deploy:
   -in juliar.jks.enc -out juliar.jks -d
 - cp $TRAVIS_BUILD_DIR/juliar.jks $HOME
 - cd build/libs/
-- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
+- jarsigner -verbose -sigalg SHA1withRSA -tsa http://timestamp.comodoca.com/rfc3161 -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
 - jarsigner -verify Juliar.jar
 - cd ../../
 - git config --local user.name "Juliar Team"
