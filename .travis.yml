@@ -15,6 +15,8 @@ notifications:
   slack: juliarlang:z7GTm7XhwjuvwIb9oYKvFdWN
 
 before_deploy:
+- openssl aes-256-cbc -K $encrypted_d33e3e505123_key -iv $encrypted_d33e3e505123_iv
+  -in juliar.jks.enc -out juliar.jks -d
 - cp $TRAVIS_BUILD_DIR/juliar.jks $HOME
 - cd build/libs/
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
@@ -33,9 +35,10 @@ deploy:
   overwrite: true
   on:
     repo: juliarLang/juliar
-before_install:
-- openssl aes-256-cbc -K $encrypted_d33e3e505123_key -iv $encrypted_d33e3e505123_iv
-  -in juliar.jks.enc -out juliar.jks -d
+    tags: false
+    all_branches: true
+    
+
 env:
   global:
   - secure: FGtOsrLcdqCI49kLofgPz8wk1GFPXy7eHp9G4xHj1LNW+uIpFVUdkswd1Gx1yzd8Dh0wiq85csJG0a9u9wX/eEJ76uM3iTduyt8dzDt17WU09jCTrAkKzv55B2whMd4GTLvFaJhCixdp6GLewKdnKgIQhuZGtOnVGnGjyxjsFJpuWjTxC8gbgz7uFhoRTLyMZS5Dh0F56bde1Tvg75N3zmc+k3a6s161Gw3GeD3BjS5MeNTeS2uISvSnCRHdsRE1OjDzIugDkXdM0I/6IZKAoTP3cXMpcN3eLvJDq0gn1KFpIWTrsHdroR1RnZKvFhdom5UU3LEZ2KzTlQ0p1h/1wrgvKEI/4WYdNsw1DjWDfcQe0mDAhtL5O/1TZVKFzlNtT4rJG5g91eA2464V61MuGK1V7Os8ysj52g5Q5N04pmh1oWMEd0cdolOvk2fVnA8hxOGGLKkWWAzACKzWXzAYnGUP3pFK6eHIBOgfxiCtZ/ej4uKOn50baejt22YlZPYaD3CVyJdiuRsiFWEId2Is1A0JD5gNjU3GSajMR8tIjykLgItsaV5EupijhERHs4o0UKMnZPjvwgscFEgk/hXW8a+XLRh89O9nAVvFUIQxGrOyY1B+TH7eso5tHt29xKZUF3C01xLB16lh4RZ2EpLMfu8j28GHh3eTIVQecbX1d1Q=
