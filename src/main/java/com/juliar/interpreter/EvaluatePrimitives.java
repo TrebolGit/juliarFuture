@@ -3,7 +3,6 @@ package com.juliar.interpreter;
 import com.juliar.errors.JuliarLogger;
 import com.juliar.nodes.*;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +42,7 @@ class EvaluatePrimitives {
                 getByteFromString(activationFrame, n.getInstructions().get(1), n.getInstructions().get(2));
                 break;
             case "printLine":
-                printLine(activationFrame, functionName, n.getInstructions().get(2));
+                printLine(activationFrame, functionName, n.getInstructions().get(1));
                 break;
             case "fileOpen":
                 String data = fileOpen(n.getInstructions().get(2));

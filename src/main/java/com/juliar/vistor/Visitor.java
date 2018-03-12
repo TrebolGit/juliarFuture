@@ -223,6 +223,19 @@ public class Visitor extends JuliarBaseVisitor<Node>
 
             }
         }
+
+        String nodeText = node.getText();
+        if ( nodeText.equalsIgnoreCase("()") ||
+                nodeText.equalsIgnoreCase( "(") ||
+                nodeText.equalsIgnoreCase( ")") ||
+                nodeText.equalsIgnoreCase( "{") ||
+                nodeText.equalsIgnoreCase( "}") ||
+                nodeText.equalsIgnoreCase( ";"))
+        {
+            return new AnnotatedNode();
+        }
+
+
         return new FinalNode(node);
     }
 
@@ -310,13 +323,6 @@ public class Visitor extends JuliarBaseVisitor<Node>
         return node;
     }
 
-    /*
-    @Override
-    public Node visitLogicalAndExpression(JuliarParser.LogicalAndExpressionContext ctx) {
-        return handleBooleanOperatorNode( ctx );
-    }
-    */
-
     @Override
     public Node visitIfExpr(JuliarParser.IfExprContext ctx) {
         IfExprNode node = new IfExprNode();
@@ -328,21 +334,6 @@ public class Visitor extends JuliarBaseVisitor<Node>
 
         return node;
     }
-    /*
-
-    @Override
-    public Node visitLogicalBooleanOperators(JuliarParser.LogicalBooleanOperatorsContext ctx) {
-        return handleBooleanOperatorNode( ctx );
-    }
-    */
-
-    /*
-    @Override
-    public Node visitComparisonOperator(JuliarParser.ComparisonOperatorContext ctx) {
-        return handleBooleanOperatorNode( ctx );
-    }
-    */
-
 
     @Override
     public Node visitNotOperator(JuliarParser.NotOperatorContext ctx) {
@@ -692,11 +683,14 @@ public class Visitor extends JuliarBaseVisitor<Node>
                 ParseTree parseTree = pt.next();
                 Node node = parseTree.accept(visitor);
 
-                if (node != null) {
-                    action(parent, node);
-                    action(node);
-                    parent.addInst(node);
+                if (node instanceof AnnotatedNode) {
+                    continue;
                 }
+
+                action(parent, node);
+                action(node);
+                parent.addInst(node);
+
             }
 
             funcContextStack.pop();
