@@ -1,21 +1,30 @@
 language: java
+
 sudo: required
+
 jdk:
 - oraclejdk8
+
 os:
 - linux
+
 script:
-- ./gradlew build
+- "./gradlew build"
 
 notifications:
   slack: juliarlang:z7GTm7XhwjuvwIb9oYKvFdWN
 
-
 before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "Juliar Team"
-  - git config --local user.email "admin@juliar.org"
-  - git tag "Juliar-$(date +'%Y%m%d-%H%M%S')"
+- openssl aes-256-cbc -K $encrypted_d33e3e505123_key -iv $encrypted_d33e3e505123_iv
+  -in juliar.jks.enc -out juliar.jks -d
+- cp $TRAVIS_BUILD_DIR/juliar.jks $HOME
+- cd build/libs/
+- jarsigner -verbose -sigalg SHA1withRSA -tsa http://timestamp.comodoca.com/rfc3161 -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
+- jarsigner -verify Juliar.jar
+- cd ../../
+- git config --local user.name "Juliar Team"
+- git config --local user.email "admin@juliar.org"
+- git tag "Juliar-$(date +'%Y%m%d-%H%M%S')"
 
 deploy:
   provider: releases
@@ -27,3 +36,11 @@ deploy:
   overwrite: true
   on:
     repo: juliarLang/juliar
+    tags: false
+    all_branches: true
+    
+
+env:
+  global:
+  - secure: FGtOsrLcdqCI49kLofgPz8wk1GFPXy7eHp9G4xHj1LNW+uIpFVUdkswd1Gx1yzd8Dh0wiq85csJG0a9u9wX/eEJ76uM3iTduyt8dzDt17WU09jCTrAkKzv55B2whMd4GTLvFaJhCixdp6GLewKdnKgIQhuZGtOnVGnGjyxjsFJpuWjTxC8gbgz7uFhoRTLyMZS5Dh0F56bde1Tvg75N3zmc+k3a6s161Gw3GeD3BjS5MeNTeS2uISvSnCRHdsRE1OjDzIugDkXdM0I/6IZKAoTP3cXMpcN3eLvJDq0gn1KFpIWTrsHdroR1RnZKvFhdom5UU3LEZ2KzTlQ0p1h/1wrgvKEI/4WYdNsw1DjWDfcQe0mDAhtL5O/1TZVKFzlNtT4rJG5g91eA2464V61MuGK1V7Os8ysj52g5Q5N04pmh1oWMEd0cdolOvk2fVnA8hxOGGLKkWWAzACKzWXzAYnGUP3pFK6eHIBOgfxiCtZ/ej4uKOn50baejt22YlZPYaD3CVyJdiuRsiFWEId2Is1A0JD5gNjU3GSajMR8tIjykLgItsaV5EupijhERHs4o0UKMnZPjvwgscFEgk/hXW8a+XLRh89O9nAVvFUIQxGrOyY1B+TH7eso5tHt29xKZUF3C01xLB16lh4RZ2EpLMfu8j28GHh3eTIVQecbX1d1Q=
+  - secure: E+tPILYSTGO3Bta5CPvnjWMazssTJNSj8u5wevq61k+TBxQuE9sDxSNmXCdVisP5ueFC7HPPKakxnpuTgqPcC3OHaMSYu2WnlKydE61cz9xP1KgHbBTgm49i3OY/PMntdbWVxoAaefAVnEwcB2xeLETPAntLUQiF4gzubBiPyPuuoDAIS6FO48G5r5igRdDD0zHEedtdt+ji8tey1tn/OUn/qGQFhxMc58fUUCIvSdsbIO9phWNiYdSaa5hC/lac4AENFY6GoUlzvuypxny56ycDXgJ3vKBc0/e8/ifFVl7vOJBTv/6Vu1rwMWXG3mjjaZFARjKXPDUdi/xNDl98xjSiUUZ5RrYosAPowXUq4UdcDIyfhgj73613oglIejtnlyF+Y4vFjy2eirYvqVn6DovPNAc2yCe1AxxU9lFfornZ2RutdGzaOI6/pI0X71K+cK5GtGwvz33W20e7NTNvOj0cGVgCKQiSDrIJR2KC26CV5sz2708Yd6yzCAmj4ydpGdKDc/9EElZWwOwWoZPLV5/EczBP+ulI45D5BkL2m2qVkvCLHNg7uomFanEbLTK0dTun0iRXAIgClNn4aP/hvmM2B2B5YqvQ1IyMNLgpY86OGcoq7eTE8G59nzKGmD+/xLnxLYGApGXAybTa1u+j+bG6qLFW5yWbQKlPBH2MaiE=
