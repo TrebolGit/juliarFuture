@@ -26,7 +26,7 @@ Runs on top of Java VM.
 
 ### A simple to use language with a beautiful IDE built-in!
 
-[![Juliar](https://user-images.githubusercontent.com/11934545/34542052-d50ce740-f0a8-11e7-99f0-52109248bb43.png)](https://juliar.org/downloads)
+[![Juliar](https://user-images.githubusercontent.com/11934545/37502439-17f3a62e-28a9-11e8-922a-1cdd5fe0501d.png)](https://juliar.org/downloads)
 
 For more information, please check out our official website at [https://juliar.org](http://juliar.org)
 

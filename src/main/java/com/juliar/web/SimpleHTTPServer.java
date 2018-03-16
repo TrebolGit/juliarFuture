@@ -8,8 +8,11 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import java.awt.*;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -29,17 +32,26 @@ public class SimpleHTTPServer {
     static private String contentType = "Content-Type";
 
     public static void main()  {
+        int port = Juliar.port;
         try {
-            server = HttpServer.create(new InetSocketAddress(Juliar.port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
 
         } catch(IOException e){
             InetSocketAddress myport = new InetSocketAddress(0);
             try {
                 server = HttpServer.create(myport, 0);
+                port = server.getAddress().getPort();
             } catch(IOException err){
                 JuliarLogger.log(err);
             }
-            Juliar.port = myport.getPort();
+
+        }
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + Integer.toString(port)));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         server.createContext("/", new MyHandler());
         server.createContext("/get", new GetHandler());

@@ -143,7 +143,7 @@ body {
     background-color: rgb(35,39,51);
     width:100%;
     z-index:100;
-    position:fixed;
+    position: absolute;
     border-bottom:1px solid #192320;
 }
 
@@ -404,18 +404,18 @@ body {
 }
 
 
-.CodeMirror {
+.jide_container .CodeMirror {
     max-height: 100%;
 }
 
-.CodeMirror-scroll {
+.jide_container .CodeMirror-scroll {
     max-height: 100%;
 }
 
-.CodeMirror-fullscreen.CodeMirror {
+.jide_container .CodeMirror-fullscreen.CodeMirror {
     max-height: none;
 }
 
-.CodeMirror-fullscreen .CodeMirror-scroll {
+.jide_container .CodeMirror-fullscreen .CodeMirror-scroll {
     max-height: none;
 }
