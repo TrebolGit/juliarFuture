@@ -1,69 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Juliar</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900" rel="stylesheet">
-    <link href="codemirror.css" rel="stylesheet">
-    <link href="juliar.css" rel="stylesheet">
-</head>
-<body>
+    <head>
+        <title>Juliar</title>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,900,900i" rel="stylesheet">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="codemirror.css" rel="stylesheet">
+        <link href="juliar.css" rel="stylesheet">
+    </head>
+    <body class="container">
+        <div class="jide_container">
+            <header>
+                <ul id="menu">
+                    <li><a href="#">File</a>
+                        <ul class="hidden">
+                            <li><a href="#new">New</a></li>
+                            <li><a href="#load">Load</a></li>
+                            <li><a href="#openfolder">Open Folder</a></li>
+                            <li><a href="#save">Save</a></li>
+                            <li><a href="#saveas">Save As...</a></li>
+                            <li><a href="#download">Download Output</a></li>
+                            <li><a href="#exit">Exit</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Edit</a>
+                        <ul class="hidden">
+                            <li><a href="#undo">Undo</a></li>
+                            <li><a href="#redo">Redo</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">View</a>
+                    </li>
+                    <li><a href="#">Run</a>
+                        <ul class="hidden">
+                            <li><a href="#run">Run Interpreter</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Help</a>
+                        <ul class="hidden">
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#newfeatures">What's new?</a></li>
+                            <li><a href="#docs">Documentation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </header>
+            <nav>Go to File -> Folder Open</nav>
+            <main>
+                <textarea name="codeArea" id="codeArea"></textarea>
+            </main>
+            <aside>Help...Coming soon</aside>
+            <footer><p>Output: </p> <div id="output"></div></footer>
+            <span class="dot" onclick="JAJAX()">&#9658;</span>
 
-    <nav>
-        <label for="show-menu" class="show-menu">Commands</label>
-        <input type="checkbox" id="show-menu" role="button">
-        <ul id="menu">
-            <li><a href="#">File</a>
-                <ul class="hidden">
-                    <li><a href="#new">New</a></li>
-                    <li><a href="#load">Load</a></li>
-                    <li><a href="#openfolder">Open Folder</a></li>
-                    <li><a href="#save">Save</a></li>
-                    <li><a href="#saveas">Save As...</a></li>
-                    <li><a href="#download">Download Output</a></li>
-                    <li><a href="#exit">Exit</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Edit</a>
-                <ul class="hidden">
-                    <li><a href="#undo">Undo</a></li>
-                    <li><a href="#redo">Redo</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">View</a>
-            </li>
-            <li><a href="#">Run</a>
-                <ul class="hidden">
-                    <li><a href="#run">Run Interpreter</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Help</a>
-                <ul class="hidden">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#newfeatures">What's new?</a></li>
-                    <li><a href="#docs">Documentation</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="row main">
-        <div class="col-6">
-            <div class="tab" id="files_tab">
-                <button class="tablinks" id="defaultOpen">Untitled.jrl</button>
-                <button class="tablinks">+</button>
-            </div>
-            <textarea name="codeArea" id="codeArea"></textarea>
-            <div class="tabcontent"></div>
-
-        </div>
-        <div class="col-6">
-            <h3>Output:</h3>
-            <div id="output"></div>
             <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />
-            <input type="button" name="compile" value="&#9654;" id="compile_btn" onclick="JAJAX()" />
             <div id="juliar_popup" class="modal">
                 <!-- Modal content -->
                 <div class="modal-content">
@@ -77,10 +71,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script src="codemirror.js"></script>
-    <script src="simple.js"></script>
-    <script src="juliar.js"></script>
-</body>
+    </body>
 </html>
 
+<script src="codemirror.js"></script>
+<script src="simple.js"></script>
+<script src="juliar.js"></script>
