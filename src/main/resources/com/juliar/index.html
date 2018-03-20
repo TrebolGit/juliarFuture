@@ -49,12 +49,59 @@
                     </li>
                 </ul>
             </header>
-            <nav>Go to File -> Folder Open</nav>
+            <nav>Coming Soon...</nav>
+            <div class="tab" id="files_tab">
+                <button class="tablinks" name="0">Untitled.jrl</button>
+                <button id="addtab">+</button>
+            </div>
+
+            <aside>
+                <div class="tab" id="views_tab">
+                    <button class="tablinks optional" name="Help">News</button>
+                    <button class="tablinks optional" name="Packages">Packages</button>
+                    <button class="tablinks optional" name="Viewer">Viewer</button>
+                </div>
+
+                <div class="tabcontent views_tab Help">
+                    -03/25/2018 New Editor
+                </div>
+                <div class="tabcontent views_tab Packages">
+                    <button>Check for updates...</button><br/><br/>
+                    <label class="container">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        Base Package
+                    </label>
+                </div>
+                <div class="tabcontent views_tab Viewer">
+                    Coming Soon...
+                </div>
+
+            </aside>
             <main>
+
                 <textarea name="codeArea" id="codeArea"></textarea>
+                <div class="tabcontent files_tab" name="0">
+
+                </div>
             </main>
-            <aside>Help...Coming soon</aside>
-            <footer><p>Output: </p> <div id="output"></div></footer>
+            <footer>
+                <div class="tab" id="output_tab">
+                    <button class="tablinks output" name="Output">Output</button>
+                    <button class="tablinks output" name="Errors">Errors</button>
+                    <button class="tablinks output" name="Console">Console</button>
+                </div>
+                <div class="tabcontent output_tab Output">
+                    <div id="output">Click Run to see the output</div>
+                </div>
+                <div class="tabcontent output_tab Errors">
+                    <div id="errors">Click Run to see the errors</div>
+                </div>
+                <div class="tabcontent output_tab Console">
+                    Coming Soon...
+                </div>
+
+            </footer>
             <span class="dot" onclick="JAJAX()">&#9658;</span>
 
             <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />

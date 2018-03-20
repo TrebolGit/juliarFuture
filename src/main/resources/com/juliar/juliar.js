@@ -261,23 +261,86 @@ window.onclick = function(e) {
 };
 
 // Tabs
-function openTab(tabIndex) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+function unchecktabs(tabType){
+    var tabs = document.getElementById(tabType).getElementsByClassName("tablinks");
+    var content = document.getElementsByClassName("tabcontent " + tabType);
+
+    for (i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
     }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+    for (i = 0; i < content.length; i++) {
+        content[i].style.display = "none";
     }
-    tabcontent[tabIndex].style.display = "block";
-    //evt.currentTarget.className += " active";
 }
 
-document.getElementById("files_tab").addEventListener('click', function(e){
-   e.preventDefault();
-   openTab(1);
+function openTab(tabName, tabType) {
+    tabType = tabType || "files_tab";
+    var tabs = document.getElementById(tabType).getElementsByClassName("tablinks");
+    var content = document.getElementsByClassName("tabcontent " + tabType);
+
+    for (i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+    }
+    tabs[tabName].classList.add("active");
+
+    for (i = 0; i < content.length; i++) {
+        content[i].style.display = "none";
+        if(content[i].classList.contains(tabName)){
+            content[i].style.display ="block";
+        }
+    }
+}
+
+var allTabs = document.getElementsByClassName("tab");
+for(var i=0; i<allTabs.length;i++) {
+    allTabs[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        if (e.target.name != null && e.target.classList.contains("tablinks")) {
+            openTab(e.target.name, e.target.parentElement.id);
+        }
+    });
+}
+
+openTab("0", "files_tab");
+openTab("Help", "views_tab");
+openTab("Output","output_tab");
+
+
+//Generate Stack of Tabs
+var tabs = [];
+
+function File(id, name, path, modified) {
+    this.id = id;
+    this.name = name;
+    this.path = path || null;
+    this.modified = modified || false;
+}
+var lastTabID = 0;
+
+document.getElementById("addtab").addEventListener('click', function(e){
+    unchecktabs("files_tab");
+    var newTab = new File();
+    newTab.id = ++lastTabID;
+    newTab.name = "Untitled_"+newTab.id+".jrl";
+    newTab.name += "<span class='close_tab_btn'>x</span>";
+    newTab.modfiied = false;
+    tabs.push(newTab);
+    var newNode = document.createElement('button');
+    newNode.className = "tablinks active";
+    newNode.name = newTab.id;
+    newNode.innerHTML = newTab.name;
+    var filesTab = document.getElementById("files_tab");
+    filesTab.insertBefore(newNode, document.getElementById("addtab"));
+
+    newfile();
 });
 
-//openTab(0);
+document.getElementById("files_tab").addEventListener('click', function(e){
+    if(e.target.classList.contains("close_tab_btn")){
+        var nameOfNode = e.target.parentElement.name;
+        var fileTabs= document.getElementById("files_tab");
+        var el = fileTabs.querySelector("button[name='"+nameOfNode+"']");
+        fileTabs.removeChild(el);
+    }
+});
