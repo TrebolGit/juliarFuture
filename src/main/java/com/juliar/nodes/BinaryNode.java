@@ -5,20 +5,21 @@ package com.juliar.nodes;
  */
 @SuppressWarnings("serial")
 public class BinaryNode extends NodeImpl  {
-    private Operation op;
-    private Node lv;
-    private Node rv;
+    //private Operation op;
+    //private Node lv;
+    //private Node rv;
     private IntegralTypeNode integralTypeNode;
 
 
     public BinaryNode(Operation operation){
-        op = operation;
+        //op = operation;
     }
 
     public BinaryNode(){
     }
 
 
+    /*
     public BinaryNode makeNode(Operation operation, Node lvalue, Node rvalue){
         BinaryNode binaryNode = new BinaryNode(operation);
         binaryNode.lv = lvalue;
@@ -26,6 +27,7 @@ public class BinaryNode extends NodeImpl  {
 
         return binaryNode;
     }
+
 
     public Operation operation(){
         return op;
@@ -36,6 +38,7 @@ public class BinaryNode extends NodeImpl  {
     public Node right(){
         return rv;
     }
+    */
 
     public IntegralTypeNode data(){return integralTypeNode;}
 

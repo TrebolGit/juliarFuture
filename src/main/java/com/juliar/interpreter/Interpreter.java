@@ -71,6 +71,7 @@ public class Interpreter {
             functionMap.put( NodeType.StatementType              , ((n, activationFrame, callback  )-> evalStatement(n)         ));
             functionMap.put( NodeType.ExpressionType             , ((n, activationFrame, callback  )-> evalStatement(n)         ));
             functionMap.put( NodeType.FinalType                  , ((n, activationFrame, callback  )-> evalFinal()              ));
+            functionMap.put( NodeType.EvaluatableType            ,       (( n, activationFrame,      callback  )-> evaluateEvauatable(n, activationFrame, callback) ));
             functionMap.put( NodeType.UserDefinedFunctionReferenceType , (( n, activationFrameStack, callback  )-> evalUserDefinedFunctionCall(n) ));
             functionMap.put( NodeType.AggregateType              , ( this::evaluateAggregate        ));
             functionMap.put( NodeType.ReturnValueType            , ( this::evalReturn               ));
@@ -110,7 +111,7 @@ public class Interpreter {
         }
         catch( Exception ex){
             JuliarLogger.log( ex );
-        }
+            }
 
         return new ArrayList<>();
     }
@@ -286,6 +287,51 @@ public class Interpreter {
 
     private List<Node> evalAdd(){
         return new ArrayList<>();
+    }
+
+    private List<Node> evaluateEvauatable( Node node, ActivationFrame frame, Interpreter interpreter){
+            for (Node n : node.getInstructions()) {
+                    if ( n instanceof FinalNode){
+                        String data = ((FinalNode) n).dataString();
+                        switch (data) {
+                            case "+":
+                            case "-":
+                            case "*":
+                            case "/":
+                                interpreter.pushOperatorStack(n);
+                                break;
+                            default:
+                                interpreter.pushOperandStack(n);
+                        }
+                    }
+
+                    if ( n instanceof LiteralNode){
+                        evaluateEvauatable( n, frame, interpreter);
+                    }
+
+                    if (n instanceof FunctionCallNode ){
+
+                    }
+
+                    if ( n instanceof VariableNode ){
+                        String s = ((VariableNode)n).getVariableName();
+                        interpreter.pushOperandStack( n );
+                    }
+
+                    if ( n instanceof BinaryNode) {
+                        evaluateEvauatable(n, frame, interpreter);
+                    }
+                }
+/*
+            }
+
+            if ( shouldEvaluate ) {
+                interpreter.evaluateExpressionStack();
+            }
+
+        }
+*/
+        return  new ArrayList<>();
     }
 
     private List<Node> evalNull(){
@@ -650,6 +696,7 @@ public class Interpreter {
 
     private List<Node> evalBinaryNode(Node node) {
         BinaryNode bn = (BinaryNode) node;
+        /*
         String operation = bn.operation().name();
 
         Object ol = bn.left();
@@ -688,6 +735,7 @@ public class Interpreter {
                 assert true;
                 break;
         }
+        */
         return new ArrayList<>();
     }
 

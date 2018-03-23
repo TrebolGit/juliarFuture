@@ -1,10 +1,8 @@
 package com.juliar.interpreter;
 
 import com.juliar.nodes.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+
+import java.util.*;
 
 import static com.juliar.nodes.IntegralType.*;
 
@@ -22,7 +20,7 @@ public class EvaluateAssignments<T> {
         }
     }
 
-    public static List<Node> evalReassignment(Node n, ActivationFrame activationFrame, Interpreter calback) {
+    public static List<Node> evalReassignment(Node n, ActivationFrame activationFrame, Interpreter callback) {
         if ( n != null){
             VariableReassignmentNode node = (VariableReassignmentNode)n;
 
@@ -42,6 +40,14 @@ public class EvaluateAssignments<T> {
                 case VariableType:
                     VariableNode variableNode = (VariableNode) rvalueVariableNode;
                     activationFrame.variableSet.put ( variableName, variableNode );
+                    break;
+                case EvaluatableType:
+                   if (true){
+                        System.out.println("need to add code to evaluate");
+                        //ArrayList<Node> evaluatableNode = new ArrayList<Node>()
+                        //evaluatableNode.add( rvalueVariableNode );
+                        callback.execute( new ArrayList<Node>(Arrays.asList(rvalueVariableNode)));
+                    }
                     break;
             }
         }

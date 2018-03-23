@@ -225,6 +225,7 @@ public class CodeGenerator {
             }
 
             if (instruction instanceof BinaryNode){
+                /*
                 JuliarLogger.log("BinaryNode");
                 //Map<IntegralType,Integer> op = CodeGeneratorMap.generateMap(((BinaryNode)instruction).operation().toString());
 
@@ -260,6 +261,7 @@ public class CodeGenerator {
                 mw.visitIntInsn(ILOAD, 0);
 
                 debugPrintLine(mw,addType);
+                */
             }
 
             if (instruction instanceof AggregateNode) {

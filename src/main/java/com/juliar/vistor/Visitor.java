@@ -124,12 +124,13 @@ public class Visitor extends JuliarBaseVisitor<Node>
             if (ctx.types().size() == 2) {
                 BinaryNode node = new BinaryNode();
                 try {
-
+/*
                     Node n = node.makeNode(
                                 Operation.subtract,
                                 ctx.types(0).accept(this),
                                 ctx.types(1).accept(this));
                     n.addInst( funcContextStack, n);
+*/
                 }catch( Exception ex){
                     JuliarLogger.log(ex.getMessage(),ex);
                 }
@@ -273,6 +274,13 @@ public class Visitor extends JuliarBaseVisitor<Node>
     }
 
     @Override
+    public Node visitBinaryExpression(JuliarParser.BinaryExpressionContext ctx) {
+        BinaryNode node = new BinaryNode();
+        iterateWithTryCatch( ctx, node);
+        return node;
+    }
+
+    @Override
     public Node visitAssignmentExpression(JuliarParser.AssignmentExpressionContext ctx) {
         AssignmentNode node = new AssignmentNode(null);
 
@@ -309,6 +317,7 @@ public class Visitor extends JuliarBaseVisitor<Node>
         iterateOverContext.iterateOverChildren(ctx, this, node);
         return node;
     }
+
 
     @Override
     public Node visitAssignmentOperatorExpression(JuliarParser.AssignmentOperatorExpressionContext ctx) {

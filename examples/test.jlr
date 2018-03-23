@@ -1,10 +1,4 @@
 function main() = {
-    printLine("this is a test");
     int x;
-    x = 3 + 3 + main(foo(x));
-}
-
-
-function foo() = {
-
+    x = 2 + 3 + 4;
 }

@@ -359,7 +359,7 @@ singleExpression
  	;
 
  reassignmentExpression
-     : variable equalsign ( variable | functionCall | primitiveTypes | singleExpression |  userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
+     : variable equalsign singleExpression // ( variable | functionCall | primitiveTypes | singleExpression | BinaryExpression | userDefinedTypeVariableReference | userDefinedTypeFunctionReference )
      ;
 /*
 
