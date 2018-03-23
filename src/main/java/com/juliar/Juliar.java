@@ -12,10 +12,10 @@ import com.juliar.web.SimpleHTTPServer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-
-import java.awt.*;
-import java.io.*;
-import java.net.URI;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -62,8 +62,6 @@ public class Juliar {
 			}
 			else if(unparsedArgs.length == 0) {
 				SimpleHTTPServer.main();
-				if (Desktop.isDesktopSupported())
-					Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + Integer.toString(port)));
 				return;
 			}
 			else if (startupInstructions(unparsedArgs)) {

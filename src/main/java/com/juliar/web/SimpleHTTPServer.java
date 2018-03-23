@@ -1,6 +1,5 @@
 package com.juliar.web;
 
-import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
 import com.juliar.errors.JuliarLogger;
 import com.sun.net.httpserver.Headers;
@@ -8,14 +7,20 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import java.awt.*;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import static java.lang.System.setErr;
+import static java.lang.System.setOut;
 
 public class SimpleHTTPServer {
     static File jarPath=new File(Juliar.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -29,17 +34,26 @@ public class SimpleHTTPServer {
     static private String contentType = "Content-Type";
 
     public static void main()  {
+        int port = Juliar.port;
         try {
-            server = HttpServer.create(new InetSocketAddress(Juliar.port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
 
         } catch(IOException e){
             InetSocketAddress myport = new InetSocketAddress(0);
             try {
                 server = HttpServer.create(myport, 0);
+                port = server.getAddress().getPort();
             } catch(IOException err){
                 JuliarLogger.log(err);
             }
-            Juliar.port = myport.getPort();
+
+        }
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + Integer.toString(port)));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         server.createContext("/", new MyHandler());
         server.createContext("/get", new GetHandler());
@@ -97,12 +111,17 @@ public class SimpleHTTPServer {
             SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
         }
         private static String doInPlaceInterpret( String theCode) throws IOException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
+            PrintStream oldOut = System.out;
+            PrintStream oldErr = System.err;
+            ByteArrayOutputStream newOut = new ByteArrayOutputStream();
+            ByteArrayOutputStream newErr = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(newOut);
+            PrintStream ps2 = new PrintStream(newErr);
             // IMPORTANT: Save the old System.out!
-            PrintStream old = System.out;
             // Tell Java to use your special stream
-            System.setOut(ps);
+            setOut(ps);
+            setErr(ps2);
+
 
             try{
                 compiler.isDebug = false;
@@ -122,8 +141,11 @@ public class SimpleHTTPServer {
             }
             // Put things back
             System.out.flush();
-            System.setOut(old);
-            return baos.toString();
+            System.err.flush();
+            setOut(oldOut);
+            setErr(oldErr);
+
+            return "{'output': '"+newOut.toString()+"', 'errors': '"+newErr.toString()+"'}";
         }
     }
 

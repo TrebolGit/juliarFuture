@@ -1,14 +1,10 @@
+body {
+    margin: 0;
+}
 * {
     box-sizing: border-box;
 }
-a{
-    text-decoration:none;
-    color: #ef7171;
-}
-a:active{
-    text-decoration:none;
-    color: #ef7171;
-}
+
 .row::after {
     content: "";
     clear: both;
@@ -53,46 +49,137 @@ a:active{
     .col-12 {width: 100%;}
 }
 
-body {
-    margin: 0;
-    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-    color: rgb(51,52,71);
-    transition:all 0.3s ease;
+.jide_container {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-height: 100vh;
 }
+
+@media (min-width: 768px) {
+    .jide_container {
+        display: grid;
+        grid-template-columns: 200px 1fr 300px;
+        grid-template-rows: auto auto 1fr auto;
+
+    }
+}
+
+.jide_container .dot{
+    height: 64px;
+    width: 64px;
+    background: linear-gradient(45deg, #191c26, #262a38);
+    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    right: 400px;
+    bottom: 170px;
+    box-sizing: border-box;
+    text-align:center;
+    padding-top:18px;
+    padding-left:8px;
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+    z-index:9999;
+}
+
+.jide_container header {
+    grid-column: span 3;
+    font-size: 0.8em;
+    margin-bottom: 45px;
+    background-color: rgb(35,39,51);
+    color: white;
+}
+
+
+.jide_container #files_tab {
+    flex: 1;
+    max-height:40px;
+    grid-row: span 1;
+    grid-column: span 1;
+}
+
+.jide_container main {
+    flex: 1;
+    background-color: rgb(35,39,51);
+    max-height: 100%;
+    overflow-y: auto;
+    grid-row: span 1;
+    grid-column: span 1;
+
+}
+
+
+
+.jide_container nav {
+    background-color: rgb(53,61,79);
+    padding: 8px;
+    color: white;
+    border-right: 3px solid rgb(35,39,51);
+    z-index:99;
+    grid-row: span 3;
+}
+
+.jide_container aside {
+    background-color: rgb(53,61,79);
+    color:white;
+    grid-row: span 3;
+    border-left: 3px solid rgb(35,39,51)
+}
+
+.jide_container footer {
+    grid-column: span 1;
+    height:200px;
+    font-size: 1.0em;
+    background-color: rgb(53,61,79);
+    border-top: 2px  solid rgb(35,39,51);
+    color: white;
+}
+
+.jide_container h1 {
+    margin-bottom: 1em;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+
 
 /* Top Nav Stuff */
 
-nav #menu {
-    background-color:rgb(51,52,71);
+.jide_container #menu {
+    background-color: rgb(35,39,51);
     width:100%;
     z-index:100;
-    position:fixed;
+    position: absolute;
     border-bottom:1px solid #192320;
 }
 
 
-nav #menu > li{
+.jide_container #menu > li{
     padding:15px;
 }
 
-nav ul.hidden {
+.jide_container ul.hidden {
     padding-top:15px;
     margin-left:-15px;
 }
 
 /*Strip the ul of padding and list styling*/
-nav ul {
+.jide_container ul {
     list-style-type:none;
     margin:0;
     padding:0;
     position: absolute;
 }
 /*Create a horizontal list with spacing*/
-nav li {
+.jide_container li {
     display:inline-block;
 }
 /*Style for menu links*/
-nav li a {
+.jide_container li a {
     display:block;
     text-align: center;
     font-family: 'Montserrat', sans-serif;
@@ -100,144 +187,119 @@ nav li a {
     text-decoration: none;
 }
 /*Hover state for top level links*/
-nav li:hover{
-    background: #19c589;
+.jide_container li:hover{
+    background: rgb(25,225,198);
 }
 
 /*Style for dropdown links*/
-nav li:hover ul a {
+.jide_container li:hover ul a {
     background: #f3f3f3;
     color: #2f3036;
     height: 40px;
     line-height: 40px;
 }
 /*Hover state for dropdown links*/
-nav li:hover ul a:hover {
-    background: #19c589;
+.jide_container li:hover ul a:hover {
+    background: rgb(25,225,198);
     color: #fff;
 }
 /*Hide dropdown links until they are needed*/
-nav li ul {
+.jide_container li ul {
     display: none;
 }
 /*Make dropdown links vertical*/
-nav li ul li {
+.jide_container li ul li {
     display: block;
     float: none;
 }
 /*Prevent text wrapping*/
-nav li ul li a {
+.jide_container li ul li a {
     width: auto;
     min-width: 100px;
     padding: 0 20px;
 }
 /*Display the dropdown on hover*/
-nav #menu > li:hover > .hidden, .hidden:hover {
+.jide_container #menu > li:hover > .hidden, .hidden:hover {
     display: block;
     visibility: visible;
 }
 
 /*Style 'show menu' label button and hide it by default*/
-nav .show-menu {
+.jide_container .show-menu {
     font-family: 'Montserrat', sans-serif;
     text-decoration: none;
     color: #fff;
-    background: #19c589;
+    background: rgb(25,225,198);
     text-align: center;
     padding: 10px 0;
     display: none;
 }
 /*Hide checkbox*/
-nav input[type=checkbox]{
+.jide_container input[type=checkbox]{
     display: none;
 }
 /*Show menu when invisible checkbox is checked*/
-nav input[type=checkbox]:checked ~ #menu{
+.jide_container input[type=checkbox]:checked ~ #menu{
     display: block;
 }
 /*Responsive Styles*/
 @media screen and (max-width : 760px){
     /*Make dropdown links appear inline*/
-    nav ul {
+    .jide_container ul {
         position: static;
         display: none;
     }
     /*Create vertical spacing*/
-    nav menu li {
+    .jide_container menu li {
         margin-bottom: 1px;
     }
     /*Make all menu links full width*/
-    nav ul li, li a {
+    .jide_container ul li, li a {
         width: 100%;
     }
     /*Display 'show menu' link*/
-    nav .show-menu {
+    .jide_container .show-menu {
         display:block;
     }
 }
 
 
+.jide_container .cm-s-cobalt.CodeMirror { background: rgb(53,61,79); color: yellow; font-family:'Montserrat', sans-serif; }
+.jide_container .cm-s-cobalt div.CodeMirror-selected { background: #b36539; }
+.jide_container .cm-s-cobalt .CodeMirror-line::selection, .cm-s-cobalt .CodeMirror-line > span::selection, .cm-s-cobalt .CodeMirror-line > span > span::selection { background: rgba(179, 101, 57, .99); }
+.jide_container .cm-s-cobalt .CodeMirror-line::-moz-selection, .cm-s-cobalt .CodeMirror-line > span::-moz-selection, .cm-s-cobalt .CodeMirror-line > span > span::-moz-selection { background: rgba(179, 101, 57, .99); }
+.jide_container .cm-s-cobalt .CodeMirror-gutters { background: rgb(53,61,79); border-right: 0; }
+.jide_container .cm-s-cobalt .CodeMirror-guttermarker { color: #ffee80; }
+.jide_container .cm-s-cobalt .CodeMirror-guttermarker-subtle { color: rgb(115,127,150); font-family:monospace !important; }
+.jide_container .cm-s-cobalt .CodeMirror-linenumber { color: rgb(115,127,150); font-family:monospace !important; }
+.jide_container .cm-s-cobalt .CodeMirror-cursor { border-left: 1px solid white; }
+
+.jide_container .cm-s-cobalt span.cm-comment { color: #9B9B9B; }
+.jide_container .cm-s-cobalt span.cm-string { color: #19e2c6; }
+.jide_container .cm-s-cobalt span.cm-brace { color: white; }
+.jide_container .cm-s-cobalt span.cm-bracket { color: darkgreen; }
+.jide_container .cm-s-cobalt span.cm-paren { color: white; }
+.jide_container .cm-s-cobalt span.cm-semicolon { font-weight:700; }
+.jide_container .cm-s-cobalt span.cm-keyword { color: #FF707F; }
+
+.jide_container .cm-s-cobalt span.cm-atom { color: #845dc4; }
+.jide_container .cm-s-cobalt span.cm-number, .cm-s-cobalt span.cm-attribute { color: yellow; }
 
 
-.main{
-    padding-top:50px;
-}
+.jide_container .cm-s-cobalt span.cm-meta { color: #ff9d00; }
+.jide_container .cm-s-cobalt span.cm-variable-2, .cm-s-cobalt span.cm-tag { color: #9effff; }
+.jide_container .cm-s-cobalt span.cm-variable-3, .cm-s-cobalt span.cm-def, .cm-s-cobalt .cm-type { color: white; }
+.jide_container .cm-s-cobalt span.cm-builtin, .cm-s-cobalt span.cm-special { color: #ff9e59; }
+.jide_container .cm-s-cobalt span.cm-link { color: #845dc4; }
+.jide_container .cm-s-cobalt span.cm-error { color: #9d1e15; }
 
-
-.cm-s-cobalt.CodeMirror { background: rgb(51,52,71); color: yellow;  margin-left:-15px; }
-.cm-s-cobalt div.CodeMirror-selected { background: #b36539; }
-.cm-s-cobalt .CodeMirror-line::selection, .cm-s-cobalt .CodeMirror-line > span::selection, .cm-s-cobalt .CodeMirror-line > span > span::selection { background: rgba(179, 101, 57, .99); }
-.cm-s-cobalt .CodeMirror-line::-moz-selection, .cm-s-cobalt .CodeMirror-line > span::-moz-selection, .cm-s-cobalt .CodeMirror-line > span > span::-moz-selection { background: rgba(179, 101, 57, .99); }
-.cm-s-cobalt .CodeMirror-gutters { background: rgb(51,52,71); border-right: 0; }
-.cm-s-cobalt .CodeMirror-guttermarker { color: #ffee80; }
-.cm-s-cobalt .CodeMirror-guttermarker-subtle { color: rgb(115,127,150); font-family:monospace !important; }
-.cm-s-cobalt .CodeMirror-linenumber { color: rgb(115,127,150); font-family:monospace !important; }
-.cm-s-cobalt .CodeMirror-cursor { border-left: 1px solid white; }
-
-.cm-s-cobalt span.cm-comment { color: #9B9B9B; }
-.cm-s-cobalt span.cm-string { color: #19e2c6; }
-.cm-s-cobalt span.cm-brace { color: white; }
-.cm-s-cobalt span.cm-bracket { color: darkgreen; }
-.cm-s-cobalt span.cm-paren { color: white; }
-.cm-s-cobalt span.cm-semicolon { font-weight:700; }
-.cm-s-cobalt span.cm-keyword { color: #FF707F; }
-
-.cm-s-cobalt span.cm-atom { color: #845dc4; }
-.cm-s-cobalt span.cm-number, .cm-s-cobalt span.cm-attribute { color: yellow; }
-
-
-.cm-s-cobalt span.cm-meta { color: #ff9d00; }
-.cm-s-cobalt span.cm-variable-2, .cm-s-cobalt span.cm-tag { color: #9effff; }
-.cm-s-cobalt span.cm-variable-3, .cm-s-cobalt span.cm-def, .cm-s-cobalt .cm-type { color: white; }
-.cm-s-cobalt span.cm-builtin, .cm-s-cobalt span.cm-special { color: #ff9e59; }
-.cm-s-cobalt span.cm-link { color: #845dc4; }
-.cm-s-cobalt span.cm-error { color: #9d1e15; }
-
-.cm-s-cobalt .CodeMirror-activeline-background { background: rgb(51,52,71); }
-.cm-s-cobalt .CodeMirror-matchingbracket { outline:1px solid grey;color:white !important; }
-.CodeMirror { height: 100%; }
-
-#compile_btn {
-    border-radius: 50%;
-    color:white;
-    outline: none;
-    width:60px;
-    height:60px;
-    outline-color: transparent;
-    border:none;
-    box-shadow:none;
-    background-color:rgb(0,224,188);
-    font-size:30px;
-    top:0;
-    position:fixed;
-    margin-left:-80px;
-    z-index:777;
-}
-
+.jide_container .cm-s-cobalt .CodeMirror-activeline-background { background: rgb(51,52,71); }
+.jide_container .cm-s-cobalt .CodeMirror-matchingbracket { outline:1px solid grey;color:white !important; }
+.jide_container .CodeMirror { height: 100%; }
 
 
 /* The Modal (background) */
-.modal {
+.jide_container .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 999; /* Sit on top */
@@ -252,7 +314,7 @@ nav input[type=checkbox]:checked ~ #menu{
 }
 
 /* Modal Content */
-.modal-content {
+.jide_container .modal-content {
     position: relative;
     background-color: #fefefe;
     margin: auto;
@@ -263,6 +325,16 @@ nav input[type=checkbox]:checked ~ #menu{
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s
+}
+
+.jide_container .circle_status{
+    height:10px;
+    width:10px;
+    fill:rgb(242, 240, 34);
+}
+
+.jide_container .circle_status.ok{
+    fill:rgb(25, 226, 198);
 }
 
 /* Add Animation */
@@ -277,27 +349,27 @@ nav input[type=checkbox]:checked ~ #menu{
 }
 
 /* The Close Button */
-.close {
+.jide_container .close {
     color: white;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.jide_container .close:hover,
+.jide_container .close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
 
-.modal-header {
+.jide_container .modal-header {
     padding: 1px 16px;
-    background-color: rgb(0,224,188);
+    background-color:  rgb(25,225,198);
     color: white;
 }
 
-.modal-body {
+.jide_container .modal-body {
     padding: 2px 16px;
     color: rgb(51,52,71);
     background-color: white;
@@ -305,38 +377,122 @@ nav input[type=checkbox]:checked ~ #menu{
 
 /* Tabs */
 /* Style the tab */
-.tab {
+.jide_container .tab {
     overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    background-color:  rgb(35,39,51);
+    text-decoration:none;
+    text-align:center;
+    display: block;
 }
 
 /* Style the buttons inside the tab */
-.tab button {
-    background-color: inherit;
+.jide_container .tab button {
+    background-color: rgb(35,39,51);
     float: left;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    width:200px;
+    height: 40px;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 14px;
+    border-top: 5px solid rgb(35,39,51);
+    color: white;
+    font-family:  'Montserrat', sans-serif;
+}
+
+.jide_container .tab button .close_tab_btn,.jide_container .tab button .circle_status{
+    display:none;
+}
+
+.jide_container .tab button:hover .close_tab_btn,
+.jide_container .tab button.active .close_tab_btn,
+.jide_container .tab button:hover .circle_status,
+.jide_container .tab button.active .circle_status{
+    display:inline-block;
 }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
+.jide_container .tab button:hover {
+    background-color: rgb(53,61,79);
+    border-color: #19e2c6;
 }
 
 /* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
+.jide_container .tab button.active {
+    background-color: rgb(53,61,79);
+    border-color: #19e2c6;
+}
+
+/* Optional to the right Tabs */
+.jide_container #views_tab .tablinks.optional{
+    width: 99px;
+}
+
+/* Output Tabs */
+.jide_container #output_tab {
+    background-color: #353d4f;
+}
+.jide_container #output_tab .tablinks{
+    width: 155px;
+    border-top: 5px solid #262a38;
+}
+
+.jide_container #output_tab .tablinks.active,
+.jide_container #output_tab button:hover {
+    border-top: 5px solid #737f97;
+}
+
+.jide_container .tab #addtab {
+    width: 40px;
 }
 
 /* Style the tab content */
-.tabcontent {
+.jide_container .tabcontent {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
+}
+
+.jide_container .tabcontent input[type=checkbox]{
+    display:inline-block;
+}
+
+.jide_container #addtab, .jide_container #addtab:hover{
+    border: none;
+}
+
+.jide_container .close_tab_btn {
+    float:right;
+}
+
+
+
+.jide_container a{
+    text-decoration:none;
+    color: #ef7171;
+}
+.jide_container a:active{
+    text-decoration:none;
+    color: #ef7171;
+}
+
+
+.jide_container .CodeMirror {
+    max-height: 100%;
+}
+
+.jide_container .CodeMirror-scroll {
+    max-height: 100%;
+}
+
+.jide_container .CodeMirror-fullscreen.CodeMirror {
+    max-height: none;
+}
+
+.jide_container .CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
+}
+
+.jide_container main .tabcontent {
+    padding: 0;
 }
