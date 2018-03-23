@@ -327,6 +327,16 @@ body {
     animation-duration: 0.4s
 }
 
+.jide_container .circle_status{
+    height:10px;
+    width:10px;
+    fill:rgb(242, 240, 34);
+}
+
+.jide_container .circle_status.ok{
+    fill:rgb(25, 226, 198);
+}
+
 /* Add Animation */
 @-webkit-keyframes animatetop {
     from {top:-300px; opacity:0}
@@ -389,6 +399,17 @@ body {
     border-top: 5px solid rgb(35,39,51);
     color: white;
     font-family:  'Montserrat', sans-serif;
+}
+
+.jide_container .tab button .close_tab_btn,.jide_container .tab button .circle_status{
+    display:none;
+}
+
+.jide_container .tab button:hover .close_tab_btn,
+.jide_container .tab button.active .close_tab_btn,
+.jide_container .tab button:hover .circle_status,
+.jide_container .tab button.active .circle_status{
+    display:inline-block;
 }
 
 /* Change background color of buttons on hover */
@@ -470,4 +491,8 @@ body {
 
 .jide_container .CodeMirror-fullscreen .CodeMirror-scroll {
     max-height: none;
+}
+
+.jide_container main .tabcontent {
+    padding: 0;
 }

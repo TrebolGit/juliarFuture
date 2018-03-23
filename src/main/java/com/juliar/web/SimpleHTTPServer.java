@@ -1,6 +1,5 @@
 package com.juliar.web;
 
-import com.bugsnag.Bugsnag;
 import com.juliar.Juliar;
 import com.juliar.errors.JuliarLogger;
 import com.sun.net.httpserver.Headers;
@@ -19,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import static java.lang.System.setErr;
+import static java.lang.System.setOut;
 
 public class SimpleHTTPServer {
     static File jarPath=new File(Juliar.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -109,12 +111,17 @@ public class SimpleHTTPServer {
             SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
         }
         private static String doInPlaceInterpret( String theCode) throws IOException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
+            PrintStream oldOut = System.out;
+            PrintStream oldErr = System.err;
+            ByteArrayOutputStream newOut = new ByteArrayOutputStream();
+            ByteArrayOutputStream newErr = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(newOut);
+            PrintStream ps2 = new PrintStream(newErr);
             // IMPORTANT: Save the old System.out!
-            PrintStream old = System.out;
             // Tell Java to use your special stream
-            System.setOut(ps);
+            setOut(ps);
+            setErr(ps2);
+
 
             try{
                 compiler.isDebug = false;
@@ -134,8 +141,11 @@ public class SimpleHTTPServer {
             }
             // Put things back
             System.out.flush();
-            System.setOut(old);
-            return baos.toString();
+            System.err.flush();
+            setOut(oldOut);
+            setErr(oldErr);
+
+            return "{'output': '"+newOut.toString()+"', 'errors': '"+newErr.toString()+"'}";
         }
     }
 

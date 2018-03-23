@@ -2,12 +2,13 @@
 
 var filename = "untitled.jrl";
 var joutput = document.getElementById('output');
+var jerrors = document.getElementById('errors');
 
 // Auto-save every 5 seconds in Local Storage
-window.setInterval(function(){
-    localStorage.juliarCode = myCodeMirror.getValue();
+/*window.setInterval(function(){
+    localStorage.juliarCode = tabs[currentTab].codeIDE.getValue();
     localStorage.output = joutput.innerHTML;
-}, 5000);
+}, 5000);*/
 
 // Code Mirror Simple Styling rules for Juliar
 
@@ -56,34 +57,28 @@ CodeMirror.defineSimpleMode("simplemode", {
     }
 });
 
-var myCodeMirror = CodeMirror.fromTextArea(codeArea, {
-    lineNumbers: true,
-    mode:  "simplemode",
-    theme: "cobalt"
-});
 
 // Juliar Function Calls
 
+//Today's date
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1; //January is 0!
+var yyyy = today.getFullYear();
+
+if (dd < 10) {
+    dd = '0' + dd
+}
+
+if (mm < 10) {
+    mm = '0' + mm
+}
+
+today = mm + '/' + dd + '/' + yyyy;
+
 
 function newfile(){
-    //Get Today's Date
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
 
-    if (dd < 10) {
-        dd = '0' + dd
-    }
-
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-
-    today = mm + '/' + dd + '/' + yyyy;
-
-    myCodeMirror.getDoc().setValue("/*\n\tTitle: Untitled\n\tAuthor: " + "Juliar" + "\n\tDate: " + today + "\n*/\n\n" +
-        "function main() = {\n\tprintLine(\"Hello World\");\n}");
 }
 
 function openFileOption()
@@ -112,11 +107,13 @@ function JAJAX() {
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            joutput.innerHTML = xmlhttp.responseText.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            var jsonResponse = JSON.parse(xmlhttp.responseText);
+            joutput.innerHTML = jsonResponse["output"].replace(/(?:\r\n|\r|\n)/g, '<br />');
+            jerrors.innerHTML = jsonResponse["errors"].replace(/(?:\r\n|\r|\n)/g, '<br />');
         }
     };
 
-    var codeArea = myCodeMirror.getValue();
+    var codeArea = tabs[currentTab].codeIDE.getValue();
     xmlhttp.open("GET","/get?q=" + encodeURIComponent(codeArea), true);
     xmlhttp.send();
 
@@ -138,10 +135,10 @@ function readSingleFile() {
     if (!file) {
         return;
     }
-    filename = file.name;
+
     var reader = new FileReader();
     reader.onload = function(e) {
-        myCodeMirror.getDoc().setValue(e.target.result);
+        add_tab(file.name, false, e.target.result);
     };
     reader.readAsText(file);
 }
@@ -177,7 +174,7 @@ document.getElementById("menu").addEventListener('click', function(e){
                 openFileOption();
                 break;
             case "save":
-                download(filename,myCodeMirror.getValue());
+                download(tabs[currentTab].name,tabs[currentTab].codeIDE.getValue());
                 break;
             case "download":
                 download('output.txt',joutput.innerHTML);
@@ -186,10 +183,10 @@ document.getElementById("menu").addEventListener('click', function(e){
                 EXIT();
                 break;
             case "undo":
-                myCodeMirror.undo();
+                tabs[currentTab].codeIDE.undo();
                 break;
             case "redo":
-                myCodeMirror.redo();
+                tabs[currentTab].codeIDE.redo();
                 break;
             case "run":
                 JAJAX();
@@ -223,14 +220,14 @@ function menu_unhover(el)
 
 // Load Content from cache, else generate new page.
 
-if(localStorage.juliarCode){
-    myCodeMirror.getDoc().setValue(localStorage.juliarCode);
+/*if(localStorage.juliarCode){
+    tabs[currentTab].codeIDE.getDoc().setValue(localStorage.juliarCode);
     if(localStorage.output) {
         joutput.innerHTML = localStorage.output;
     }
 } else {
     newfile();
-}
+}*/
 
 
 // Modal
@@ -261,6 +258,16 @@ window.onclick = function(e) {
 };
 
 // Tabs
+
+
+function File(id, name, path, modified, codeIDE) {
+    this.id = id;
+    this.name = name;
+    this.path = path || null;
+    this.modified = modified || true;
+    this.codeIDE = codeIDE;
+}
+
 function unchecktabs(tabType){
     var tabs = document.getElementById(tabType).getElementsByClassName("tablinks");
     var content = document.getElementsByClassName("tabcontent " + tabType);
@@ -279,10 +286,14 @@ function openTab(tabName, tabType) {
     var tabs = document.getElementById(tabType).getElementsByClassName("tablinks");
     var content = document.getElementsByClassName("tabcontent " + tabType);
 
+
     for (i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("active");
+        if(tabs[i].name === tabName){
+            tabs[i].classList.add("active");
+        }
     }
-    tabs[tabName].classList.add("active");
+
 
     for (i = 0; i < content.length; i++) {
         content[i].style.display = "none";
@@ -290,6 +301,8 @@ function openTab(tabName, tabType) {
             content[i].style.display ="block";
         }
     }
+
+    currentTab = tabName;
 }
 
 var allTabs = document.getElementsByClassName("tab");
@@ -302,44 +315,84 @@ for(var i=0; i<allTabs.length;i++) {
     });
 }
 
-openTab("0", "files_tab");
+
 openTab("Help", "views_tab");
 openTab("Output","output_tab");
 
 
 //Generate Stack of Tabs
-var tabs = [];
+var tabs = {};
+var currentTab = 0;
 
-function File(id, name, path, modified) {
-    this.id = id;
-    this.name = name;
-    this.path = path || null;
-    this.modified = modified || false;
-}
 var lastTabID = 0;
 
 document.getElementById("addtab").addEventListener('click', function(e){
+    add_tab();
+});
+
+
+function add_tab(filename, modified, code) {
     unchecktabs("files_tab");
     var newTab = new File();
-    newTab.id = ++lastTabID;
-    newTab.name = "Untitled_"+newTab.id+".jrl";
-    newTab.name += "<span class='close_tab_btn'>x</span>";
-    newTab.modfiied = false;
-    tabs.push(newTab);
+    newTab.id = lastTabID++;
+    if(filename == null) {
+        newTab.name = "Untitled_" + newTab.id + ".jrl";
+    } else {
+        newTab.name = filename;
+    }
+    newTab.modfied = modified || true;
     var newNode = document.createElement('button');
     newNode.className = "tablinks active";
     newNode.name = newTab.id;
-    newNode.innerHTML = newTab.name;
+    var mod = "";
+    if(!newTab.modfied)  mod = "ok";
+    newNode.innerHTML = '<span class="close_tab_btn">x</span><svg class="circle_status '+mod+'" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg\">' +
+        '<circle cx="5" cy="5" r="5" />' +
+        '</svg> ' + newTab.name;
     var filesTab = document.getElementById("files_tab");
     filesTab.insertBefore(newNode, document.getElementById("addtab"));
 
-    newfile();
-});
+    var newTextArea = document.createElement('div');
+    newTextArea.className = "tabcontent files_tab " + newTab.id;
+    if(code == null) {
+        newTextArea.innerHTML = "<textarea name=\"codeArea\" id=\"codeArea" + newTab.id + "\">" +
+            "/*\n\tTitle: " + newTab.name + "\n\tAuthor: " + "Juliar" + "\n\tDate: " + today + "\n*/\n\n" +
+            "function main() = {\n\tprintLine(\"Hello World\");\n}</textarea>";
+    } else{
+        newTextArea.innerHTML = "<textarea name=\"codeArea\" id=\"codeArea" + newTab.id + "\">" + code +"</textarea>";
+    }
+    document.getElementsByTagName("main")[0].appendChild(newTextArea);
 
+    openTab(newTab.id.toString(), "files_tab");
+    newTab.codeIDE = CodeMirror.fromTextArea(document.getElementById("codeArea" + newTab.id), {
+        lineNumbers: true,
+        mode: "simplemode",
+        theme: "cobalt"
+    });
+    tabs[newTab.id]  = newTab;
+    currentTab = newTab.id;
+}
+
+add_tab();
+
+
+//Close
 document.getElementById("files_tab").addEventListener('click', function(e){
     if(e.target.classList.contains("close_tab_btn")){
         var nameOfNode = e.target.parentElement.name;
         var fileTabs= document.getElementById("files_tab");
+        var main = document.getElementsByTagName("main")[0];
+        if(e.target.parentElement.classList.contains("active") && Object.keys(tabs).length > 1){
+            var position = Object.keys(tabs).indexOf(nameOfNode) - 1;
+            if(position < 0) position = 1;
+            openTab(Object.keys(tabs)[position].toString(),"files_tab");
+            currentTab = Object.keys(tabs)[position];
+        }
+        delete tabs[nameOfNode];
+
+        var textarea =  main.getElementsByClassName("tabcontent files_tab "+nameOfNode)[0];
+        main.removeChild(textarea);
+
         var el = fileTabs.querySelector("button[name='"+nameOfNode+"']");
         fileTabs.removeChild(el);
     }
