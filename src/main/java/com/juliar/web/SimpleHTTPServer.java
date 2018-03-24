@@ -98,25 +98,26 @@ public class SimpleHTTPServer {
             StringBuilder response = new StringBuilder();
             String q = httpExchange.getRequestURI().getQuery();
 
-            response.append("<html><body>");
             //Map <String,String> parms = SimpleHTTPServer.queryToMap(httpExchange.getRequestURI().getQuery());
             if(!q.isEmpty() && q.startsWith("q=")){
                 response.append(doInPlaceInterpret(q.substring(2)));
             }
             else{
-                response.append("File not found");
+                response.append("{\"output\": \"Interpreter Error Occured\", \"error\": \"Invalid Interpreter String\"}");
             }
 
-            response.append("</body></html>");
             SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
         }
         private static String doInPlaceInterpret( String theCode) throws IOException {
             PrintStream oldOut = System.out;
             PrintStream oldErr = System.err;
+
             ByteArrayOutputStream newOut = new ByteArrayOutputStream();
             ByteArrayOutputStream newErr = new ByteArrayOutputStream();
+
             PrintStream ps = new PrintStream(newOut);
             PrintStream ps2 = new PrintStream(newErr);
+
             // IMPORTANT: Save the old System.out!
             // Tell Java to use your special stream
             setOut(ps);
@@ -126,15 +127,7 @@ public class SimpleHTTPServer {
             try{
                 compiler.isDebug = false;
                 InputStream inputStream = new ByteArrayInputStream(theCode.getBytes(charset));
-
                 List<String> errors = compiler.compile(inputStream, ".", false);
-
-                if (errors != null || errors.size() > 0) {
-                    for (int i = 0; i < errors.size(); i++) {
-                        System.out.println(errors.get(i));
-                    }
-                }
-
             }
             catch (Exception ex){
                 throw ex;
@@ -145,8 +138,59 @@ public class SimpleHTTPServer {
             setOut(oldOut);
             setErr(oldErr);
 
-            return "{'output': '"+newOut.toString()+"', 'errors': '"+newErr.toString()+"'}";
+            return "{\"output\": "+quote(newOut.toString())+", \"errors\": "+quote(newErr.toString())+"}";
         }
+    }
+
+    static String quote(String string) {
+        if (string == null || string.length() == 0) {
+            return "\"\"";
+        }
+
+        char         c = 0;
+        int          i;
+        int          len = string.length();
+        StringBuilder sb = new StringBuilder(len + 4);
+        String       t;
+
+        sb.append('"');
+        for (i = 0; i < len; i += 1) {
+            c = string.charAt(i);
+            switch (c) {
+                case '\\':
+                case '"':
+                    sb.append('\\');
+                    sb.append(c);
+                    break;
+                case '/':
+                    sb.append('\\').append(c);
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                default:
+                    if (c < ' ') {
+                        t = "000" + Integer.toHexString(c);
+                        sb.append("\\u").append(t.substring(t.length() - 4));
+                    } else {
+                        sb.append(c);
+                    }
+            }
+        }
+        sb.append('"');
+        return sb.toString();
     }
 
     static class ExitHandler implements HttpHandler {
