@@ -1,6 +1,5 @@
 // Initial Variables
 
-var filename = "untitled.jrl";
 var joutput = document.getElementById('output');
 var jerrors = document.getElementById('errors');
 
@@ -108,8 +107,26 @@ function JAJAX() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var jsonResponse = JSON.parse(xmlhttp.responseText);
-            joutput.innerHTML = jsonResponse["output"].replace(/(?:\r\n|\r|\n)/g, '<br />');
-            jerrors.innerHTML = jsonResponse["errors"].replace(/(?:\r\n|\r|\n)/g, '<br />');
+            var output = jsonResponse["output"];
+            var errors = jsonResponse["errors"];
+            var re = /(?:\r\n|\r|\n)/g;
+            var outLength = (output.match(re) || []).length;
+            var errLength = (errors.match(re) || []).length;
+
+            var lines_err = errors.split(re);
+            for(var i=0;i<lines_err.length;i++){
+                if(lines_err[i].indexOf("(") == 0 && lines_err[i].indexOf(")") != -1){
+                   var last = lines_err[i].indexOf(")");
+                   var lines = lines_err[i].slice(1,last);
+                   lines_err[i] = "(<a href='#' class='error_class'>"+lines+"</a>)"+lines_err[i].slice(last+1);
+                }
+            }
+            errors = lines_err.join("\r\n");
+
+            update_oe_tab(outLength, errLength);
+
+            joutput.innerHTML = output.replace(re, '<br />');
+            jerrors.innerHTML = errors.replace(re, '<br />');
         }
     };
 
@@ -117,6 +134,24 @@ function JAJAX() {
     xmlhttp.open("GET","/get?q=" + encodeURIComponent(codeArea), true);
     xmlhttp.send();
 
+}
+
+function update_oe_tab(outLength, errLength){
+    var outTab = document.getElementById("output_tab").querySelector("button[name='Output']");
+    var errTab = document.getElementById("output_tab").querySelector("button[name='Errors']");
+
+    if(outLength > 0) {
+        outTab.innerHTML = "Output (" + outLength + ")";
+    } else{
+        outTab.innerHTML = "Output";
+    }
+    if(errLength > 0) {
+        errTab.innerHTML = "Errors (" + errLength + ")";
+        openTab("Errors","output_tab");
+    } else{
+        errTab.innerHTML = "Errors";
+        openTab("Output","output_tab");
+    }
 }
 
 function EXIT() {
@@ -301,8 +336,9 @@ function openTab(tabName, tabType) {
             content[i].style.display ="block";
         }
     }
-
-    currentTab = tabName;
+    if(tabType === "files_tab") {
+        currentTab = tabName;
+    }
 }
 
 var allTabs = document.getElementsByClassName("tab");
@@ -395,5 +431,16 @@ document.getElementById("files_tab").addEventListener('click', function(e){
 
         var el = fileTabs.querySelector("button[name='"+nameOfNode+"']");
         fileTabs.removeChild(el);
+    }
+});
+
+//Go to Error Line
+document.getElementById("errors").addEventListener('click', function(e){
+    e.preventDefault();
+    if(e.target.classList.contains("error_class")){
+        var href = e.target.innerHTML;
+        var linechar = href.split(",");
+        tabs[currentTab].codeIDE.focus();
+        tabs[currentTab].codeIDE.setCursor({line:  (parseInt(linechar[0])-1), ch:  parseInt(linechar[1])});
     }
 });

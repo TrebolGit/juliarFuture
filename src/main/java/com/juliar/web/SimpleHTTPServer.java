@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
 import static java.lang.System.setErr;
 import static java.lang.System.setOut;
 
@@ -34,6 +35,7 @@ public class SimpleHTTPServer {
     static private String contentType = "Content-Type";
 
     public static void main()  {
+        // System.out.println(FullUpdater.CheckVersion());
         int port = Juliar.port;
         try {
             server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -57,6 +59,7 @@ public class SimpleHTTPServer {
         }
         server.createContext("/", new MyHandler());
         server.createContext("/get", new GetHandler());
+        server.createContext("/getstructure", new GetStructureHandler());
         server.createContext("/exit", new ExitHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
@@ -90,6 +93,30 @@ public class SimpleHTTPServer {
             } catch (Exception e) {
                 return "";
             }
+        }
+    }
+
+    static class GetStructureHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+            //String q = httpExchange.getRequestURI().getQuery();
+
+            String structure = displayIt(new File(""));
+            response.append(structure);
+
+            SimpleHTTPServer.writeResponse(httpExchange, response.toString(),"");
+        }
+
+        static String displayIt(File node){
+            String structure =  node.getAbsoluteFile().toString();
+
+            if(node.isDirectory()){
+                String[] subNote = node.list();
+                for(String filename : subNote){
+                    structure += displayIt(new File(node, filename));
+                }
+            }
+            return structure;
         }
     }
 
@@ -196,6 +223,7 @@ public class SimpleHTTPServer {
     static class ExitHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             server.stop(0);
+            System.exit(0);
         }
     }
 
