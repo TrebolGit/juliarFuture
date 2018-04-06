@@ -19,11 +19,21 @@ public abstract class NodeImpl implements Node , Serializable{
     public Interpreter interpreter;
     public ActivationFrame frame;
 
+    protected Node parentNode;
+
     private IntegralType integralType;
 
 
     public NodeImpl(){
         //setNodeName();
+    }
+
+    public Node ParentNode(){
+        return parentNode;
+    }
+
+    public void SetParentNode(Node node){
+        parentNode = node;
     }
 
     @Override
@@ -33,6 +43,10 @@ public abstract class NodeImpl implements Node , Serializable{
 
     @Override
     public void addInst(Node instruction) {
+        NodeImpl nodeImpl = (NodeImpl)instruction;
+        if ( nodeImpl != null && nodeImpl.parentNode == null){
+            nodeImpl.parentNode = this;
+        }
         instructions.add( instruction );
     }
 

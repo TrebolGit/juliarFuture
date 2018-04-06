@@ -17,7 +17,7 @@ public class Interpreter {
     private Map<NodeType, Evaluate> functionMap = new HashMap<>();
     public Stack<Node> operatorStack = new Stack<Node>();
     public Stack<Node> operandStack = new Stack<Node>();
-    private operatorPrecedence operatorPrecedenceTable = new operatorPrecedence();
+    private operatorState operatorPrecedenceTable = new operatorState();
 
 
     private enum SrEval{
@@ -27,7 +27,7 @@ public class Interpreter {
         End,
     }
 
-    private class operatorPrecedence {
+    private class operatorState {
         public SrEval shiftReduceOperationTable[][] = {
       /*              PLUS            MINUS           MULTILY        DIVIDE         EXPONENT       FUNCTION       p             c              COMMA          LEFTPAREN      RIGHTPAREN     SEMI            EQUAL         EQEQ           BIAND         BIOR          */
       /*0 PLUS     */ {SrEval.Reduce,  SrEval.Reduce,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift,  SrEval.Shift, SrEval.Shift,  SrEval.Reduce, SrEval.Shift,  SrEval.Reduce, SrEval.Reduce,  SrEval.Error, SrEval.Error,  SrEval.Error, SrEval.Error },
@@ -48,6 +48,12 @@ public class Interpreter {
      /*15 BIOR     */ {SrEval.Error,   SrEval.Error,   SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error,  SrEval.Error, SrEval.Error,  SrEval.Error,  SrEval.Shift,  SrEval.Reduce, SrEval.Error,   SrEval.Error, SrEval.Error,  SrEval.Reduce, SrEval.Reduce },
         };
     }
+
+/*
+    private class operatorBinding {
+        public
+    }
+*/
 
     public Interpreter(InstructionInvocation invocation){
         try {
@@ -219,24 +225,31 @@ public class Interpreter {
     private int getOperatorPrecedenceValue( FinalNode node){
         int precedence = -1;
         String dataString = node.dataString();
-        if ( dataString.equals( "(" )){
-            precedence = 9;
-        }
-
-        if ( dataString.equals( ")" )) {
-            precedence = 10;
-        }
-
-        if ( dataString.equals( "==")){
-            precedence = 13;
-        }
-
-        if ( dataString.equals( "&&")){
-            precedence  = 14;
-        }
-
-        if ( dataString.equals( "||")) {
-            precedence = 15;
+        switch (dataString){
+            case "*":
+            case "/":
+            case "%":
+                precedence = 7;
+                break;
+            case "+":
+            case "-":
+                precedence = 0;
+                break;
+            case "(":
+                precedence = 9;
+                break;
+            case ")":
+                precedence = 10;
+                break;
+            case "==":
+                precedence = 13;
+                break;
+            case "&&":
+                precedence  = 14;
+                break;
+            case "||":
+                precedence = 15;
+                break;
         }
 
         return precedence;
@@ -298,6 +311,10 @@ public class Interpreter {
                             case "-":
                             case "*":
                             case "/":
+                            case ">=":
+                            case "<=":
+                            case "&&":
+                            case "==":
                                 interpreter.pushOperatorStack(n);
                                 break;
                             default:

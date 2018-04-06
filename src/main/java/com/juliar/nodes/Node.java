@@ -20,12 +20,6 @@ public interface Node {
 
     NodeType getType();
 
-    /*
-    void setNodeName();
-
-    String getNodeName();
-    */
-
     IntegralType getIntegralType();
 
     void setVariableTypeByIntegralType( IntegralType type);

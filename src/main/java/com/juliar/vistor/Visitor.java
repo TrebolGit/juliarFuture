@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -698,7 +699,14 @@ public class Visitor extends JuliarBaseVisitor<Node>
 
                 action(parent, node);
                 action(node);
+
                 parent.addInst(node);
+
+                if ( node instanceof NodeImpl){
+                    if ( ((NodeImpl)node).ParentNode() == null){
+                        System.out.println("this is null");
+                    }
+                }
 
             }
 

@@ -25,6 +25,11 @@ public class FinalNode extends NodeImpl{
     public FinalNode(){
     }
 
+    @Override
+    public void addInst(Node instruction) {
+        super.addInst(instruction);
+    }
+
     public void setDataString(Object data){
         object = data;
     }

@@ -43,6 +43,8 @@ public class FunctionDeclNode extends NodeImpl implements IContextInfo {
             super.addInst( instruction );
         }
 
+        ((NodeImpl)instruction).SetParentNode( this );
+
         return;
     }
 

@@ -34,6 +34,7 @@ public class ExpressionNode extends NodeImpl{
     public void addInst(Node instruction) {
         if ( instruction instanceof FinalNode )
         {
+            ((NodeImpl)instruction).SetParentNode( this );
             return;
         }
         super.addInst(instruction);
