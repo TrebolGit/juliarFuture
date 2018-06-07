@@ -9,6 +9,8 @@
 [![Juliar Programming Language Logo](https://user-images.githubusercontent.com/11934545/34541564-abf43afe-f0a6-11e7-9507-de1450e51ad8.png)](https://juliar.org/)
 
 
+## This project is active, but due to the small team size, we are currently putting all of our energy on a C# port of Juliar: DReAM https://github.com/juliarLang/DReAM. 
+
 Juliar is a programming language that can be both interpreted and compiled directly into Java bytecode. 
 
 Juliar aim is to allow programmers and developers to quickly prototype new programs with the least amount of code possible, 
