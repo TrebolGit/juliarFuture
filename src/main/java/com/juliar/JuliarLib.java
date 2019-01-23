@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+
+/*
+    main lib method for juliar.
+ */
 public class JuliarLib {
     private static ErrorListener errors;
     public static void main(String[] args) {
