@@ -1,3 +1,4 @@
+## This project has been deprecated in favor of Juka DReAM: https://github.com/jukaLang/DReAM. 
 # Juliar Programming Language
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9a508bdddb8747bf9ed8e39bddfb10f2)](https://www.codacy.com/app/TheAndreiM/Juliar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=juliarLang/juliar&amp;utm_campaign=Badge_Grade)
@@ -9,7 +10,7 @@
 [![Juliar Programming Language Logo](https://user-images.githubusercontent.com/11934545/34541564-abf43afe-f0a6-11e7-9507-de1450e51ad8.png)](https://juliar.org/)
 
 
-## This project is active, but due to the small team size, we are currently putting all of our energy on a C# port of Juliar: DReAM https://github.com/juliarLang/DReAM. 
+## This project has been deprecated in favor of Juka DReAM: https://github.com/jukaLang/DReAM. 
 
 Juliar is a programming language that can be both interpreted and compiled directly into Java bytecode. 
 
