@@ -1,32 +1,45 @@
+.gradle
+/build/
 
-.idea/workspace.xml
+# User-specific stuff:
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
 
-*.tokens
+# Sensitive or high-churn files:
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.xml
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xm
 
-src/com/juliar/parser/juliarBaseVisitor.java
+# Gradle:
+.idea/**/gradle.xml
+.idea/**/libraries
 
-src/com/juliar/parser/juliarLexer.java
+# Sonarlint plugin
+.idea/sonarlint
 
-src/com/juliar/parser/juliarParser.java
+.idea/inspectionProfiles/
+.idea/vcs.xml
 
-src/com/juliar/parser/juliarVisitor.java
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-*.xml
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-.idea/workspace.xml
-
-.idea/workspace.xml
-
-.idea/workspace.xml
-
-*.class
-
-out/com/juliar/codegenerator/CodeGenerator.class
-
-out/com/juliar/parser/juliarVisitor.class
-
-out/.idea/src.iml
-
-out/com/juliar/parser/juliar.g4
-.idea/misc.xml
-.idea/misc.xml
+# Other
+JuliarWebCompiler/web/WEB-INF/lib/Juliar.jar

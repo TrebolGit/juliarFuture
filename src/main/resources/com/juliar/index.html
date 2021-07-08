@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Juliar</title>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,900,900i" rel="stylesheet">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="codemirror.css" rel="stylesheet">
+        <link href="juliar.css" rel="stylesheet">
+    </head>
+    <body class="container">
+        <div class="jide_container">
+            <header>
+                <ul id="menu">
+                    <li><a href="#">File</a>
+                        <ul class="hidden">
+                            <li><a href="#new">New</a></li>
+                            <li><a href="#load">Load</a></li>
+                            <li><a href="#openfolder">Open Folder</a></li>
+                            <li><a href="#save">Save</a></li>
+                            <li><a href="#saveas">Save As...</a></li>
+                            <li><a href="#download">Download Output</a></li>
+                            <li><a href="#exit">Exit</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Edit</a>
+                        <ul class="hidden">
+                            <li><a href="#undo">Undo</a></li>
+                            <li><a href="#redo">Redo</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">View</a>
+                    </li>
+                    <li><a href="#">Run</a>
+                        <ul class="hidden">
+                            <li><a href="#run">Run Interpreter</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Help</a>
+                        <ul class="hidden">
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#newfeatures">What's new?</a></li>
+                            <li><a href="#docs">Documentation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </header>
+            <nav>Coming Soon...</nav>
+            <div class="tab" id="files_tab">
+                <button id="addtab">+</button>
+            </div>
+
+            <aside>
+                <div class="tab" id="views_tab">
+                    <button class="tablinks optional" name="Help">News</button>
+                    <button class="tablinks optional" name="Packages">Packages</button>
+                    <button class="tablinks optional" name="Viewer">Viewer</button>
+                </div>
+
+                <div class="tabcontent views_tab Help">
+                    -03/25/2018 New Editor
+                </div>
+                <div class="tabcontent views_tab Packages">
+                    <button>Check for updates...</button><br/><br/>
+                    <label class="container">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        Base Package
+                    </label>
+                </div>
+                <div class="tabcontent views_tab Viewer">
+                    Coming Soon...
+                </div>
+
+            </aside>
+            <main>
+                <!--<textarea name="codeArea" id="codeArea"></textarea>-->
+            </main>
+            <footer>
+                <div class="tab" id="output_tab">
+                    <button class="tablinks output" name="Output">Output</button>
+                    <button class="tablinks output" name="Errors">Errors</button>
+                    <button class="tablinks output" name="Console">Console</button>
+                </div>
+                <div class="tabcontent output_tab Output">
+                    <div id="output">Click Run to see the output</div>
+                </div>
+                <div class="tabcontent output_tab Errors">
+                    <div id="errors">Click Run to see the errors</div>
+                </div>
+                <div class="tabcontent output_tab Console">
+                    Coming Soon...
+                </div>
+
+            </footer>
+            <span class="dot" onclick="JAJAX()">&#9658;</span>
+
+            <input type="file" id="file1" onchange="readSingleFile()" style="display:none" />
+            <div id="juliar_popup" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Modal Header</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal Body</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script src="codemirror.js"></script>
+<script src="simple.js"></script>
+<script src="juliar.js"></script>

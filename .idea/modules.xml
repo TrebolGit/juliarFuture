@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/juliarFuture.iml" filepath="$PROJECT_DIR$/juliarFuture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/juliar.iml" filepath="$PROJECT_DIR$/.idea/juliar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/juliar_main.iml" filepath="$PROJECT_DIR$/.idea/modules/juliar_main.iml" group="juliar" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/juliar_test.iml" filepath="$PROJECT_DIR$/.idea/modules/juliar_test.iml" group="juliar" />
     </modules>
   </component>
 </project>

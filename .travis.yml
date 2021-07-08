@@ -1,20 +1,50 @@
 language: java
-sudo: true
+
+sudo: required
+
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 os:
-  - linux
+- linux
 
+env:
+  global:
+  - VERSION=$(date +'%Y%m%d-%H%M%S')
+  - secure: FGtOsrLcdqCI49kLofgPz8wk1GFPXy7eHp9G4xHj1LNW+uIpFVUdkswd1Gx1yzd8Dh0wiq85csJG0a9u9wX/eEJ76uM3iTduyt8dzDt17WU09jCTrAkKzv55B2whMd4GTLvFaJhCixdp6GLewKdnKgIQhuZGtOnVGnGjyxjsFJpuWjTxC8gbgz7uFhoRTLyMZS5Dh0F56bde1Tvg75N3zmc+k3a6s161Gw3GeD3BjS5MeNTeS2uISvSnCRHdsRE1OjDzIugDkXdM0I/6IZKAoTP3cXMpcN3eLvJDq0gn1KFpIWTrsHdroR1RnZKvFhdom5UU3LEZ2KzTlQ0p1h/1wrgvKEI/4WYdNsw1DjWDfcQe0mDAhtL5O/1TZVKFzlNtT4rJG5g91eA2464V61MuGK1V7Os8ysj52g5Q5N04pmh1oWMEd0cdolOvk2fVnA8hxOGGLKkWWAzACKzWXzAYnGUP3pFK6eHIBOgfxiCtZ/ej4uKOn50baejt22YlZPYaD3CVyJdiuRsiFWEId2Is1A0JD5gNjU3GSajMR8tIjykLgItsaV5EupijhERHs4o0UKMnZPjvwgscFEgk/hXW8a+XLRh89O9nAVvFUIQxGrOyY1B+TH7eso5tHt29xKZUF3C01xLB16lh4RZ2EpLMfu8j28GHh3eTIVQecbX1d1Q=
+  - secure: E+tPILYSTGO3Bta5CPvnjWMazssTJNSj8u5wevq61k+TBxQuE9sDxSNmXCdVisP5ueFC7HPPKakxnpuTgqPcC3OHaMSYu2WnlKydE61cz9xP1KgHbBTgm49i3OY/PMntdbWVxoAaefAVnEwcB2xeLETPAntLUQiF4gzubBiPyPuuoDAIS6FO48G5r5igRdDD0zHEedtdt+ji8tey1tn/OUn/qGQFhxMc58fUUCIvSdsbIO9phWNiYdSaa5hC/lac4AENFY6GoUlzvuypxny56ycDXgJ3vKBc0/e8/ifFVl7vOJBTv/6Vu1rwMWXG3mjjaZFARjKXPDUdi/xNDl98xjSiUUZ5RrYosAPowXUq4UdcDIyfhgj73613oglIejtnlyF+Y4vFjy2eirYvqVn6DovPNAc2yCe1AxxU9lFfornZ2RutdGzaOI6/pI0X71K+cK5GtGwvz33W20e7NTNvOj0cGVgCKQiSDrIJR2KC26CV5sz2708Yd6yzCAmj4ydpGdKDc/9EElZWwOwWoZPLV5/EczBP+ulI45D5BkL2m2qVkvCLHNg7uomFanEbLTK0dTun0iRXAIgClNn4aP/hvmM2B2B5YqvQ1IyMNLgpY86OGcoq7eTE8G59nzKGmD+/xLnxLYGApGXAybTa1u+j+bG6qLFW5yWbQKlPBH2MaiE=
+
+
+before_script:
+- echo $VERSION > "src/main/resources/com/juliar/version.txt"
+
+script:
+- "./gradlew build"
 
 notifications:
-  email:
-  - andreim@juliar.org
+  slack: juliarlang:z7GTm7XhwjuvwIb9oYKvFdWN
 
-script: ./antlrbuild.sh
-       javac src.com.juliar.test.JuliarCompilerTest.java
-       javac src.com.juliar.test.JClassLoader.java
-       javac src.com.juliar.test.TestByteCode.java
-       java  out.com.juliar.test.JuliarCompilerTest
-       java  out.com.juliar.test.JClassLoader
-       java  out.com.juliar.test.TestByteCode
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_d33e3e505123_key -iv $encrypted_d33e3e505123_iv
+  -in juliar.jks.enc -out juliar.jks -d
+- cp $TRAVIS_BUILD_DIR/juliar.jks $HOME
+- cd build/libs/
+- jarsigner -verbose -sigalg SHA1withRSA -tsa http://timestamp.comodoca.com/rfc3161 -digestalg SHA1 -keystore $HOME/juliar.jks -storepass $storepass -keypass $keypass Juliar.jar juliarandroid
+- jarsigner -verify Juliar.jar
+- cd ../../
+- git config --local user.name "Juliar Team"
+- git config --local user.email "admin@juliar.org"
+- git tag "Juliar-$VERSION"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: fSxR02Yw0Yxxi0Px5R2sFAdjvuG6fBBE+InHfo6HIL6nS8SrPwlr9A/XREWX09PIs0/4JJZZTRU7vdz4y19F9moYH2KgodtIUp8Hedseu4f0vSfvhNZ06P+L77g1iBcTsIrlOjbKkcUJHPrc7LbzwddheAUhY4nV5Setps2614f9euwT4Uffi6rqEq3a0bWtKXeu+b1iK6GSctV6of4FkgYVpoYa1an9OF7S0qfFsdqwd1RXd+Ksg4aEYdjXJxNWyRxvSl5N6LbKf25CJt2bEJrRVEmsynxnisrm3X64svV1NrnBx9zEGOj5CQank/4n7FAn987GD9aPJIL/jpR/8GKMN1UHBJUuhjL2sv01uYmH1bsyGjzGRfwR2EHk9uhLnflnsgP0VI8zY6brU/m2gvY0NyFaw66Ti6bhw8nNouT+iOt3MSc6orV1LeE5ZSZgyCDznfyippbqfBiU6ga7tnAiM3ZSMMTJlC4JTyQEdgzJ/ggloJKzxZFrVgkwprg4VUbNwQ3EQxRZ8je1H3AtvvP25YQIlxPzoXDD+7EYi0nU3WlQ7Z6Cd85hnVIRAPZzuQ3CE0vjmCw/Hwb3FcrKb4Ir5Pq1ODEQQ3K1jbu4zkiSBdIylMvxZ/ITftKdUMkIaXOGrKz3aBC886ZNFEzfpLab/bI0KPz/sK1+ZoeOlLw=
+  file_glob: true
+  file: build/libs/*
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: juliarLang/juliar
+    tags: false
+    all_branches: true
